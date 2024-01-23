@@ -1,38 +1,82 @@
-.App {
+.center{
   text-align: center;
+ 
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.bg {
+  background-image: url("../public/XE220992.jpg");
+  height: 100vh;
+  width: 100vw;
+  /* background-size: cover; */
+  background-repeat: no-repeat;
+  background-size: 100vw 100vh;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
+.formBg {
+  background-color: rgb(255 255 255 / 40%)
+  ;
+  backdrop-filter: blur(10px); ;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  right: 36%;
+  width: 25%;
+  height: 65%;
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+}
+.login {
+  width: 80%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+.loginBtn {
+  background-color: #E47F2B; 
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  width: 80%;
+  margin-top: 7px;
+  border-radius: 3px;
+}
+.logos{
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+    flex-wrap: nowrap;
+    align-content: center;
+    align-items: center;
+    padding-top: 7%;
+    padding-bottom: 10%;
 }
 
-.App-link {
-  color: #61dafb;
+
+.salade{
+  background-color: rgba(0, 128, 0, 0.637);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.dessert{
+background-color: rgba(255, 0, 0, 0.553);
+}
+.main{
+  background-color: rgba(241, 141, 18, 0.678);
+}
+.cantineLogo {
+  height: 10vw;
+}
+.weviooLogo {
+
+  height: 3.5vw;
+}
+.restaurantBg{
+  background-image: url("./assets/restaurant-background-2ez77umko2vj5w02-modified.jpg");
+  padding-top: 3%;
 }
