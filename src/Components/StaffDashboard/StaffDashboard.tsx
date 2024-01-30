@@ -3,10 +3,10 @@ import { StaffDashboardWrapper } from './StaffDashboard.styled';
 
 interface StaffDashboardProps {}
 
-const StaffDashboard: FC<StaffDashboardProps> = () => (
- <StaffDashboardWrapper>
+const StaffDashboard: FC<StaffDashboardProps> = () => 
+{ return <StaffDashboardWrapper>
     StaffDashboard Component
  </StaffDashboardWrapper>
-);
+}
 
 export default StaffDashboard;

@@ -9,7 +9,7 @@ interface DishCardProps {
 
 
 const DishCard: FC<DishCardProps> = (props ) => (
-    
+
  <DishCardWrapper>
     <ImgWrapper className={props.category}>
 <FoodImg  src={(props.image)} alt=" foodPhoto" />
