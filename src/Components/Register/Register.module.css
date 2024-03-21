@@ -1,0 +1,16 @@
+.cantineLogoRegister {
+
+height: 16vh;
+
+}
+.borderDanger{
+
+    border: 2px solid red;
+}
+.errorMessage{
+    background: rgb(255 0 0 / 66%);
+    padding: 3px 10px 3px 10px;
+    border-radius: 26px;
+    color: white;
+    border: 1px solid white;
+}

@@ -1,0 +1,29 @@
+.homeBg{
+   
+background-image: url("../../assets/wevioorestau_1.jpg");
+
+
+  padding-top: 3%;
+  min-width: 81vw;
+ 
+  min-height: 100vh;
+  background-size: cover;
+
+;}
+.homeMsg{
+   /* border: 1px solid black;*/
+    height: 500px;
+    width: 900px;
+    margin: auto;
+    margin-top: 50px;
+    backdrop-filter: blur(9px);
+}
+
+.homeLogos{
+    margin: auto;
+    width: 13vw;
+}
+
+h3 {
+  text-shadow: 3px 2px 5px black;
+}

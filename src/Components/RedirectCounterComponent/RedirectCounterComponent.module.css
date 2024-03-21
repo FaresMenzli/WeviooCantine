@@ -1,0 +1,44 @@
+.redirectCounterWrapper
+
+  { 
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); 
+  
+}
+.redirectCounterContent{
+    
+background-color: #fefefe;
+margin: auto;
+padding: 20px;
+border: 1px solid #888;
+margin-top:50vh;
+border-radius:20px;
+font-weight:bold;
+text-align:center;
+width: 30%;
+transform:scale(0);
+}
+.redirectCounterContent.open{
+transform:scaleY(.01) scaleX(0);
+    animation:unfoldIn 1s cubic-bezier(0.08, 0.640, 0.240, 1.000) forwards;
+}
+
+@keyframes unfoldIn {
+    0% {
+      transform:scaleY(.005) scaleX(0);
+    }
+    25% {
+      transform:scaleY(.005) scaleX(1);
+    }
+    100% {
+      transform:scaleY(1) scaleX(1);
+    }
+  }

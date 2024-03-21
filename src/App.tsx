@@ -1,39 +1,39 @@
-import { useState } from 'react';
-import './App.css';
-import pokemon from "./Pokemon.json"
-import Login from './Components/Login/Login';
-import { BrowserRouter, Route, Routes, redirect } from 'react-router-dom';
-import Dishes from './Components/Dishes/Dishes';
-import AdminDashboard from './Components/AdminDashboard/AdminDashboard';
-import StaffDashboard from './Components/StaffDashboard/StaffDashboard';
-import Cart from './Components/Cart/Cart';
-//import type { RootState } from '../src/redux/store'
+import "./App.css";
+import Login from "./Components/Login/Login";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+import Dishes from "./Components/Dishes/Dishes";
+import AdminDashboard from "./Components/AdminDashboard/AdminDashboard";
+import StaffDashboard from "./Components/StaffDashboard/StaffDashboard";
+import Cart from "./Components/Cart/Cart";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import DishDetails from "./Components/DishDetails/DishDetails";
+import { Dish } from "./Models/Dish";
+import GridExample from "./Components/AgGrid/AgGrid";
+import { AuthProvider } from "./Contexts/AuthContext";
+import  WeviooNavbar  from "./Components/WeviooNavbar/WeviooNavbar";
+import Home from "./Components/Home/Home";
+import Notfound from "./Components/NotFound/Notfound";
+import TestComponent from "./Components/TestComponent/TestComponent";
+
+
 function App() {
-  const [firstname, setFirstname]=useState("Fares El Ouissi")
-  const handleChange=(e:any)=>{setFirstname(e.target.value)}
-  const reset = ()=>{setFirstname("")}
-
-
-
-
   return (
     <BrowserRouter>
-<Routes>
-<Route path='login' element={<Login/>}></Route>
-<Route path='dishes' element={<Dishes/>}></Route>
-<Route path='Admin' element={<AdminDashboard/>}></Route>
-<Route path='Staff' element={<StaffDashboard/>}></Route>
-<Route path='Cart' element={<Cart/>}></Route>
-
-
-
-</Routes>
-
-</BrowserRouter>
+     <AuthProvider>
+      <Routes>
+        <Route path="/" element={<Home />}></Route>
+        <Route path="/login" element={<Login />}></Route>
+        <Route path="dishes" element={<Dishes />}></Route>
+        <Route path="Admin" element={<AdminDashboard />}></Route>
+        <Route path="Staff" element={<StaffDashboard />}></Route>
+        <Route path="Cart" element={<Cart />}></Route>
+        <Route path="/dishDetails/:id" element={<DishDetails ></DishDetails>} />
+        <Route path="home" element={<Home />}></Route>
+        <Route path="test" element={<TestComponent />}></Route>
+        <Route path="*" element={<Notfound/>} />
+      </Routes>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 export default App;
-function useSelector(arg0: (state: any) => any, arg1: { count: any; }): { count: any; } {
-  throw new Error('Function not implemented.');
-}
-

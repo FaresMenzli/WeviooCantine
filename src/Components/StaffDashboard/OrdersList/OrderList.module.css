@@ -1,0 +1,19 @@
+.filterContainer {
+    background: #ffffffb5!important;
+ /*    width: 17%;
+    height: 36vh;
+    position: absolute;
+    margin: 28px;
+    border-radius: 28px;
+    padding-top: 5vh;
+*/
+    color: black; 
+   
+}
+.dateSelector{
+
+    border-radius: 20px;
+    padding: 6px;
+    font-family: cursive;
+    width: 68%;
+}
