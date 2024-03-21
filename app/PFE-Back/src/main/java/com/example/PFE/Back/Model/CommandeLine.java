@@ -36,10 +36,10 @@ public class CommandeLine {
     private int quantityOrdered;
     private Date commandeLineDate;
 
-    public CommandeLine(final Date date, final Dish dish, final int quantity) {
-    }
+
 
     public CommandeLine(final Date date, final Order order, final Dish dish, final int quantity) {
+        // constructor
     }
 
 

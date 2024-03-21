@@ -29,13 +29,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         String requestUri = request.getRequestURI();
 
-        System.out.println(requestUri);
-        System.out.println("request");
+
         if (shouldSkipAuthentication(requestUri)) {
             filterChain.doFilter(request, response);
             return;
         }
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++Filter");
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String userEmail;

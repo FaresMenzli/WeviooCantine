@@ -26,8 +26,6 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(final RegisterRequest request) {
         if (userRepo.existsByUserEmail(request.getEmail())) {
-            System.out.println("******************************");
-            System.out.println(userRepo.existsByUserEmail(request.getEmail()));
             throw new UserAlreadyExistsException("User with username " + request.getEmail() + " already exists");
         }
         var user = User.builder()
@@ -37,8 +35,7 @@ public class AuthenticationService {
                 .userPassword(passwordEncoder.encode(request.getPassword()))
                 .userRole(UserRole.COLLABORATER)
                 .build();
-        System.out.println("-------------------------------------------------------------------");
-        System.out.println(user);
+
         userRepo.save(user);
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()

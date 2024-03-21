@@ -1,19 +1,18 @@
 package com.example.PFE.Back.Auth;
 
 import com.example.PFE.Back.Auth.Service.AuthenticationService;
-import com.example.PFE.Back.Model.User;
+
 import com.example.PFE.Back.Repo.UserRepo;
 import com.example.PFE.Back.Service.Implementation.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestController
 @RequestMapping("/api/v1/auth")

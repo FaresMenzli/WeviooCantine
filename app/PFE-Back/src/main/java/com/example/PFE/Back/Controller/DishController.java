@@ -28,7 +28,6 @@ public class DishController {
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/dishs")
     public List<Dish> dishList(){
-        System.out.println("dishList");
         return dishService.dishList();
     }
 
@@ -45,8 +44,7 @@ public class DishController {
     }
     @PostMapping("/add")
     public ResponseEntity<Dish> addDish(@RequestBody Dish dish) {
-        System.out.println("----------------------------------------------------");
-        System.out.println(dish);
+
         Dish savedDish = dishService.addDish(dish);
 
         return new ResponseEntity<>(savedDish, HttpStatus.CREATED);
