@@ -185,6 +185,12 @@ thead tr th {
   border-radius: 35px;
   font-weight: bold;
 }
+.orderListTable{
+  width: 50vw;
+  background-color: rgba(14, 14, 46, 0.456);
+  backdrop-filter: blur(10px);
+  border-radius: 35px;
+}
 .cartTable{
   width: 50vw;
   background-color: rgba(43, 43, 172, 0.456);

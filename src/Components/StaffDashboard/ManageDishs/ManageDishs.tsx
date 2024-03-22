@@ -87,14 +87,14 @@ const ManageDish: FC<ManageDishProps> = (props) => {
           return (
         <ToastContainer />
   
-              <table className="white text-center mb-5">
+              <table className="white  text-center mb-5">
                 <thead>
                   <tr>
-                    <th>Actions</th>
-                    <th>id</th>
-                    <th>Dish name</th>
-                    <th>Dish photo</th>
-                    <th>Dish category</th>
+                    <th className="white textShadow">Actions</th>
+                    <th className="white textShadow">id</th>
+                    <th className="white textShadow">Dish name</th>
+                    <th className="white textShadow">Dish photo</th>
+                    <th className="white textShadow">Dish category</th>
                   </tr>
                 </thead>
                 <tbody>

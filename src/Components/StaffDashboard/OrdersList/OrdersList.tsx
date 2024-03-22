@@ -1,30 +1,46 @@
 import { FC, useEffect, useState } from "react";
 import interceptor from "../../../Interceptor/Interceptor";
-import { Pen, Trash } from "react-bootstrap-icons";
+import { BoxArrowRight, Pen, Trash } from "react-bootstrap-icons";
 import WeviooSpinner from "../../WeviooSpinner/WeviooSpinner";
 import dayjs from 'dayjs';
 
 import styles from "./OrderList.module.css"
 import { Filters, RightBar } from "../../Dishes/Dishes.styled";
 import { User } from "../../../Models/User";
+import { Modal } from "react-bootstrap";
+import { Dish } from "../../../Models/Dish";
 interface OrderListProps {
     
+}
+interface CommandeLine{
+  commandeLineId:number;
+  dish :Dish;
+  quantityOrdered:5;
+
 }
 interface Order {
     id: number;
     orderDate: Date;
     total: number;
     user:User
+    commandeLines:CommandeLine[]
+    
   }
  
 const OrderList: FC<OrderListProps> = () => {
+  const [modalOpen, setModalOpen] = useState(false);
     const today = dayjs();
 const [orders, setOrders] = useState<Order[]>([])
 const [selectedDate, setSelectedDate] = useState<string>(today.format('YYYY-MM-DD'));
 const [searchByUser, setSearchByUser] = useState("");
-
+const [commandeLines,setCommandeLines]= useState<CommandeLine[]>([])
 const [loading, setLoading] = useState(false);
 const [error, setError] = useState(null);
+const handleOrderDetailsClick = (commandeLines:CommandeLine[]) => {
+ setCommandeLines(commandeLines)
+  setModalOpen(true);
+  console.log(modalOpen)
+};
 
 useEffect(() => {
    if (selectedDate)
@@ -38,7 +54,20 @@ const handleDateChange =  (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(event.target.value);    
 };
 
+const convertDate = (date:string) => {
 
+  const originalDate = new Date(date);
+   return originalDate.toLocaleString('en-GB', {
+    day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+     
+    hour12: false,
+    timeZone: 'UTC'
+  });
+}
    
 
 
@@ -73,13 +102,16 @@ const handleDateChange =  (event: React.ChangeEvent<HTMLInputElement>) => {
      
      (<div>
     
-    <table className="m-auto mt-5" >
+    <table className="text-center m-auto mt-5" >
             <thead>
               <tr>
-              <th>Actions</th>
-              <th>id</th>
-              <th>orderDate</th>
-              <th>User</th>
+              <th className="white textShadow">Actions</th>
+              <th className="white textShadow">id</th>
+              <th className="white textShadow">orderDate</th>
+              <th className="white textShadow">Total</th>
+              <th className="white textShadow">User</th>
+              <th className="white textShadow">Order Details</th>
+
               </tr>
             </thead>
             <tbody>
@@ -101,14 +133,53 @@ const handleDateChange =  (event: React.ChangeEvent<HTMLInputElement>) => {
                   <Trash className="clickable"  color="red"> </Trash>
                 </td>
                 <td className="white">{order.orderId}</td>
-                <td className="white">{order.orderDate}</td>
+                <td className="white">{convertDate(order.orderDate)}</td>
+                <td className="white">{order.total}</td>
                 <td className="white">{order.user.userFirstName} <b>{order.user.userLastName}</b> </td>
+                <td className="clickable" onClick={()=>handleOrderDetailsClick(order.commandeLines)}> <BoxArrowRight color="white"></BoxArrowRight></td>
+
               </tr>
             ))}</tbody>
           </table>
-          </div> )
+       
+          </div> 
+          )
+          
+          
 }
-    
+
+{modalOpen && (
+        <div className={styles.modal }>
+          <div className={styles.modalContent}>
+            <span className={styles.close} onClick={() => setModalOpen(false)}>
+              &times;
+            </span>
+            <table className="text-center m-auto mt-5" >
+            <thead>
+              <tr>
+              <th > CommandeLine Id</th>
+              <th >Dish name</th>
+              <th >Dish photo</th>
+              <th >quantity</th>
+              
+
+              </tr>
+            </thead>
+            <tbody>
+{commandeLines.map((cl :CommandeLine) =>
+
+            <tr>
+              <td>{cl.commandeLineId}</td>
+              <td>{cl.dish.dishName}</td>
+              <td><img height={60} src={cl.dish.dishPhoto} alt="" /></td>
+            <td>{cl.quantityOrdered}</td>
+            </tr>)
+}
+</tbody>
+</table>
+          </div>
+        </div>
+      )}  
     </>);
 }
  
