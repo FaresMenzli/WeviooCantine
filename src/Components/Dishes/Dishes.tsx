@@ -83,10 +83,13 @@ const Dishes: FC<DishesProps> = () => {
   }, [data]);
 
   if (loading === "pending") {
-    return (
+    return (<>
+      <WeviooNavbar></WeviooNavbar>
       <div className="restaurantBg d-flex align-items-center justify-content-center">
+        
         <WeviooSpinner></WeviooSpinner>
       </div>
+      </>
     );
   }
 
@@ -98,10 +101,9 @@ const Dishes: FC<DishesProps> = () => {
       <DishesMainPage>
         <WeviooNavbar></WeviooNavbar>
         <RightBar className=" ms-3 d-flex ">
-       
           <button
             id="Filters"
-            className="fw-bold "
+            className="fw-bold position-fixed "
             onClick={() => setshowFilters(!showFilters)}
           >
             {!showFilters ? "show Filters" : "hide Filters"}
@@ -196,13 +198,13 @@ const Dishes: FC<DishesProps> = () => {
           </Filters>
         </RightBar>
 
-        <div className="restaurantBg">
-          <header className=" d-flex align-items-center justify-content-center">
+        <div className="restaurantBg pt-4 pb-5">
+         <div className="searchWrapper">
             <div
-              className="input-group searchGroup ps-5 me-5 mt-4 mb-4"
-              style={{ width: "30%" }}
+              className="input-group searchGroup m-auto mb-4"
+              style={{ width: "30%", position:"sticky",top:"45px" }}
             >
-              <span className="input-group-text" style={{ height: "38px" }}>
+              <span className="input-group-text" style={{ height: "30px" }}>
                 <Search></Search>
               </span>
               <SearchForDish
@@ -214,13 +216,13 @@ const Dishes: FC<DishesProps> = () => {
                 className="form-control"
               />
             </div>
-           
-          </header>
+            </div>
+          
        
           <div onClick={()=>setshowFilters(false)} style={{   margin: '0 auto',
     display: 'block'}}><WeviooSuggestionAnimated></WeviooSuggestionAnimated></div>
           
-          <DishesWrapper style={{zoom:"80%"}} className="ps-5">
+          <DishesWrapper style={{zoom:"80%"}} className="ps-5 mt-5">
             
             {filteredDishes
               .filter((dish: Dish) => {
