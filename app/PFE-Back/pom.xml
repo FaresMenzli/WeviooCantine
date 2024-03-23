@@ -122,6 +122,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>weviooCantine</finalName>
 	</build>
 
 </project>
