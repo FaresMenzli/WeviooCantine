@@ -72,13 +72,13 @@ const DishCard: FC<DishCardProps> = (props) => {
  
         <DishCardButtons>
        
-          <select className="m-auto form-select form-select-sm quantityWidth" onChange={handleChange}>
+        {dishsPage && (  <select className="m-auto form-select form-select-sm quantityWidth" onChange={handleChange}>
             
             <option value="1">{ props.quantity===0?0:1}</option>
             {quantitySelecter.map((x) => (
               <option key={x}  value={x}>{x}</option>
             ))}
-          </select>
+          </select>)}
 
           {dishsPage && (
             <AddToCartBtn
@@ -89,11 +89,11 @@ const DishCard: FC<DishCardProps> = (props) => {
             ></AddToCartBtn>
           )}
 
-          <ToDetailsButton
+{dishsPage && (<ToDetailsButton
             type="button"
             value="details"
             onClick={() => navigate(`/dishDetails/${props.id}`)}
-          ></ToDetailsButton>
+          ></ToDetailsButton>)}
         </DishCardButtons>
         <div>Quantity : {props.quantity}</div>
         <div>Price : {props.price} TND </div>

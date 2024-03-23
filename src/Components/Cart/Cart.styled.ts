@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const CartWrapper = styled.div`
-padding-top:45px;
+
 `;
 export const TopBarCart = styled.div`
 height:5vh;

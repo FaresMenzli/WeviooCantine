@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import {
   AdminDashboardWrapper,
-  DetailsDashboard,
+  AdminLeftBar,
   MainDashboard,
   RightBarDashboard,
   TopBarDashboard,
@@ -14,6 +14,7 @@ import { useAuth } from "../../Contexts/AuthContext";
 import apiService from "../../Interceptor/Interceptor";
 import interceptor from "../../Interceptor/Interceptor";
 import WeviooNavbar from "../WeviooNavbar/WeviooNavbar";
+import AccordionMenu from "./AccordionMenu/AccordionMenu";
 
 
 interface AdminDashboardProps {}
@@ -46,16 +47,17 @@ const AdminDashboard: FC<AdminDashboardProps> = () => {
       <TopBarDashboard>
        <div className="white pt-1">Users List</div>
        <div className="white pt-1">Dashboard</div>
-       <div>Orders</div>
+       <div className="white pt-1">Orders</div>
       </TopBarDashboard>
       <MainDashboard>
-        <RightBarDashboard></RightBarDashboard>
-        <DetailsDashboard className="adminDashboard" >
-          <div className="d-flex align-items-center justify-content-center pt-2 pb-5">
-            <input type="button" value="Add new user" />
-          </div>
-          <div className="pb-5 d-flex align-items-center justify-content-center">
-          <table >
+    
+        <div className="adminDashboard" >
+          <AdminLeftBar>
+          <AccordionMenu />
+          </AdminLeftBar>
+         
+          <div className="pb-5 d-flex align-items-center justify-content-center mt-5">
+          <table className="text-center" >
             <thead>
               <tr>
               <th>Actions</th>
@@ -77,9 +79,10 @@ const AdminDashboard: FC<AdminDashboardProps> = () => {
                 <td>{user.userLastName}</td>
               </tr>
             ))}</tbody>
+            <tfoot></tfoot>
           </table>
           </div>
-        </DetailsDashboard>
+        </div>
       </MainDashboard>
     </AdminDashboardWrapper>
   );
