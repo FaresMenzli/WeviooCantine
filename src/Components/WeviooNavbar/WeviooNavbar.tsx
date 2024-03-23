@@ -1,10 +1,10 @@
 import React, { FC, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { User } from "../../Models/User";
+
 import { useAuth } from "../../Contexts/AuthContext";
 import styles from "./WeviooNavbar.module.css";
-import { BasketFill, ChevronCompactDown, ChevronDown } from "react-bootstrap-icons";
+import { BasketFill, ChevronDown } from "react-bootstrap-icons";
 import { CartItems, CartSpan } from "../Dishes/Dishes.styled";
 
 import { useLocation, useNavigate } from "react-router-dom";

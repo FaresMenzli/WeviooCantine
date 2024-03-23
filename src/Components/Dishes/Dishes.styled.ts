@@ -5,10 +5,18 @@ display:flex;
 justify-content: space-evenly;
 flex-wrap: wrap;
 flex-direction: row;
- margin-left: 150px;
+
+     backdrop-filter: brightness(0.5);
+    margin-left: 300px;
+    margin-right: 50px;
+}
+    border-radius: 69px;
+    overflow: hidden;
 
 `;
-export const SearchForDish = styled.input`    margin: auto;
+export const SearchForDish = styled.input`    
+height:30px;
+margin: auto;
 display: block;
 text-align: center;
 width: 30%;
@@ -58,7 +66,7 @@ width: 13vw;
 min-width:150px;
 margin-top:150px;
 background: linear-gradient(66deg, rgb(244 234 138) 0%, rgb(241, 218, 54) 100%);
-position:absolute;
+position:fixed;
 
 border-radius:20px;
 opacity:80%;

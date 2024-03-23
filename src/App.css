@@ -120,16 +120,17 @@
   height: 3.5vw;
 }
 .restaurantBg {
-  background-image: url("./assets/restaurant-background-2ez77umko2vj5w02-modified.jpg");
-  padding-top: 3%;
-  min-width: 81vw;
-  min-height: 100vh;
+  background-image: url("./assets/6492a862-165f-4948-9c6b-7b4b55bad757.webp");
+min-height: 100vh;
+  background-attachment: fixed;
+  background-size: cover;
+  background-position-y: top;
 }
 
 .adminDashboard {
   background-image: url("../public/dhasboardbackground-1.jpg");
   height: 100%;
-  width: 85%;
+  width: 100vw;
 }
 .white {
   color: white;
@@ -141,6 +142,9 @@
 
 .StaffBg {
   background-image: url("../public/christian-mackie-euBmypOZUZA-unsplash.jpg");
+  background-attachment: fixed;
+  background-size: cover;
+  background-position-y: top;
 }
 
 .clickable {
@@ -202,8 +206,9 @@ table {
   background-color: rgb(174 255 255 / 20%);
   backdrop-filter: blur(10px);
   border-radius: 35px;
-
-  
+}
+tfoot{
+  height: 60px;
 }
 .totalCell{
   border-right: 1px white dotted;
@@ -448,7 +453,7 @@ width: 31%!Important;
   background-color: #0076ad !important;
 }
 .DishDetailsBG{
-
+  background-attachment: fixed;
   height: 100vh;
   background-image: url('../public/13099022-gouttes-de-pluie-sur-la-fenetre-avec-arriere-plan-flou-jour-de-pluie-goutte-d-eau-sur-le-verre-concept-de-sentiment-de-solitude-gratuit-photo.jpg');
 }
@@ -460,7 +465,7 @@ width: 31%!Important;
   height: 100vh;
   width: 100vw;
   background-size: cover;
-
+  background-attachment: fixed;
   background-image: url('../public/Reduce-Checkout-Abandonments-Chargebee.jpg');
 }
 .mt-15{
@@ -472,12 +477,15 @@ input:disabled {
   color: white;
   
 }
+.searchWrapper{
+  position: sticky;
 
-/* .searchGroup{
-  width: 30%;
+  z-index: 9;
+  top:45px
+}
+.searchGroup{
 
-  left: 34%;
-} */
+} 
 svg{
   height: 60px;
 }
@@ -651,4 +659,31 @@ background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 0%, 
 
 .reseveDish:hover:after{
   width: 100%;
+}
+
+
+
+
+.accordion-menu {
+  margin-top: 20px;
+}
+
+.accordion-item {
+  margin-bottom: 10px;
+}
+
+.accordion-header {
+  background-color: #f0f0f0;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.accordion-body {
+  padding: 10px;
+  display: none;
+  background-color: #fff;
+}
+
+.accordion-body.active {
+  display: block;
 }

@@ -4,7 +4,7 @@ export const AdminDashboardWrapper = styled.div`
 background-color:blue;
 height:100%;
 width:100%;
-padding-top:45px;
+
 `;
 export const TopBarDashboard = styled.div`
 background-color:black;
@@ -29,7 +29,15 @@ height:95vh
 border: black solid 4px;
 
 `;
-export const DetailsDashboard = styled.div`
+export const AdminLeftBar = styled.div`
+height: 75vh;
+width: 200px;
+background: radial-gradient(black, transparent);
+background: aliceblue;
+position: fixed;
+margin-left: 25px;
+margin-top: 4vh;
+border-radius: 20px;
 
 `;
 

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const StaffDashboardWrapper = styled.div`
 min-height: 100vh;
 height:100%;
-padding-top:45px;
+
 `;
 export const ManageDishs = styled.div`
 `;
