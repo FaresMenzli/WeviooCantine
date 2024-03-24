@@ -3,7 +3,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { Dish } from "../Models/Dish";
 import axios from "axios";
-
 export interface DishesState {
   data: Dish[];
   loading: "idle" | "pending";
@@ -15,11 +14,13 @@ const initialState: DishesState = {
   loading: "idle",
   error: null,
 };
+
 export const fetchDishes = createAsyncThunk<Dish[]>(
   "dishes/fetchDishes",
   async () => {
+     const backendUrl ='http://62.72.30.33:5000';
     const response = await axios.get<Dish[]>(
-      "http://localhost:5000/api/Dishs/dishs"
+      `${backendUrl}/api/Dishs/dishs`
     );
     return response.data;
   }

@@ -14,11 +14,14 @@ import  WeviooNavbar  from "./Components/WeviooNavbar/WeviooNavbar";
 import Home from "./Components/Home/Home";
 import Notfound from "./Components/NotFound/Notfound";
 import TestComponent from "./Components/TestComponent/TestComponent";
+import { BackendUrlProvider } from "./Contexts/BackendUrlContext";
 
 
 function App() {
   return (
     <BrowserRouter>
+            <BackendUrlProvider>
+
      <AuthProvider>
       <Routes>
         <Route path="/" element={<Home />}></Route>
@@ -33,6 +36,8 @@ function App() {
         <Route path="*" element={<Notfound/>} />
       </Routes>
       </AuthProvider>
+      </BackendUrlProvider>
+
     </BrowserRouter>
   );
 }
