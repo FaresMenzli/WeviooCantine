@@ -5,7 +5,7 @@ interface BackendUrlContextType {
 }
 
 const BackendUrlContext = createContext<BackendUrlContextType>({
-    backendUrl: 'http://example.com', 
+    backendUrl: '62.72.30.33:5000', 
 });
 
 export const useBackendUrl = () => useContext(BackendUrlContext);
