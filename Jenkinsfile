@@ -88,7 +88,7 @@ pipeline {
             steps{
                 script {
                    
-                    def backendImageName = "wevioo-cantine-backend-image"
+                    def backendImageName = "wevioo-cantine-backend-image-develop"
                     def backendContainerExists = sh(script: "docker ps -q --filter ancestor=${backendImageName}", returnStdout: true)
                     def backendContainerId = sh(script: "docker ps -q --filter ancestor=${backendImageName}", returnStdout: true).trim()
                     echo "name : '${backendImageName}' , id :'${backendContainerId}' exists: '${backendContainerExists}'"
@@ -110,7 +110,7 @@ pipeline {
                 
                 dir('app/PFE-Back') {
                    
-                    sh 'docker build -t wevioo-cantine-backend-image .'
+                    sh 'docker build -t wevioo-cantine-backend-image-develop .'
                 }
             }
         } 
@@ -118,7 +118,7 @@ pipeline {
             steps{
                   script {
                    
-                    def frontendImageName = "wevioo-cantine-frontend-image"
+                    def frontendImageName = "wevioo-cantine-frontend-image-develop"
                     def frontendContainerExists = sh(script: "docker ps -q --filter ancestor=${frontendImageName}", returnStdout: true)
                     def frontendContainerId = sh(script: "docker ps -q --filter ancestor=${frontendImageName}", returnStdout: true).trim()
                     if (frontendContainerExists) {
@@ -137,20 +137,20 @@ pipeline {
             steps {
                
                    
-                    sh 'docker build -t wevioo-cantine-frontend-image .'
+                    sh 'docker build -t wevioo-cantine-frontend-image-develop .'
                 
             }
         } 
          stage('run the backend docker image on the server') {
             steps {
                
-                 sh 'docker run -d -p 5000:5000 wevioo-cantine-backend-image'
+                 sh 'docker run -d -p 5001:5000 wevioo-cantine-backend-image-develop'
               
             }
         }
         stage('run the frontend docker image on the server') {
             steps {
-                 sh 'docker run -d -p 3000:80 wevioo-cantine-frontend-image'
+                 sh 'docker run -d -p 3001:80 wevioo-cantine-frontend-image-develop'
               
             }
         }

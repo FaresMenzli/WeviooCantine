@@ -20,10 +20,12 @@ import { BackendUrlProvider } from "./Contexts/BackendUrlContext";
 function App() {
   return (
     <BrowserRouter>
+    <div className="mode">Develop Mode</div>
             <BackendUrlProvider>
 
      <AuthProvider>
       <Routes>
+        
         <Route path="/" element={<Home />}></Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="dishes" element={<Dishes />}></Route>
