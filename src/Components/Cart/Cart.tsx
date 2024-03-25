@@ -35,6 +35,7 @@ export default function Cart() {
   const [emptyCart, setEmptyCart] = useState(false);
   const cart = useSelector((state: RootState) => state.cart.value);
   const dispatch = useDispatch();
+  
   const { backendUrl } = useBackendUrl();;
   const [dishs, setDishs] = useState<Dish[]>([]);
   const [order, setOrder] = useState(false)
@@ -112,9 +113,11 @@ const placeOrder=()=>{
   };
 
   useEffect(() => {
+    console.log("emptyCart"+emptyCart , "showOrderDetails"+showOrderDetails)
     if (cart.length>0){
     cart.map((x) => (ids += x.dishId + ","));
     const url = `${backendUrl}/api/Dishs/dishsByIds/${ids.slice(0, -1)}`;
+   
     axios
       .get(url)
       .then((res) => {
