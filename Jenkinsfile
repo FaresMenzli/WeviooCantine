@@ -144,13 +144,13 @@ pipeline {
          stage('run the backend docker image on the server') {
             steps {
                
-                 sh 'docker run -d -p 5000:5000 wevioo-cantine-backend-image-e2e'
+                 sh 'docker run -d -p 5002:5000 wevioo-cantine-backend-image-e2e'
               
             }
         }
         stage('run the frontend docker image on the server') {
             steps {
-                 sh 'docker run -d -p 3000:80 wevioo-cantine-frontend-image-e2e'
+                 sh 'docker run -d -p 3002:80 wevioo-cantine-frontend-image-e2e'
               
             }
         }
