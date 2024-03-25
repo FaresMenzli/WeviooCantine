@@ -689,8 +689,8 @@ background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 0%, 
 }
 .mode{
   position: absolute;
-  top: 30px;
-  left: -31px;
+  top: 20px;
+  left: -27px;
   z-index: 2;
   background: dodgerblue;
   transform: rotate(-45deg);
