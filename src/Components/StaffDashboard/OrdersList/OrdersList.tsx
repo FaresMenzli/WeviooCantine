@@ -9,6 +9,7 @@ import { Filters, RightBar } from "../../Dishes/Dishes.styled";
 import { User } from "../../../Models/User";
 import { Modal } from "react-bootstrap";
 import { Dish } from "../../../Models/Dish";
+import { useBackendUrl } from "../../../Contexts/BackendUrlContext";
 interface OrderListProps {
     
 }
@@ -28,6 +29,7 @@ interface Order {
   }
  
 const OrderList: FC<OrderListProps> = () => {
+  const { backendUrl } = useBackendUrl();
   const [modalOpen, setModalOpen] = useState(false);
     const today = dayjs();
 const [orders, setOrders] = useState<Order[]>([])
@@ -45,7 +47,7 @@ const handleOrderDetailsClick = (commandeLines:CommandeLine[]) => {
 useEffect(() => {
    if (selectedDate)
  { setLoading(true)
-     interceptor.get(`http://localhost:5000/api/orders/getOrdersByDate?date=${selectedDate}`)
+     interceptor.get(`${backendUrl}/api/orders/getOrdersByDate?date=${selectedDate}`)
 .then( response =>setOrders(response.data))
 .then(()=>setLoading(false))}
    

@@ -13,6 +13,7 @@ import { Bounce, Flip, ToastContainer } from 'react-toastify';
 import styles from '../Register/Register.module.css';
 import interceptor from '../../Interceptor/Interceptor';
 import {setConnectedUser} from "../../redux/connectedUser"
+import { useBackendUrl } from '../../Contexts/BackendUrlContext';
 
 
 
@@ -38,6 +39,7 @@ const Login: FC<LoginProps> = () => {
     }));
     setEmail(e.target.value);
   };
+  const { backendUrl } = useBackendUrl();
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -54,14 +56,14 @@ const Login: FC<LoginProps> = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     axios
-      .post(`http://localhost:5000/api/v1/auth/authenticate`, login)
+      .post(`${backendUrl}/api/v1/auth/authenticate`, login)
       .then((response) => {
         console.log(login.userEmail)
         const token = response.data.token;
         setToken(token);
         navigate('/home');
       })
-      .then((res)=> axios.post('http://localhost:5000/api/user/getUser' ,login).then(res=>{ console.log(res.data); setUser(res.data) ;}))
+      .then((res)=> axios.post(`${backendUrl}/api/user/getUser` ,login).then(res=>{ console.log(res.data); setUser(res.data) ;}))
       .catch((error) => {
         if (error.response) {
           if (error.response.status === 403) {

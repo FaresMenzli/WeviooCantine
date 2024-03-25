@@ -51,11 +51,10 @@ const Dishes: FC<DishesProps> = () => {
 
 
 
-  //const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState<string[]>([]);
   const [search, setSearch] = useState("");
   const [dishs, setDishs] = useState([]);
-  //const [data, setData] = useState([]);
+
   const [checked, setChecked] = useState<string[]>([]);
   const baseURL = `http://localhost:5000`;
   const { data, loading, error } = useSelector(

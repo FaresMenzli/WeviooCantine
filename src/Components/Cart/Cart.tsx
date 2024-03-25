@@ -23,6 +23,7 @@ import { useAuth } from "../../Contexts/AuthContext";
 import {  useNavigate } from "react-router-dom";
 
 import RedirectCounterComponent from "../RedirectCounterComponent/RedirectCounterComponent";
+import { useBackendUrl } from "../../Contexts/BackendUrlContext";
 
 interface CartProps {}
 
@@ -34,7 +35,7 @@ export default function Cart() {
   const [emptyCart, setEmptyCart] = useState(false);
   const cart = useSelector((state: RootState) => state.cart.value);
   const dispatch = useDispatch();
-  const baseURL = `http://localhost:5000`;
+  const { backendUrl } = useBackendUrl();;
   const [dishs, setDishs] = useState<Dish[]>([]);
   const [order, setOrder] = useState(false)
   const [redirectToLogin , setRedirectToLogin] = useState(false)
@@ -70,7 +71,7 @@ const placeOrder=()=>{
   const orderRequestBody = {commandeLines: cart , total:totalPrice}
 
  
-  interceptor.post(`http://localhost:5000/api/orders/orderForUser/${userId}`, orderRequestBody)
+  interceptor.post(`${backendUrl}/api/orders/orderForUser/${userId}`, orderRequestBody)
   .then(response => {
     // Handle the response
     console.log('Response:', response);
@@ -113,7 +114,7 @@ const placeOrder=()=>{
   useEffect(() => {
     if (cart.length>0){
     cart.map((x) => (ids += x.dishId + ","));
-    const url = `${baseURL}/api/Dishs/dishsByIds/${ids.slice(0, -1)}`;
+    const url = `${backendUrl}/api/Dishs/dishsByIds/${ids.slice(0, -1)}`;
     axios
       .get(url)
       .then((res) => {
