@@ -18,6 +18,7 @@ import { ToastContainer } from "react-toastify";
 import WeviooNavbar from "../WeviooNavbar/WeviooNavbar";
 import ManageDish from "./ManageDishs/ManageDishs";
 import OrderList from "./OrdersList/OrdersList";
+import { useBackendUrl } from "../../Contexts/BackendUrlContext";
 
 interface StaffDashboardProps {}
 
@@ -28,13 +29,14 @@ const StaffDashboard: FC<StaffDashboardProps> = () => {
   //const [data, setData] = useState([]);
   // const [loading, setLoading] = useState(true);
   const baseURL = `http://localhost:5000`;
+  const { backendUrl } = useBackendUrl();
   const { data, loading, error } = useSelector(
     (state: RootState) => state.dishes
   );
 
   useEffect(() => {
     // setLoading(true);
-    const url = `${baseURL}/dishs`;
+    const url = `${backendUrl}/dishs`;
     // axios.get(url).then((res) => setData(res.data));
     // setLoading(false);
   }, []);

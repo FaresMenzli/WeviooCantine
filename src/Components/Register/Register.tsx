@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { showToast } from "../Toaster/toasterService";
 import { Flip, ToastContainer, Zoom } from "react-toastify";
 import axios from "axios";
+import { useBackendUrl } from "../../Contexts/BackendUrlContext";
 interface ChildProps {
     updateParentState: (newValue: boolean) => void;
   }
@@ -15,7 +16,7 @@ interface ChildProps {
     password: string;
   }
 const LogOut: React.FC<ChildProps> = ({updateParentState}) => {
-
+  const { backendUrl } = useBackendUrl();
   const { handleSubmit, register, formState: { errors } } = useForm<FormData>();
 
     const handleButtonClick = () => {
@@ -26,7 +27,7 @@ const LogOut: React.FC<ChildProps> = ({updateParentState}) => {
       console.log(data);
       
       axios
-      .post(`http://localhost:5000/api/v1/auth/register`, data)
+      .post(`${backendUrl}/api/v1/auth/register`, data)
       .then((response) => {
         showToast("registered Succefully" , {type: "success",theme: "dark",
         transition: Zoom,})
