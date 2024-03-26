@@ -16,6 +16,7 @@ import Notfound from "./Components/NotFound/Notfound";
 import TestComponent from "./Components/TestComponent/TestComponent";
 import { BackendUrlProvider } from "./Contexts/BackendUrlContext";
 import { activeEnv } from "./util/constant";
+import Footer from "./Components/Footer/Footer";
 
 
 function App() {
@@ -43,9 +44,10 @@ function App() {
         <Route path="test" element={<TestComponent />}></Route>
         <Route path="*" element={<Notfound/>} />
       </Routes>
+      <Footer></Footer>
       </AuthProvider>
       </BackendUrlProvider>
-
+    
     </BrowserRouter>
   );
 }
