@@ -20,7 +20,7 @@ import { BackendUrlProvider } from "./Contexts/BackendUrlContext";
 function App() {
   return (
     <BrowserRouter>
-    <div className="mode">Develop Mode</div>
+    <div className="mode">TEST</div>
             <BackendUrlProvider>
 
      <AuthProvider>
