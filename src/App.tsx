@@ -27,7 +27,7 @@ function App() {
 
   return (
     <BrowserRouter>
-    <div className="mode">{getEnv()}</div>
+    <div className="env">{getEnv()}</div>
             <BackendUrlProvider>
 
      <AuthProvider>

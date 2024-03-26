@@ -198,11 +198,12 @@ const Dishes: FC<DishesProps> = () => {
         </RightBar>
 
         <div className="restaurantBg pt-4 pb-5">
-         <div className="searchWrapper">
+        <div className="searchWrapper">
             <div
               className="input-group searchGroup m-auto mb-4"
-              style={{ width: "30%", position:"sticky",top:"45px" }}
+             
             >
+              
               <span className="input-group-text" style={{ height: "30px" }}>
                 <Search></Search>
               </span>
@@ -216,7 +217,7 @@ const Dishes: FC<DishesProps> = () => {
               />
             </div>
             </div>
-          
+            
        
           <div onClick={()=>setshowFilters(false)} style={{   margin: '0 auto',
     display: 'block'}}><WeviooSuggestionAnimated></WeviooSuggestionAnimated></div>

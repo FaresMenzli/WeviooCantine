@@ -478,13 +478,17 @@ input:disabled {
   
 }
 .searchWrapper{
+  
   position: sticky;
-
   z-index: 9;
-  top:45px
+  top:45px;
+  width: 30%;
+  margin: auto;
+ 
+  
 }
 .searchGroup{
-
+ 
 } 
 svg{
   height: 60px;
@@ -687,8 +691,8 @@ background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 0%, 
 .accordion-body.active {
   display: block;
 }
-.mode{
-  position: absolute;
+.env{
+  position: fixed;
   top: 16px;
   left: -44px;
   z-index: 2;
@@ -698,5 +702,6 @@ background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 0%, 
   border: 1px solid red;
   color: rgb(0, 0, 0);
   font-weight: bold;
+
 
 }
