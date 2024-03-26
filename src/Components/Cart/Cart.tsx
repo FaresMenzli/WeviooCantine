@@ -36,7 +36,7 @@ export default function Cart() {
   const cart = useSelector((state: RootState) => state.cart.value);
   const dispatch = useDispatch();
   
-  const { backendUrl } = useBackendUrl();;
+  const { backendUrl } = useBackendUrl();
   const [dishs, setDishs] = useState<Dish[]>([]);
   const [order, setOrder] = useState(false)
   const [redirectToLogin , setRedirectToLogin] = useState(false)
