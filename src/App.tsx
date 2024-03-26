@@ -1,6 +1,6 @@
 import "./App.css";
 import Login from "./Components/Login/Login";
-import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import Dishes from "./Components/Dishes/Dishes";
 import AdminDashboard from "./Components/AdminDashboard/AdminDashboard";
 import StaffDashboard from "./Components/StaffDashboard/StaffDashboard";
@@ -15,12 +15,18 @@ import Home from "./Components/Home/Home";
 import Notfound from "./Components/NotFound/Notfound";
 import TestComponent from "./Components/TestComponent/TestComponent";
 import { BackendUrlProvider } from "./Contexts/BackendUrlContext";
+import { activeEnv } from "./util/constant";
 
 
 function App() {
+
+  const getEnv =() => {
+    return activeEnv();
+  }
+
   return (
     <BrowserRouter>
-    <div className="mode">TEST</div>
+    <div className="mode">{getEnv()}</div>
             <BackendUrlProvider>
 
      <AuthProvider>
