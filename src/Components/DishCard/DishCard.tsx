@@ -1,22 +1,21 @@
-import React, { FC, PureComponent, memo, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import {
   DishCardWrapper,
-  Description,
+
   DishName,
   ImgWrapper,
   FoodImg,
   DishDescriptionSection,
   AddToCartBtn,
-  OrderBtn,
+
   DishCardButtons,
   ToDetailsButton,
 } from "./DishCard.styled";
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import { Button } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { addtItemToCart, decrementQuantity } from "../../redux/cart";
-import { preProcessFile } from "typescript";
+import { addtItemToCart } from "../../redux/cart";
+
 import { decrementQuantityFromDishs } from "../../redux/dishs";
 
 interface DishCardProps {

@@ -22,7 +22,7 @@ const WeviooNavbar: FC = () => {
 
     }
    
-  }, [])
+  }, [location.pathname])
 
 
 

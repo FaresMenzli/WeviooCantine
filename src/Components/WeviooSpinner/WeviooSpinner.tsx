@@ -1,5 +1,4 @@
 import { FunctionComponent } from "react";
-import { ReactSVG } from "react-svg";
 import { ReactComponent as AnimatedSVG } from './LogoWeviooAnim.svg';
 import styles from "./WeviooSpinner.module.css"
 
