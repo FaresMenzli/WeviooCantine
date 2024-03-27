@@ -1,15 +1,19 @@
 # Stage 1: Build the React application
-FROM node:alpine AS build
+FROM node:16-alpine AS dependencies
 
 WORKDIR /app
 
 COPY package*.json ./
 RUN npm install
 
+# Stage 2: Build the React application
+FROM dependencies AS build
+# Copy the rest of the application code
 COPY . .
+# run build
 RUN npm run build
 
-# Stage 2: Serve the production build using Nginx
+# Stage 3: Serve the production build using Nginx
 FROM nginx:alpine
 
 # Remove default nginx website
