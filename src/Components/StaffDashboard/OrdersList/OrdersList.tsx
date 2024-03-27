@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 import styles from "./OrderList.module.css"
 import { Filters, RightBar } from "../../Dishes/Dishes.styled";
 import { User } from "../../../Models/User";
-import { Modal } from "react-bootstrap";
+
 import { Dish } from "../../../Models/Dish";
 import { useBackendUrl } from "../../../Contexts/BackendUrlContext";
 interface OrderListProps {
@@ -37,7 +37,7 @@ const [selectedDate, setSelectedDate] = useState<string>(today.format('YYYY-MM-D
 const [searchByUser, setSearchByUser] = useState("");
 const [commandeLines,setCommandeLines]= useState<CommandeLine[]>([])
 const [loading, setLoading] = useState(false);
-const [error, setError] = useState(null);
+
 const handleOrderDetailsClick = (commandeLines:CommandeLine[]) => {
  setCommandeLines(commandeLines)
   setModalOpen(true);

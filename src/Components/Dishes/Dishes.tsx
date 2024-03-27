@@ -2,26 +2,25 @@
 
 import React, { FC, useEffect, useState } from "react";
 import {
-  CartItems,
-  CartSpan,
+ 
   DishesMainPage,
   DishesWrapper,
   Filters,
   RightBar,
   SearchForDish,
-  WeviooSuggestion,
+
 } from "./Dishes.styled";
 import DishCard from "../DishCard/DishCard";
-import axios from "axios";
+
 import { Dish } from "../../Models/Dish";
-import { BasketFill, ChevronCompactDown, Search } from "react-bootstrap-icons";
-import { useNavigate } from "react-router-dom";
+import {  Search } from "react-bootstrap-icons";
+
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { ReactSVG } from "react-svg";
+
 import WeviooSpinner from "../WeviooSpinner/WeviooSpinner";
 import { sortByType } from "../../redux/dishs";
-import Test from "../WeviooSuggestionAnimated/WeviooSuggestionAnimated";
+
 import WeviooSuggestionAnimated from "../WeviooSuggestionAnimated/WeviooSuggestionAnimated";
 import WeviooNavbar from "../WeviooNavbar/WeviooNavbar";
 
@@ -40,11 +39,11 @@ const Dishes: FC<DishesProps> = () => {
       : [...selectedCategories, category];
     setSelectedCategories(updatedCategories);
   };
-  let height = screen.height;
+ 
   const [showFilters, setshowFilters] = useState(true);
-  const [showSuggestion, setShowSuggestion] = useState(true);
 
-  const navigate = useNavigate();
+
+
   const cart = useSelector((state: RootState) => state.cart.value);
  
   
@@ -53,10 +52,10 @@ const Dishes: FC<DishesProps> = () => {
 
   const [category, setCategory] = useState<string[]>([]);
   const [search, setSearch] = useState("");
-  const [dishs, setDishs] = useState([]);
+ 
 
-  const [checked, setChecked] = useState<string[]>([]);
-  const baseURL = `http://localhost:5000`;
+
+
   const { data, loading, error } = useSelector(
     (state: RootState) => state.dishes
   );

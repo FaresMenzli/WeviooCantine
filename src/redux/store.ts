@@ -1,4 +1,4 @@
-import { configureStore, createReducer } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import counterReducer from "./counter"
 import cartReducer from "./cart"
 import dishesReducer ,{ fetchDishes } from "./dishs";

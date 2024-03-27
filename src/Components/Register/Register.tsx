@@ -1,5 +1,5 @@
-import { FunctionComponent, useEffect, useState } from "react";
-import { Props } from "react-svg";
+import {  useEffect } from "react";
+
 import styles from "./Register.module.css"
 import { useForm } from 'react-hook-form';
 import { showToast } from "../Toaster/toasterService";

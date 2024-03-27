@@ -9,7 +9,7 @@ const Rating: FC<RatingProps> = () => {
 
 
 
-let x =0
+
   return <RatingWrapper>{}</RatingWrapper>;
 };
 
