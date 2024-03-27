@@ -39,8 +39,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "git-info": "node src/util/gitInfo.js",
     "tsc": "tsc",
-    "start": "react-scripts start",
+    "start": "npm run git-info && react-scripts start",
     "build": "CI=false && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

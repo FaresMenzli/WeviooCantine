@@ -16,6 +16,7 @@ import TestComponent from "./Components/TestComponent/TestComponent";
 import { BackendUrlProvider } from "./Contexts/BackendUrlContext";
 import { activeEnv } from "./util/constant";
 import Footer from "./Components/Footer/Footer";
+import ShowEnv from "./Components/showEnvironement/ShowEnv";
 
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
         <Route path="/dishDetails/:id" element={<DishDetails ></DishDetails>} />
         <Route path="home" element={<Home />}></Route>
         <Route path="test" element={<TestComponent />}></Route>
+        <Route path="testShowEnv" element={<ShowEnv />}></Route>
         <Route path="*" element={<Notfound/>} />
       </Routes>
       <Footer></Footer>
