@@ -1,5 +1,5 @@
 # Stage 1: Build the React application
-FROM node:16-alpine AS dependencies
+FROM node:16-slim AS dependencies
 
 WORKDIR /app
 
