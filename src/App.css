@@ -691,6 +691,21 @@ background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 0%, 
 .accordion-body.active {
   display: block;
 }
+.branch{
+  background: black;
+  /* border: 1px solid red; */
+  color: #f00;
+  font-weight: 700;
+  height: 30px;
+  margin: auto;
+  position: fixed;
+  text-align: center;
+  bottom: 43px;
+  width: 100%;
+  z-index: 2;
+
+}
+
 .env{
   position: fixed;
   top: 16px;
@@ -702,6 +717,5 @@ background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 0%, 
   border: 1px solid red;
   color: rgb(0, 0, 0);
   font-weight: bold;
-
 
 }
