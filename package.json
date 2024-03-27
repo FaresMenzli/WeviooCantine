@@ -40,8 +40,7 @@
   },
   "scripts": {
     "tsc": "tsc",
-    "start": "react-scripts start",
-    "prebuild": "node src/util/copyScript.js",
+    "start": "node src/util/gitInfo.js && react-scripts start",
     "build": "CI=false && node src/util/gitInfo.js && react-scripts build ",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
