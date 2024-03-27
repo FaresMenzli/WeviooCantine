@@ -3,6 +3,7 @@ pipeline {
 
     tools { 
         maven 'M2_HOME' 
+        nodejs '20.11.0'
        
     }
     stages {
@@ -70,7 +71,7 @@ pipeline {
                 
                 dir('app/PFE-Back') {
                    
-                    echo 'npm install && npm run build'
+                    sh 'npm install && npm run build'
                 }
             }
         } 
