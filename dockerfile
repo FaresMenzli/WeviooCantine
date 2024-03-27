@@ -1,26 +1,12 @@
-# Stage 1: Build the React application
-FROM node:16-slim AS dependencies
 
-WORKDIR /app
-
-COPY package*.json ./
-RUN npm install
-
-# Stage 2: Build the React application
-FROM dependencies AS build
-# Copy the rest of the application code
-COPY . .
-# run build
-RUN npm run build
-
-# Stage 3: Serve the production build using Nginx
+#Serve the build using Nginx
 FROM nginx:alpine
 
 # Remove default nginx website
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copy the production build from the previous stage to nginx html directory
-COPY --from=build /app/build /usr/share/nginx/html
+# Copy the build from the previous stage to nginx html directory
+COPY build/ /usr/share/nginx/html
 
 # Expose port 80 to the outside world
 EXPOSE 80
