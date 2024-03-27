@@ -39,10 +39,10 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "git-info": "node src/util/gitInfo.js",
     "tsc": "tsc",
-    "start": "npm run git-info && react-scripts start",
-    "build": "CI=false && npm run git-info && react-scripts build",
+    "start": "react-scripts start",
+    "prebuild": "node src/util/copyScript.js",
+    "build": "CI=false  && react-scripts build && node build/gitInfo.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx"
