@@ -42,7 +42,7 @@
     "git-info": "node src/util/gitInfo.js",
     "tsc": "tsc",
     "start": "npm run git-info && react-scripts start",
-    "build": "CI=false && react-scripts build",
+    "build": "CI=false && npm run git-info && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx"

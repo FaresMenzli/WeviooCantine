@@ -693,15 +693,15 @@ background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 0%, 
 }
 .env{
   position: fixed;
-  top: 16px;
-  left: -44px;
+  margin: auto;
+  top: 0;
+  width: 100%;
+  text-align: center;
   z-index: 2;
   background: rgb(255, 255, 255);
-  transform: rotate(-45deg);
-  padding: 0 50px;
   border: 1px solid red;
   color: rgb(0, 0, 0);
   font-weight: bold;
-
+  height:20px;
 
 }

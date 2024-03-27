@@ -2,20 +2,20 @@
 import React, { useState, useEffect, FC } from 'react';
 
 import generatedGitInfo from '../../generatedGitInfo.json';
+import { activeEnv } from '../../util/constant';
 
 interface ShowEnvProps {
     
 }
  
 const ShowEnv: FC<ShowEnvProps> = () => {
-    const [currentBranch, setCurrentBranch] = useState<string>('');
-
-
-
-  
+    const getEnv =() => {
+        return activeEnv();
+      }
+    
     return (
       <div>
-        <p>Current Branch: {generatedGitInfo.gitBranch}</p>
+        <div className='env'>{getEnv()} Environement  - Current Branch: {generatedGitInfo.gitBranch}</div>
       </div>
     );
   };
