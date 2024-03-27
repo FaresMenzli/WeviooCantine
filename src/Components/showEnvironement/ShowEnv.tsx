@@ -15,7 +15,8 @@ const ShowEnv: FC<ShowEnvProps> = () => {
     
     return (
       <div>
-        <div className='env'>{getEnv()} Environement  - Current Branch: {generatedGitInfo.gitBranch}</div>
+        <div className='env'>{getEnv()}</div>
+        <div className='branch'> Current Git Branch: {generatedGitInfo.gitBranch}</div>
       </div>
     );
   };
