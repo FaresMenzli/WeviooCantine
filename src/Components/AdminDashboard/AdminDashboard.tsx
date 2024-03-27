@@ -3,18 +3,19 @@ import {
   AdminDashboardWrapper,
   AdminLeftBar,
   MainDashboard,
-  RightBarDashboard,
+
   TopBarDashboard,
 } from "./AdminDashboard.styled";
 import axios from "axios";
 import { User } from "../../Models/User";
-import { url } from "inspector";
+
 import { Trash, Pen } from "react-bootstrap-icons";
-import { useAuth } from "../../Contexts/AuthContext";
-import apiService from "../../Interceptor/Interceptor";
+
+
 import interceptor from "../../Interceptor/Interceptor";
 import WeviooNavbar from "../WeviooNavbar/WeviooNavbar";
 import AccordionMenu from "./AccordionMenu/AccordionMenu";
+import { useBackendUrl } from "../../Contexts/BackendUrlContext";
 
 
 interface AdminDashboardProps {}
@@ -22,10 +23,9 @@ interface AdminDashboardProps {}
 
 const AdminDashboard: FC<AdminDashboardProps> = () => {
   const [users, setusers] = useState([]);
-  const baseURL = `http://localhost:5000`;
-  const { token } = useAuth();
+  const { backendUrl } = useBackendUrl();
   useEffect(() => {
-    const url = `${baseURL}/api/user/User`;
+    const url = `${backendUrl}/api/user/User`;
     interceptor.get(url).then((response) => {
       setusers(response.data);
     })
@@ -34,10 +34,7 @@ const AdminDashboard: FC<AdminDashboardProps> = () => {
     });
   }, []);
   const deleteUser = (id: number) => {
-    console.log(id);
-    console.log("deletUser");
-    console.log(`${baseURL}/deleteUserById/${id}`);
-    axios.delete(`${baseURL}/deleteUserById/${id}`);
+    axios.delete(`${backendUrl}/deleteUserById/${id}`);
     window.location.reload();
   };
 

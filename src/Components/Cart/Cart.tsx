@@ -20,16 +20,16 @@ import OrderHistory from "./OrderHistory/OrderHistory";
 import interceptor from "../../Interceptor/Interceptor";
 import WeviooNavbar from "../WeviooNavbar/WeviooNavbar";
 import { useAuth } from "../../Contexts/AuthContext";
-import {  useNavigate } from "react-router-dom";
+
 
 import RedirectCounterComponent from "../RedirectCounterComponent/RedirectCounterComponent";
 import { useBackendUrl } from "../../Contexts/BackendUrlContext";
 
-interface CartProps {}
+
 
 export default function Cart() {
   const [sendingOrder , setSendingOrder]=useState(false)
-  const navigate = useNavigate();
+
   const [showOrderDetails, setShowOrderDetails] = useState(false);
   const [orderHistory, setOrderHistory] = useState(false);
   const [emptyCart, setEmptyCart] = useState(false);
@@ -38,7 +38,6 @@ export default function Cart() {
   
   const { backendUrl } = useBackendUrl();
   const [dishs, setDishs] = useState<Dish[]>([]);
-  const [order, setOrder] = useState(false)
   const [redirectToLogin , setRedirectToLogin] = useState(false)
   let init = 0;
   let totalPrice  = 0;

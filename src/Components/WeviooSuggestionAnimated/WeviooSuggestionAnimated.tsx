@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import {
   useTransition,
   useSpring,
@@ -11,7 +11,7 @@ import {
 
 import styles from './styles.module.css'
 import DishCard from '../DishCard/DishCard'
-import { Dish } from '../../Models/Dish'
+
 
 export default function WeviooSuggestionAnimated() {
   const [open, set] = useState(false)

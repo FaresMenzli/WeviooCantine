@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { Dish } from '../../Models/Dish';
+
 
 const LazyDishDetails = lazy(() => import('./DishDetails'));
 

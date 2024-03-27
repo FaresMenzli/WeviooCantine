@@ -1,10 +1,7 @@
 import axios from "axios";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { Dish } from "../../../Models/Dish";
 import { showToast } from "../../Toaster/toasterService";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
-import WeviooSpinner from "../../WeviooSpinner/WeviooSpinner";
 import DishFormModal from "../../DishFormModal/DishFormModal";
 import { ToastContainer } from "react-toastify";
 import { Pen, Trash } from "react-bootstrap-icons";

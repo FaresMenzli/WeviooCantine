@@ -37,10 +37,7 @@ interface Props {}
 const OrderHistory: FunctionComponent<Props> = () => {
   const { backendUrl } = useBackendUrl();
   const containerStyle = useMemo(() => ({ width: "60%", height: "90%" }), []);
-  const [style, setStyle] = useState({
-    height: "100%",
-    width: "100%",
-  });
+
   const { user } = useAuth();
   const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
   const [rowData, setRowData] = useState<IOrderHistory[]>();
