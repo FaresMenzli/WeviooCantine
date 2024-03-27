@@ -1,10 +1,10 @@
 # Stage 1: Build the React application
-FROM node:alpine AS build
+FROM node:lts-slim AS build
 
 WORKDIR /app
 
-COPY package*.json ./
-RUN npm install
+COPY package.json package-lock.json ./
+RUN npm ci --only=production
 
 COPY . .
 RUN npm run build
