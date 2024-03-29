@@ -13,7 +13,7 @@ pipeline {
         stage('Git Checkout') {
             steps {
          
-             git branch: developenv.BRANCH_NAME , url: 'https://github.com/FaresMenzli/WeviooCantine.git'
+             git branch: 'e2e', url: 'https://github.com/FaresMenzli/WeviooCantine.git'
             }
 
            
@@ -89,7 +89,7 @@ pipeline {
             steps{
                 script {
                    
-                    def backendImageName = "wevioo-cantine-backend-image-develop"
+                    def backendImageName = "wevioo-cantine-backend-image-e2e"
                     def backendContainerExists = sh(script: "docker ps -q --filter ancestor=${backendImageName}", returnStdout: true)
                     def backendContainerId = sh(script: "docker ps -q --filter ancestor=${backendImageName}", returnStdout: true).trim()
                     echo "name : '${backendImageName}' , id :'${backendContainerId}' exists: '${backendContainerExists}'"
@@ -111,7 +111,7 @@ pipeline {
                 
                 dir('app/PFE-Back') {
                    
-                    sh 'docker build -t wevioo-cantine-backend-image-develop .'
+                    sh 'docker build -t wevioo-cantine-backend-image-e2e .'
                 }
             }
         } 
@@ -119,7 +119,7 @@ pipeline {
             steps{
                   script {
                    
-                    def frontendImageName = "wevioo-cantine-frontend-image-develop"
+                    def frontendImageName = "wevioo-cantine-frontend-image-e2e"
                     def frontendContainerExists = sh(script: "docker ps -q --filter ancestor=${frontendImageName}", returnStdout: true)
                     def frontendContainerId = sh(script: "docker ps -q --filter ancestor=${frontendImageName}", returnStdout: true).trim()
                     if (frontendContainerExists) {
@@ -138,20 +138,20 @@ pipeline {
             steps {
                
                    
-                    sh 'docker build -t wevioo-cantine-frontend-image-develop .'
+                    sh 'docker build -t wevioo-cantine-frontend-image-e2e .'
                 
             }
         } 
          stage('run the backend docker image on the server') {
             steps {
                
-                 sh 'docker run -d -p 5001:5000 wevioo-cantine-backend-image-develop'
+                 sh 'docker run -d -p 5002:5000 wevioo-cantine-backend-image-e2e'
               
             }
         }
         stage('run the frontend docker image on the server') {
             steps {
-                 sh 'docker run -d -p 3001:80 wevioo-cantine-frontend-image-develop'
+                 sh 'docker run -d -p 3002:80 wevioo-cantine-frontend-image-e2e'
               
             }
         }
