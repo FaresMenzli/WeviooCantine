@@ -20,7 +20,19 @@ import { useBackendUrl } from "../../Contexts/BackendUrlContext";
 interface StaffDashboardProps {}
 
 const StaffDashboard: FC<StaffDashboardProps> = () => {
+  const [isNavbarShrunk, setIsNavbarShrunk] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      const isTop = window.scrollY < 100; 
+      setIsNavbarShrunk(!isTop);
+    };
 
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   const [view, setView] = useState("manageDishs");
   //const [data, setData] = useState([]);
@@ -46,13 +58,14 @@ const StaffDashboard: FC<StaffDashboardProps> = () => {
     );
   } */
 
+
   if (error) {
     return <p>Error: {error}</p>;
   }
   return (
     <StaffDashboardWrapper className="StaffBg">
       <WeviooNavbar></WeviooNavbar>
-      <TopBarStaff className="white">
+      <TopBarStaff shrunk={isNavbarShrunk}  className="white ">
         <Links
           className={`${view==="dishList" ? "text-decoration-underline" : ""} clickable`}
           onClick={() => {

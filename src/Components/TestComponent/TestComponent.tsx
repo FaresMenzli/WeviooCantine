@@ -24,7 +24,7 @@ const TestComponent: FC<TestComponentProps> = () => {
       ];
     return (  <div className="App">
     <h1>Table with Pagination</h1>
-    <Table data={data} itemsPerPage={2} />
+    {/*  <Table data={data} itemsPerPage={2} />  */}
   </div> );
 }
  
