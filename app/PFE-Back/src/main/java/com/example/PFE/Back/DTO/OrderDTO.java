@@ -14,4 +14,5 @@ public class OrderDTO {
     private Date orderDate;
     private List<CommandeLineDTO> commandeLines;
     private Float total;
+    private UserDTO userDTO;
 }

@@ -16,6 +16,8 @@ import interceptor from "../../Interceptor/Interceptor";
 import WeviooNavbar from "../WeviooNavbar/WeviooNavbar";
 import AccordionMenu from "./AccordionMenu/AccordionMenu";
 import { useBackendUrl } from "../../Contexts/BackendUrlContext";
+import Table from "../TestComponent/Table";
+import WeviooSpinner from "../WeviooSpinner/WeviooSpinner";
 
 
 interface AdminDashboardProps {}
@@ -24,11 +26,12 @@ interface AdminDashboardProps {}
 const AdminDashboard: FC<AdminDashboardProps> = () => {
   const [users, setusers] = useState([]);
   const { backendUrl } = useBackendUrl();
+  const [loading, setLoading] = useState(true)
   useEffect(() => {
     const url = `${backendUrl}/api/user/User`;
     interceptor.get(url).then((response) => {
       setusers(response.data);
-    })
+    }).then(()=>setLoading(false))
     .catch(error => {
       console.error('Error fetching data:', error);
     });
@@ -40,21 +43,25 @@ const AdminDashboard: FC<AdminDashboardProps> = () => {
 
   return (
     <AdminDashboardWrapper>
-      <WeviooNavbar></WeviooNavbar>
-      <TopBarDashboard>
+      <WeviooNavbar/>
+       <TopBarDashboard>
        <div className="white pt-1">Users List</div>
        <div className="white pt-1">Dashboard</div>
        <div className="white pt-1">Orders</div>
       </TopBarDashboard>
+      <div className="adminDashboard" > 
+      {loading? (<WeviooSpinner></WeviooSpinner> ):(
+        <>
+    
       <MainDashboard>
     
-        <div className="adminDashboard" >
+       
           <AdminLeftBar>
           <AccordionMenu />
           </AdminLeftBar>
          
-          <div className="pb-5 d-flex align-items-center justify-content-center mt-5">
-          <table className="text-center" >
+          <div className="pb-5 d-flex align-items-start justify-content-center mt-5 w-100 ">
+         {/*  <table className="text-center userListTable" >
             <thead>
               <tr>
               <th>Actions</th>
@@ -76,11 +83,18 @@ const AdminDashboard: FC<AdminDashboardProps> = () => {
                 <td>{user.userLastName}</td>
               </tr>
             ))}</tbody>
-            <tfoot></tfoot>
-          </table>
+            <tfoot> <tr>
+              <th>Actions</th>
+              <th>id</th>
+              <th>name</th>
+              <th>surname</th>
+              </tr></tfoot>
+          </table> */}
+          <Table  data={users} itemsPerPage={2}></Table>
           </div>
-        </div>
-      </MainDashboard>
+       
+      </MainDashboard></>)}
+      </div>
     </AdminDashboardWrapper>
   );
 };
