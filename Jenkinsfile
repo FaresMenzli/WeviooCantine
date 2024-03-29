@@ -13,7 +13,7 @@ pipeline {
         stage('Git Checkout') {
             steps {
          
-             git branch: 'e2e', url: 'https://github.com/FaresMenzli/WeviooCantine.git'
+             git branch: 'develop', url: 'https://github.com/FaresMenzli/WeviooCantine.git'
             }
 
            
