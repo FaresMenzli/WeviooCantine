@@ -1,0 +1,9 @@
+.footerwrapper{
+    height: 6%;
+    z-index: 3;
+    position: fixed;
+    bottom: 0;
+    background: #ffffffe3;
+    width: 100%;
+    font-weight: bold;
+    border-top: 4px solid red;}

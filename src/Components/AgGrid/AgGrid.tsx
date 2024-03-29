@@ -99,13 +99,6 @@ const AgGrid: FunctionComponent<Props> = () => {
       });
   }, []);
 
-  const onFirstDataRendered = useCallback((params: FirstDataRenderedEvent) => {
-    // arbitrarily expand a row for presentational purposes
-    setTimeout(() => {
-      params.api.getDisplayedRowAtIndex(1)!.setExpanded(true);
-    }, 0);
-  }, []);
-
   // Container: Defines the grid's theme & dimensions.
   return (
     <div style={containerStyle}>

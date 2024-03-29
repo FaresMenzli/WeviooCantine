@@ -6,7 +6,7 @@ import React, {
   ReactNode,
 } from "react";
 import { User } from "../Models/User";
-import jwt_decode, { jwtDecode } from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from "react-router-dom";
 import { showToast } from "../Components/Toaster/toasterService";
 import { ToastContainer } from "react-toastify";

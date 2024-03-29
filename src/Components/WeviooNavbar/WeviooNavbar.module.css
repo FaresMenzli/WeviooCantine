@@ -5,10 +5,10 @@
 }
 .Navbar {
   position: sticky!important;
-  z-index: 1;
+  z-index: 2;
   background: linear-gradient(135deg, rgba(160, 80, 0, 1) 0%, rgb(232 100 0) 0%, rgb(255 128 1) 0%, rgba(174, 87, 0, 1) 1%, rgba(255, 119, 0, 1) 12%, rgba(242, 129, 0, 1) 17%, rgba(242, 129, 0, 1) 17%,rgb(246, 200, 156) 22%, rgb(244, 198, 160) 22%, rgb(255 169 83) 40%, rgba(242, 129, 0, 1) 49%, rgba(238, 119, 0, 1) 61%, rgba(255, 142, 29, 1) 75%, rgba(255, 132, 9, 1) 88%, rgba(246, 123, 0, 1) 100%);
   height: 45px;
-  width: 100%;
+  max-width: 100vw;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -83,6 +83,7 @@
 .dropdown:hover .dropdownContent {
   display: block;
 }
+
 
 .profileImage {
   margin-top: -14px;

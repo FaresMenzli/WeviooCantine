@@ -1,6 +1,6 @@
 // apiService.ts
 
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosInstance} from 'axios';
 
 interface CustomAxiosInstance extends AxiosInstance {
   authToken?: string;

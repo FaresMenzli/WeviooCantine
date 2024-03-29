@@ -6,15 +6,12 @@ import {
   TopBarStaff,
 } from "./StaffDashboard.styled";
 import { Dish } from "../../Models/Dish";
-import axios from "axios";
+
 import DishCard from "../DishCard/DishCard";
-import { Trash, Pen } from "react-bootstrap-icons";
-import DishFormModal from "../DishFormModal/DishFormModal";
 import { RootState } from "../../redux/store";
 import { useSelector } from "react-redux";
 import WeviooSpinner from "../WeviooSpinner/WeviooSpinner";
-import { showToast } from "../Toaster/toasterService";
-import { ToastContainer } from "react-toastify";
+
 import WeviooNavbar from "../WeviooNavbar/WeviooNavbar";
 import ManageDish from "./ManageDishs/ManageDishs";
 import OrderList from "./OrdersList/OrdersList";
@@ -23,12 +20,24 @@ import { useBackendUrl } from "../../Contexts/BackendUrlContext";
 interface StaffDashboardProps {}
 
 const StaffDashboard: FC<StaffDashboardProps> = () => {
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [manage, setManage] = useState(true);
+  const [isNavbarShrunk, setIsNavbarShrunk] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      const isTop = window.scrollY < 100; 
+      setIsNavbarShrunk(!isTop);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   const [view, setView] = useState("manageDishs");
   //const [data, setData] = useState([]);
   // const [loading, setLoading] = useState(true);
-  const baseURL = `http://localhost:5000`;
+
   const { backendUrl } = useBackendUrl();
   const { data, loading, error } = useSelector(
     (state: RootState) => state.dishes
@@ -49,17 +58,18 @@ const StaffDashboard: FC<StaffDashboardProps> = () => {
     );
   } */
 
+
   if (error) {
     return <p>Error: {error}</p>;
   }
   return (
     <StaffDashboardWrapper className="StaffBg">
       <WeviooNavbar></WeviooNavbar>
-      <TopBarStaff className="white">
+      <TopBarStaff shrunk={isNavbarShrunk}  className="white ">
         <Links
           className={`${view==="dishList" ? "text-decoration-underline" : ""} clickable`}
           onClick={() => {
-            setManage(false);
+           
             setView("dishList");
           }}
         >
@@ -68,7 +78,7 @@ const StaffDashboard: FC<StaffDashboardProps> = () => {
         <Links
           className={`${view==="manageDishs" ? "text-decoration-underline" : ""} clickable`}
           onClick={() => {
-            setManage(true);
+           
             setView("manageDishs");
           }}
         >
@@ -77,7 +87,7 @@ const StaffDashboard: FC<StaffDashboardProps> = () => {
         <Links
           className={`${view==="orders" ? "text-decoration-underline" : ""} clickable`}
           onClick={() => {
-            setManage(true);
+           
             setView("orders");
           }}
         >

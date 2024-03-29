@@ -1,18 +1,17 @@
-import React, { ChangeEvent, FC, FormEvent, useState } from 'react';
-import { LoginWrapper } from './Login.styled';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
+import React, {  FC, FormEvent, useState } from 'react';
+
+import { useDispatch } from 'react-redux';
+
 import LogOut from '../Register/Register';
 import { User } from '../../Models/User';
-import { log } from 'console';
+
 import axios from 'axios';
 import { useAuth } from '../../Contexts/AuthContext';
  import  { useNavigate } from 'react-router-dom'; 
 import { showToast } from '../Toaster/toasterService';
 import { Bounce, Flip, ToastContainer } from 'react-toastify';
 import styles from '../Register/Register.module.css';
-import interceptor from '../../Interceptor/Interceptor';
-import {setConnectedUser} from "../../redux/connectedUser"
+
 import { useBackendUrl } from '../../Contexts/BackendUrlContext';
 
 

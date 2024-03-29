@@ -22,5 +22,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-/app/PFE-Back/target
+app/PFE-Back/target/*
 
+src/generatedGitInfo.json
+
+app/PFE-Back/target/classes/com/example/PFE/Back/Configuration/SecurityConfig.class
+app/PFE-Back/target/classes/com/example/PFE/Back/Repo/CommandeLineRepo.class
+app/PFE-Back/target/classes/com/example/PFE/Back/Service/Implementation/CommandeLineService.class

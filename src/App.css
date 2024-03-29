@@ -129,8 +129,8 @@ min-height: 100vh;
 
 .adminDashboard {
   background-image: url("../public/dhasboardbackground-1.jpg");
-  height: 100%;
-  width: 100vw;
+  height: 100vh;
+  max-width: 100vw;
 }
 .white {
   color: white;
@@ -154,12 +154,81 @@ min-height: 100vh;
 
 
 /** Table **/
+.dishListTable thead tr th{
+  text-shadow:6px -2px 20px #000000, 0px 0px 20px #000000;
+  color :white
+
+}
+.dishListTable tfoot tr th {
+  text-shadow:6px -2px 20px #000000, 0px 0px 20px #000000;
+  color :white
+
+}
+.dishListTable tbody {
+  color: white;
+  font-weight:500 ;
+}
+.dishListTable thead tr th {
+  border-radius: 0;
+  background-color: #000000a3;
+  color: white;
+}
+.active{
+  background-color: red!important;
+}
+
+.transparent{
+  color: transparent!important;
+}
+
+.dishListTable thead :first-child{
+  border-top-left-radius: 35px;
+
+}
+.dishListTable thead :last-child{
+  border-top-right-radius: 35px;
+}
 tbody tr {
-  border-bottom: 0.5px solid !important;
+  border-bottom: 1px solid !important;
 }
 tbody tr:hover {
   background-color: black;
+  color: white;
 }
+.userListTable thead tr th {
+  border-radius: 0;
+  background-color: #000000a3;
+  color: white;
+}
+.userListTable tfoot {
+  border-radius: 0;
+  background-color: #000000a3;
+  color: white;
+}
+.userListTable tfoot :first-child{
+  border-bottom-left-radius: 35px;
+
+}
+.userListTable tfoot :last-child{
+  border-bottom-right-radius: 35px;
+}
+.userListTable thead :first-child{
+  border-top-left-radius: 35px;
+
+}
+.userListTable thead :last-child{
+  border-top-right-radius: 35px;
+}
+.userListTable{
+backdrop-filter: blur(50px);}
+.userListTable thead{
+ 
+}
+.userListTable tbody {
+  font-weight: 500;
+  color: black;
+}
+
 tbody :last-child{
 
   /*border-radius: 35px*/
@@ -222,13 +291,14 @@ tfoot{
 .cartTable tfoot :last-child{
   border-bottom-right-radius: 35px;
 }
+
 .cartTable tfoot td {
   
   height: 70px;
   background-color: rgba(43, 43, 172, 0.4);
 
 }
-tbody tr {
+.cartTable tbody tr {
   border-bottom: 1px solid white;
 }
 tbody :last-child{
@@ -239,6 +309,9 @@ tbody :last-child{
   border-radius: 35px;
   
 } */
+thead :first-child{
+  border-bottom: 1px solid black;
+}
 .quantityWidth{
 width: 31%!Important;
 }
@@ -478,15 +551,19 @@ input:disabled {
   
 }
 .searchWrapper{
+  
   position: sticky;
-
   z-index: 9;
-  top:45px
+  top:45px;
+  width: 30%;
+  margin: auto;
+ 
+  
 }
 .searchGroup{
-
+ 
 } 
-svg{
+.weviooSpinner{
   height: 60px;
 }
 #eSWVUt6wnCM7 {animation: eSWVUt6wnCM7_c_o 1000ms linear infinite normal forwards}@keyframes eSWVUt6wnCM7_c_o { 0% {opacity: 1} 30% {opacity: 0} 60% {opacity: 1} }
@@ -687,3 +764,55 @@ background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 0%, 
 .accordion-body.active {
   display: block;
 }
+.branch{
+  background: black;
+  /* border: 1px solid red; */
+  color: #f00;
+  font-weight: 700;
+  height: 30px;
+  margin: auto;
+  position: fixed;
+  text-align: center;
+  bottom: 43px;
+  width: 100%;
+  z-index: 2;
+
+}
+
+.env{
+  position: fixed;
+  top: 16px;
+  left: -44px;
+  z-index: 3;
+  background: rgb(255, 255, 255);
+  transform: rotate(-45deg);
+  padding: 0 50px;
+  border: 1px solid red;
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+
+}
+
+
+/* .jqueryTest{
+  height:7vh;
+width: 100vw;
+
+align-items: center;
+justify-content: space-evenly;
+display: flex;
+position:fixed;
+background-color:black;
+
+font-size: x-large;
+letter-spacing:  3px;
+font-variant: all-petite-caps;
+transition: all 0.3s ease;
+z-index:10;
+}
+
+.jqueryTest.navbar-shrunk {
+  flex-direction: column; 
+  height: fit-content;
+  width: fit-content;
+} */

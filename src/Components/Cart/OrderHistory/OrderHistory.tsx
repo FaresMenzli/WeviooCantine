@@ -18,6 +18,7 @@ import { Dish } from "../../../Models/Dish";
 import styles from "./orderHistory.module.css";
 import interceptor from "../../../Interceptor/Interceptor";
 import { useAuth } from "../../../Contexts/AuthContext";
+import { useBackendUrl } from "../../../Contexts/BackendUrlContext";
 
 interface ICommandeLine {
   id: number;
@@ -32,14 +33,11 @@ interface IOrderHistory {
 }
 interface Props {}
 
-// Create new GridExample component
+
 const OrderHistory: FunctionComponent<Props> = () => {
-  // Row Data: The data to be displayed.
+  const { backendUrl } = useBackendUrl();
   const containerStyle = useMemo(() => ({ width: "60%", height: "90%" }), []);
-  const [style, setStyle] = useState({
-    height: "100%",
-    width: "100%",
-  });
+
   const { user } = useAuth();
   const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
   const [rowData, setRowData] = useState<IOrderHistory[]>();
@@ -95,7 +93,7 @@ const OrderHistory: FunctionComponent<Props> = () => {
 
   const onGridReady = useCallback((params: GridReadyEvent) => {
     interceptor
-      .get(`http://localhost:5000/api/orders/user/${user?.userId}`)
+      .get(`${backendUrl}/api/orders/user/${user?.userId}`)
       .then((res) => setRowData(res.data));
   }, []);
 
