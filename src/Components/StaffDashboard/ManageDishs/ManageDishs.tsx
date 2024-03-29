@@ -5,6 +5,7 @@ import { showToast } from "../../Toaster/toasterService";
 import DishFormModal from "../../DishFormModal/DishFormModal";
 import { ToastContainer } from "react-toastify";
 import { Pen, Trash } from "react-bootstrap-icons";
+import Table from "../../TestComponent/Table";
 
 interface ManageDishProps {
     data:Dish[]
@@ -60,7 +61,7 @@ const ManageDish: FC<ManageDishProps> = (props) => {
   
       return (
         <div className="pt-5">
-          <div className="pb-5 d-flex align-items-center justify-content-center">
+          <div className="pb-5 d-flex align-items-center justify-content-center mt-5">
             <input
               className="addDishs me-5"
               onClick={handleOpenModal}
@@ -80,11 +81,11 @@ const ManageDish: FC<ManageDishProps> = (props) => {
               onSubmit={handleDishSubmit}
             />
           </div>
-          <div className="d-flex align-items-center justify-content-center">
+          <div className="d-flex align-items-center justify-content-center mb-5">
           return (
         <ToastContainer />
   
-              <table className="white  text-center mb-5">
+              {/* <table className="white  text-center mb-xxl-5 ">
                 <thead>
                   <tr>
                     <th className="white textShadow">Actions</th>
@@ -125,7 +126,8 @@ const ManageDish: FC<ManageDishProps> = (props) => {
                     <th>Dish category</th>
                     </tr>
                   </tfoot>
-              </table>
+              </table> */}
+              <Table data={props.data} itemsPerPage={7}></Table>
             )
           </div>
         </div>

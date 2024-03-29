@@ -17,6 +17,7 @@ import { BackendUrlProvider } from "./Contexts/BackendUrlContext";
 import { activeEnv } from "./util/constant";
 import Footer from "./Components/Footer/Footer";
 import ShowEnv from "./Components/showEnvironement/ShowEnv";
+import Dashboard from "./Components/TestComponent/dashboard/Dashboard";
 
 function App() {
   return (
@@ -36,7 +37,7 @@ function App() {
               element={<DishDetails></DishDetails>}
             />
             <Route path="home" element={<Home />}></Route>
-            <Route path="test" element={<TestComponent />}></Route>
+            <Route path="test" element={<Dashboard />}></Route>
             <Route path="testShowEnv" element={<ShowEnv />}></Route>
             <Route path="*" element={<Notfound />} />
           </Routes>
