@@ -1,8 +1,40 @@
-import React, { useState } from 'react';
+import { string, number } from 'prop-types';
+import React, { useEffect, useState } from 'react';
 import { Chart } from 'react-google-charts';
+interface TopDishData {
+    dishId: number;
+    dishName: string;
+    quantitySold: number;
+}
 
 const Dashboard: React.FC = () => {
   const [selectedYear, setSelectedYear] = useState<string>('');
+  const [dataToShow , setDataToShow] = useState< (number | string)[][]>([])
+
+  useEffect(() => {
+    const keys = Object.keys(topDishes[0]) as (keyof TopDishData)[];
+
+    // Mapping rawData to an array of arrays, including keys as the first row
+    const transformedData: (number | string)[][] = [
+        keys,
+        ...topDishes.map(item => [item[keys[0]], item[keys[1]], item[keys[2]]])
+    ];
+
+    setDataToShow(transformedData)
+    
+
+    console.log(transformedData)
+    console.log(dataToShow)
+setDataToShow(
+   [ ['dishName', 'quantitySold']
+   , [ 'Fruit salad', 46]
+    , [ 'Coffe', 3]
+   , [ '22', 3]])
+
+
+
+  }, [])
+  
 
   const salesData = [
     ['Year', 'Sales', 'Expenses'],
@@ -11,6 +43,26 @@ const Dashboard: React.FC = () => {
     ['2016', 660, 1120],
     ['2017', 1030, 540],
   ];
+ const topDishes:TopDishData[]= [
+    {
+    "dishId": 3,
+    "dishName": "Fruit salad",
+    "quantitySold": 46
+    },
+    {
+    "dishId": 2,
+    "dishName": "Coffe",
+    "quantitySold": 3
+    },
+    {
+    "dishId": 8,
+    "dishName": "22",
+    "quantitySold": 3
+    }
+    ]
+
+
+
 
   const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedYear(e.target.value);
@@ -35,7 +87,7 @@ const Dashboard: React.FC = () => {
           height={'300px'}
           chartType="BarChart"
           loader={<div>Loading Chart</div>}
-          data={salesData}
+          data={dataToShow}
           options={{
             chart: {
               title: 'Sales by Year',
@@ -47,7 +99,7 @@ const Dashboard: React.FC = () => {
           height={'300px'}
           chartType="PieChart"
           loader={<div>Loading Chart</div>}
-          data={[['Year', 'Sales'], ['2014', 1000], ['2015', 1170], ['2016', 660], ['2017', 1030]]}
+          data={dataToShow}
           options={{
             chart: {
               title: 'Sales Distribution',
@@ -59,7 +111,7 @@ const Dashboard: React.FC = () => {
           height={'300px'}
           chartType="LineChart"
           loader={<div>Loading Chart</div>}
-          data={[['Year', 'Sales'], ['2014', 1000], ['2015', 1170], ['2016', 660], ['2017', 1030]]}
+          data={dataToShow}
           options={{
             chart: {
               title: 'Sales Trend',
@@ -71,7 +123,7 @@ const Dashboard: React.FC = () => {
           height={'300px'}
           chartType="ScatterChart"
           loader={<div>Loading Chart</div>}
-          data={[['Year', 'Sales'], ['2014', 1000], ['2015', 1170], ['2016', 660], ['2017', 1030]]}
+          data={dataToShow}
           options={{
             chart: {
               title: 'Sales Scatter',
@@ -83,7 +135,7 @@ const Dashboard: React.FC = () => {
           height={'300px'}
           chartType="AreaChart"
           loader={<div>Loading Chart</div>}
-          data={salesData}
+          data={dataToShow}
           options={{
             chart: {
               title: 'Sales and Expenses Over Time',
@@ -95,7 +147,7 @@ const Dashboard: React.FC = () => {
           height={'300px'}
           chartType="ComboChart"
           loader={<div>Loading Chart</div>}
-          data={salesData}
+          data={dataToShow}
           options={{
             chart: {
               title: 'Sales and Expenses Comparison',
@@ -107,7 +159,7 @@ const Dashboard: React.FC = () => {
           height={'300px'}
           chartType="BarChart"
           loader={<div>Loading Chart</div>}
-          data={salesData}
+          data={dataToShow}
           options={{
             chart: {
               title: 'Sales by Year',
@@ -119,7 +171,7 @@ const Dashboard: React.FC = () => {
           height={'300px'}
           chartType="PieChart"
           loader={<div>Loading Chart</div>}
-          data={[['Year', 'Sales'], ['2014', 1000], ['2015', 1170], ['2016', 660], ['2017', 1030]]}
+          data={dataToShow}
           options={{
             chart: {
               title: 'Sales Distribution',
@@ -131,7 +183,7 @@ const Dashboard: React.FC = () => {
           height={'300px'}
           chartType="LineChart"
           loader={<div>Loading Chart</div>}
-          data={[['Year', 'Sales'], ['2014', 1000], ['2015', 1170], ['2016', 660], ['2017', 1030]]}
+          data={dataToShow}
           options={{
             chart: {
               title: 'Sales Trend',
@@ -143,7 +195,7 @@ const Dashboard: React.FC = () => {
           height={'300px'}
           chartType="ScatterChart"
           loader={<div>Loading Chart</div>}
-          data={[['Year', 'Sales'], ['2014', 1000], ['2015', 1170], ['2016', 660], ['2017', 1030]]}
+          data={dataToShow}
           options={{
             chart: {
               title: 'Sales Scatter',
@@ -156,7 +208,7 @@ const Dashboard: React.FC = () => {
           height={'300px'}
           chartType="Bar"
           loader={<div>Loading Chart</div>}
-          data={[['Year', 'Sales'], ['2014', 1000], ['2015', 1170], ['2016', 660], ['2017', 1030]]}
+          data={dataToShow}
           options={{
             chart: {
               title: 'Sales Scatter',
@@ -169,7 +221,7 @@ const Dashboard: React.FC = () => {
           height={'300px'}
           chartType="ColumnChart"
           loader={<div>Loading Chart</div>}
-          data={[['Year', 'Sales'], ['2014', 1000], ['2015', 1170], ['2016', 660], ['2017', 1030]]}
+          data={dataToShow}
           options={{
             chart: {
               title: 'Sales Scatter',
@@ -182,7 +234,7 @@ const Dashboard: React.FC = () => {
           height={'300px'}
           chartType="LineChart"
           loader={<div>Loading Chart</div>}
-          data={[['Year', 'Sales'], ['2014', 1000], ['2015', 1170], ['2016', 660], ['2017', 1030]]}
+          data={dataToShow}
           options={{
             chart: {
               title: 'Sales Scatter',
