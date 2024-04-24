@@ -1,19 +1,15 @@
 .homeBg{
    
 background-image: url("../../assets/wevioorestau_1.jpg");
-
-
-
   min-width: 81vw;
- 
   min-height: 100vh;
   background-size: cover;
 
-;}
+}
 .homeMsg{
    /* border: 1px solid black;*/
-    height: 500px;
-    width: 900px;
+   height: 65vh;
+   width: 60vw;
     margin: auto;
     margin-top: 50px;
     backdrop-filter: blur(9px);

@@ -1,4 +1,12 @@
 .spinner{
 
-    height: 70vh;
+height:80vh;}
+
+.chartSpinner {
+
+    animation: weviooRotate 2s infinite;
+}
+
+@keyframes weviooRotate {
+  50% {transform: rotate(360deg);}
 }

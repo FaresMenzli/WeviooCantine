@@ -1,6 +1,9 @@
 package com.example.PFE.Back.Service.Implementation;
+
 import java.util.Calendar;
 import java.util.logging.Logger;
+
+import com.example.PFE.Back.DTO.CommandeLineDTO;
 import com.example.PFE.Back.DTO.CommandeLineRequestDTO;
 import com.example.PFE.Back.DTO.OrderDTO;
 import com.example.PFE.Back.DTO.OrderRequestDTO;
@@ -50,12 +53,6 @@ public class OrderService {
     @Autowired
     private ModelMapper modelMapper;
 
-
-    // public List<Order> getOrdersByDate(Date date) {
-    //     Logger.getLogger(OrderService.class.getName()).info("Fetching orders for date: " + date);
-    //
-    //     return orderRepository.findByDateWithLogging(date);
-    // }
     public List<Order> getOrdersByDate(Date date) {
         // Set time to start of the day
         Calendar calendar = Calendar.getInstance();
@@ -82,63 +79,10 @@ public class OrderService {
         return orderRepository.findById(orderId);
     }
 
-    // public Order createOrderForUser(Long userId, List<Long> dishIds, List<Integer> quantities) {
-    //     System.out.println("///////////////////////////");
-    //     Optional<User> userOptional = userService.getUserById(userId);
-    //     System.out.println(userOptional.get());
-    //
-    //
-    //     if (userOptional.isPresent() && dishIds.size() == quantities.size()) {
-    //         Order newOrder = new Order();
-    //         User user = userOptional.get();
-    //         newOrder.setOrderUser(user);
-    //         newOrder.setOrderDate(new Date());
-    //         orderRepository.save(newOrder);
-    //         System.out.println(user);
-    //         System.out.println("// Create CommandeLines for each Dish and quantity");// Create CommandeLines for each Dish and quantity
-    //         List<CommandeLine> commandeLines = createCommandeLines(dishIds, quantities ,newOrder.getOrderId());
-    //         System.out.println("777777777777777777777777777777777777777777777777777");
-    //         System.out.println(commandeLines);
-    //        // newOrder.setCommandeLines(commandeLines);
-    //         newOrder.setCommandeLines(commandeLines);
-    //         System.out.println("88888888888888888888888888");
-    //         System.out.println(commandeLines);
-    //
-    //
-    //
-    //         // Create the Order
-    //
-    //         //Order newOrder = new Order(new Date(), user, commandeLines);
-    //
-    //
-    //
-    //
-    //         // System.out.println("fffffffffffffffffffffffffffff");
-    //         // System.out.println(newOrder.getOrderId());
-    //
-    //         return orderRepository.save(newOrder);
-    //     } else {
-    //         // Handle the case where the user is not found or the sizes of dishIds and quantities do not match
-    //         return null;
-    //     }
-    // }
 
-    // private void addIdToCommandeLines( List<CommandeLine> commandeLines , Long OrderId){
-    //     commandeLines.stream().map(
-    //             commandeLine -> {
-    //                 commandeLine.setOrder(orderRepository.findById(OrderId).get());
-    //                 return null;
-    //             }
-    //
-    //     );
-    //
-    // }
     public Order addOrderForCustomer(Long userId, OrderRequestDTO orderRequestDTO) {
-        // Step 1: Create and save the Order
         User user = userRepo.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
-        System.out.println("--------------------------------------------------");
-        System.out.println(orderRequestDTO);
         Order order = new Order();
         order.setOrderDate(new Date());
         order.setUser(user);
@@ -146,7 +90,6 @@ public class OrderService {
 
         Order savedOrder = orderRepository.save(order);
 
-        // Step 2: Create and save CommandeLines
         for (CommandeLineRequestDTO commandeLineDTO : orderRequestDTO.getCommandeLines()) {
             Dish dish = dishRepo.findById(commandeLineDTO.getDishId())
                     .orElseThrow(() -> new DishNotFoundException("Dish not found with ID: " + commandeLineDTO.getDishId()));
@@ -156,7 +99,7 @@ public class OrderService {
             commandeLine.setQuantityOrdered(commandeLineDTO.getQuantity());
             commandeLine.setOrder(savedOrder);
             commandeLine.setDish(dish);
-            dish.setQuantityAvailable(dish.getQuantityAvailable()-commandeLineDTO.getQuantity());
+            dish.setQuantityAvailable(dish.getQuantityAvailable() - commandeLineDTO.getQuantity());
 
             commandeLineRepo.save(commandeLine);
         }
@@ -165,14 +108,14 @@ public class OrderService {
     }
 
 
-    private List<CommandeLine> createCommandeLines(List<Long> dishIds, List<Integer> quantities , Long orderId) {
+    private List<CommandeLine> createCommandeLines(List<Long> dishIds, List<Integer> quantities, Long orderId) {
         // Validate the sizes of dishIds and quantities are the same
         if (dishIds.size() != quantities.size()) {
             throw new IllegalArgumentException("Sizes of dishIds and quantities must match.");
         }
 
         // Create CommandeLines for each Dish and quantity
-        CommandeLine commandeline=new CommandeLine();
+        CommandeLine commandeline = new CommandeLine();
         return IntStream.range(0, dishIds.size())
                 .mapToObj(i -> {
                     Dish dish = dishService.getDishById(dishIds.get(i)).orElseThrow();
@@ -181,12 +124,11 @@ public class OrderService {
                     commandeline.setCommandeLineDate(new Date());
                     commandeline.setDish(dish);
                     commandeline.setQuantityOrdered(quantity);
-                    System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-                    System.out.println(commandeline);
                     return commandeline;
                 })
                 .collect(Collectors.toList());
     }
+
     public void updateOrder(Long orderId, Order updatedOrder) {
         orderRepository.findById(orderId).ifPresent(order -> {
             order.setOrderDate(updatedOrder.getOrderDate());
@@ -203,7 +145,8 @@ public class OrderService {
 
 
     public List<OrderDTO> getOrdersForUser(Long userId) {
-        User user = userRepo.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));;
+        User user = userRepo.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
+        ;
         List<Order> userOrders = orderRepository.findOrderByUser(user);
 
         return userOrders.stream()
@@ -211,11 +154,34 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
+    public Long getOrderNB(){
+        return orderRepository.count();
+    }
 
+    public long getOrderNbByDate(Date startDate, Date endDate) {
+        Calendar beginCalendar = Calendar.getInstance();
+        beginCalendar.setTime(startDate);
+        beginCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        beginCalendar.set(Calendar.MINUTE, 0);
+        beginCalendar.set(Calendar.SECOND, 0);
+        startDate = beginCalendar.getTime();
+        Calendar endCalendar = Calendar.getInstance();
+        endCalendar.set(Calendar.HOUR_OF_DAY, 23);
+        endCalendar.set(Calendar.MINUTE, 59);
+        endCalendar.set(Calendar.SECOND, 59);
+        endDate = endCalendar.getTime();
+        return orderRepository.countByOrderDateBetween(startDate, endDate);
     }
 
 
-    // public List<Dish> getAllProducts() {
-    //     return DishRepo.findAll();
-    // }
-// }
+
+
+
+
+
+
+
+}
+
+
+

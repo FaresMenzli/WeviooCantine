@@ -6,10 +6,10 @@ import { useAuth } from "../../Contexts/AuthContext";
 import styles from "./WeviooNavbar.module.css";
 import { BasketFill, ChevronDown } from "react-bootstrap-icons";
 import { CartItems, CartSpan } from "../Dishes/Dishes.styled";
-
 import { useLocation, useNavigate } from "react-router-dom";
 
 const WeviooNavbar: FC = () => {
+
   const [staffPage, setStaffPage] = useState(false)
   const location =useLocation()
   const { user ,logout} = useAuth();
@@ -35,8 +35,8 @@ const WeviooNavbar: FC = () => {
       </div>
 
       <div className={styles.linkGroup}>
-        <div onClick={()=>navigate("/admin")} className={`${styles.link} clickable`}>Admin Dashboard</div>
-        <div onClick={()=>navigate("/staff")} className={`${styles.link} clickable`}>Staff Dashboard</div>
+        <div hidden={user?.userRole!="ADMIN"} onClick={()=>navigate("/admin")} className={`${styles.link} clickable`}>Admin Dashboard</div>
+        <div hidden={user?.userRole!="ADMIN" && user?.userRole!="KITCHEN_STAFF"} onClick={()=>navigate("/staff")} className={`${styles.link} clickable`}>Staff Dashboard</div>
         <div onClick={()=>navigate("/dishes")} className={`${styles.link} clickable`}>Dish List</div>
         
         <div className={styles.dropdown}>
@@ -53,10 +53,13 @@ const WeviooNavbar: FC = () => {
           </span>} 
           <ChevronDown></ChevronDown>
           <div className={styles.dropdownContent}>
-            <p>{user?.userFirstName} {user?.userLastName.toUpperCase()}</p>
-            <p>{user?.userEmail}</p>
-            <p>MYOrders</p>
-            <p onClick={logout}>Logout</p>
+            <div >{user?.userFirstName} {user?.userLastName.toUpperCase()}</div>
+            <hr className="m-2 " />
+            <div >{user?.userEmail}</div>
+            <hr className="m-2 " />
+            <div className="clickable" onClick={()=>navigate("/cart")}>MyOrders</div>
+            <hr className="m-2 " />
+            <div className="clickable" onClick={logout}>Logout</div>
           </div>
         </div>
         <div className="d-flex ms-5">

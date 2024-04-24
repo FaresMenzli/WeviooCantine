@@ -3,7 +3,7 @@ import {
   DishList,
   Links,
   StaffDashboardWrapper,
-  TopBarStaff,
+  TopBarLinks,
 } from "./StaffDashboard.styled";
 import { Dish } from "../../Models/Dish";
 
@@ -23,41 +23,26 @@ const StaffDashboard: FC<StaffDashboardProps> = () => {
   const [isNavbarShrunk, setIsNavbarShrunk] = useState(false);
   useEffect(() => {
     const handleScroll = () => {
-      const isTop = window.scrollY < 100; 
+      const isTop = window.scrollY < 100;
       setIsNavbarShrunk(!isTop);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
   const [view, setView] = useState("manageDishs");
-  //const [data, setData] = useState([]);
-  // const [loading, setLoading] = useState(true);
-
   const { backendUrl } = useBackendUrl();
   const { data, loading, error } = useSelector(
     (state: RootState) => state.dishes
   );
 
   useEffect(() => {
-    // setLoading(true);
     const url = `${backendUrl}/dishs`;
-    // axios.get(url).then((res) => setData(res.data));
-    // setLoading(false);
   }, []);
-
- /*  if (loading === "pending") {
-    return (
-      <div className="top-50 d-flex align-items-center justify-content-center">
-        <WeviooSpinner></WeviooSpinner>
-      </div>
-    );
-  } */
-
 
   if (error) {
     return <p>Error: {error}</p>;
@@ -65,51 +50,44 @@ const StaffDashboard: FC<StaffDashboardProps> = () => {
   return (
     <StaffDashboardWrapper className="StaffBg">
       <WeviooNavbar></WeviooNavbar>
-      <TopBarStaff shrunk={isNavbarShrunk}  className="white ">
+      <TopBarLinks shrunk={isNavbarShrunk} className="white ">
         <Links
-          className={`${view==="dishList" ? "text-decoration-underline" : ""} clickable`}
+          className={`${
+            view === "dishList" ? "text-decoration-underline" : ""
+          } clickable`}
           onClick={() => {
-           
             setView("dishList");
           }}
         >
           DishList
         </Links>
         <Links
-          className={`${view==="manageDishs" ? "text-decoration-underline" : ""} clickable`}
+          className={`${
+            view === "manageDishs" ? "text-decoration-underline" : ""
+          } clickable`}
           onClick={() => {
-           
             setView("manageDishs");
           }}
         >
-          manage dishs {" "}
+          manage dishs{" "}
         </Links>
         <Links
-          className={`${view==="orders" ? "text-decoration-underline" : ""} clickable`}
+          className={`${
+            view === "orders" ? "text-decoration-underline" : ""
+          } clickable`}
           onClick={() => {
-           
             setView("orders");
           }}
         >
           Orders{" "}
         </Links>
-      </TopBarStaff>
+      </TopBarLinks>
       {view === "manageDishs" ? (
-        
-        
-        loading !== 'idle' ? (
-          
+        loading !== "idle" ? (
           <WeviooSpinner></WeviooSpinner>
-          
-         
-          )
-        :(
-          
+        ) : (
           <ManageDish data={data}></ManageDish>
         )
-
-
-        
       ) : view === "dishList" ? (
         <DishList className="d-flex flex-wrap">
           {" "}
