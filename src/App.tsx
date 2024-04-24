@@ -19,18 +19,12 @@ import Footer from "./Components/Footer/Footer";
 import ShowEnv from "./Components/showEnvironement/ShowEnv";
 import Dashboard from "./Components/BI_Dashboard/Dashboard";
 import Podium from "./Components/BI_Dashboard/Podium";
-import { useEffect, useState } from "react";
+
 import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
+import Unauthorized from "./Components/Unauthorized/Unauthorized";
+
 
 function App() {
-  const [userRole, setUserRole] = useState<string | null>(null);
-
-  // Simulate fetching user role
-  useEffect(() => {
-    // Your logic to fetch the user's role
-    // This is just a simulation
-    setUserRole("COLLAB"); // Set to "admin" or "user" to see the effect
-  }, []);
 
   return (
     <BrowserRouter>
@@ -41,7 +35,8 @@ function App() {
             <Route path="/" element={<Home />}></Route>
             <Route path="/login" element={<Login />}></Route>
             <Route path="dishes" element={<Dishes />}></Route>
-          {/*   <Route path="Staff" element={<StaffDashboard />}></Route> */}
+            <Route path="unauthorized" element={<Unauthorized />}></Route>
+         
             <Route path="Staff"   element={
                         <PrivateRoute roles={['ADMIN','KITCHEN_STAFF']}>
                             <StaffDashboard />
