@@ -13,15 +13,15 @@ export const ManageDishs = styled.div`
 export const DishList = styled.div`
 `;
 
-export const TopBarStaff = styled.div<NavbarProps>`
-height:${props => (props.shrunk ? '4vh' : '7vh')};
+export const TopBarLinks = styled.div<NavbarProps>`
+height:${props => (props.shrunk ? '4vh' : '5vh')};
 width:100vw;
 align-items: center;
 justify-content: space-evenly;
 display: flex;
 position:fixed;
 background-color: ${props => (props.shrunk ? 'black' : 'black')};
-padding-top:  ${props => (props.shrunk ? '0' : '7px')};
+padding-top:  ${props => (props.shrunk ? '0' : '1px')};
 font-size: x-large;
 letter-spacing:  ${props => (props.shrunk ? '1px' : '5px')};
 font-variant: all-petite-caps;

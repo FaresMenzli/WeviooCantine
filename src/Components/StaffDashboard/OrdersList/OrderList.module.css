@@ -13,9 +13,11 @@
 .dateSelector{
 
     border-radius: 20px;
-    padding: 6px;
-    font-family: cursive;
+  
+   
     width: 68%;
+    padding: 7px 15px;
+    font-family: system-ui;
 }
 
 .modal {

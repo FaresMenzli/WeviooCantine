@@ -13,7 +13,7 @@ interface  BackendUrlContextProps {
     children: ReactNode;
   }
 export const BackendUrlProvider: React.FC<BackendUrlContextProps> = ({ children }) => {
-    const [backendUrl, setBackendUrl] = useState<string>('http://62.72.30.33:5000');
+    const [backendUrl, setBackendUrl] = useState<string>('http://localhost:5000');
 
     return (
         <BackendUrlContext.Provider value={{ backendUrl }}>

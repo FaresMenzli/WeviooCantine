@@ -36,6 +36,12 @@ public class OrderController {
         List<Order> orders = orderService.getAllOrders();
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
+    @GetMapping("/nbOrder")
+    public ResponseEntity<Long> getOrderNB(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date start, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date end) {
+        Long nb= orderService.getOrderNbByDate(start, end);
+        return new ResponseEntity<>(nb, HttpStatus.OK);
+    }
+
 
     @GetMapping("/{orderId}")
     public ResponseEntity<Order> getOrderById(@PathVariable Long orderId) {

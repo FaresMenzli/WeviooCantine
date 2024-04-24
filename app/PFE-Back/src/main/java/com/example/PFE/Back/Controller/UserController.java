@@ -29,7 +29,6 @@ public class UserController {
 
     @PostMapping("/getUser")
     public ResponseEntity<?> getUserByEmail(@RequestBody AuthenticationRequest request) {
-        System.out.println("------------------------------------");
         System.out.println(request.getUserEmail());
         UserDTO user = userService.getUserByUserEmail(request.getUserEmail());
         if (user != null) {

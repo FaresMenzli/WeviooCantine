@@ -128,9 +128,13 @@ min-height: 100vh;
 }
 
 .adminDashboard {
-  background-image: url("../public/dhasboardbackground-1.jpg");
-  height: 100vh;
+   background-image: url("../public/dhasboardbackground-1.jpg"); 
+/*  background-image: url('https://static.vecteezy.com/system/resources/previews/005/593/805/non_2x/futuristic-abstract-technology-background-icon-symbol-circuit-and-illustration-sci-fi-futuristic-hud-lock-dashboard-display-virtual-reality-technology-screen-background-vector.jpg');
+ */  min-height: 100vh;
   max-width: 100vw;
+  background-size: cover;
+  background-attachment: fixed;
+
 }
 .white {
   color: white;
@@ -190,6 +194,7 @@ min-height: 100vh;
 }
 tbody tr {
   border-bottom: 1px solid !important;
+  height: 50px;
 }
 tbody tr:hover {
   background-color: black;

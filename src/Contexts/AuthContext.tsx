@@ -25,34 +25,48 @@ interface AuthProviderProps {
 }
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>( localStorage.getItem("token")    );
+    const [role, setRole] = useState<string | null>(localStorage.getItem('userRole'));
+  const [token, setToken] = useState<string | null>( localStorage.getItem("token"));
+ 
   const navigate = useNavigate();
   useEffect(() => {
+ 
+   
     const storedUserData = localStorage.getItem('user');
     const storedToken = localStorage.getItem('token');
+    const storedRole = localStorage.getItem("userRole")
     if (storedUserData && storedToken) {
       setUser(JSON.parse(storedUserData));
       setToken(storedToken);
-     
+      setRole(storedRole)
+      
     }
+
+    console.log(localStorage.getItem("userRole"))
+    console.log(localStorage.getItem("user"))
+    
    
   }, []);
   useEffect(() => {
     if (user && token) {
-      console.log(user)
+      console.log(user?.userRole)
+      console.log("authContext")
     localStorage.setItem('user', JSON.stringify(user));
     localStorage.setItem("token", token || "");
-
+    localStorage.setItem("userRole", user.userRole || "");
+  
   }
   const interval = setInterval(checkTokenExpiration, 1000); 
   return () => clearInterval(interval); 
-  }, [token , user]);
+  }, [token , user  ]);
 
   const logout = () => {
     setUser(null);
     setToken(null);
     localStorage.removeItem('user');
     localStorage.removeItem('token');
+    localStorage.removeItem('userRole');
+
     navigate("/login")
   };
   const isTokenExpired = (token:string) => {
@@ -84,7 +98,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   
 
   return (
-    <AuthContext.Provider value={{setUser,setToken, user, token ,logout }}>
+    <AuthContext.Provider value={{setUser,setToken, user, token  ,logout }}>
       {children}
       <ToastContainer></ToastContainer>
     </AuthContext.Provider>

@@ -4,5 +4,6 @@ export class User {
     userFirstName!: string;
     userLastName!: string;
     userPassword!:string;
+    userRole!:string;
     
 }
