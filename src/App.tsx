@@ -22,10 +22,9 @@ import Podium from "./Components/BI_Dashboard/Podium";
 
 import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
 import Unauthorized from "./Components/Unauthorized/Unauthorized";
-
+import OrderPassed from "./Components/Cart/OrderPasssed/OrderPassed";
 
 function App() {
-
   return (
     <BrowserRouter>
       <BackendUrlProvider>
@@ -36,28 +35,30 @@ function App() {
             <Route path="/login" element={<Login />}></Route>
             <Route path="dishes" element={<Dishes />}></Route>
             <Route path="unauthorized" element={<Unauthorized />}></Route>
-         
-            <Route path="Staff"   element={
-                        <PrivateRoute roles={['ADMIN','KITCHEN_STAFF']}>
-                            <StaffDashboard />
-                        </PrivateRoute>
-                    }></Route>
+
+            <Route
+              path="Staff"
+              element={
+                <PrivateRoute roles={["ADMIN", "KITCHEN_STAFF"]}>
+                  <StaffDashboard />
+                </PrivateRoute>
+              }
+            ></Route>
             <Route path="Cart" element={<Cart />}></Route>
             <Route
               path="/dishDetails/:id"
               element={<DishDetails></DishDetails>}
             />
-            <Route path="home" element={<Home />}></Route>      
-
+            <Route path="home" element={<Home />}></Route>
             <Route path="*" element={<Notfound />} />
-           <Route path="Admin"   element={
-                        <PrivateRoute roles={['ADMIN']}>
-                            <AdminDashboard />
-                        </PrivateRoute>
-                    }>
-            
-
-           </Route>
+            <Route
+              path="Admin"
+              element={
+                <PrivateRoute roles={["ADMIN"]}>
+                  <AdminDashboard />
+                </PrivateRoute>
+              }
+            ></Route>
           </Routes>
           <Footer></Footer>
         </AuthProvider>

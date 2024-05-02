@@ -24,65 +24,65 @@ import { useAuth } from "../../Contexts/AuthContext";
 
 import RedirectCounterComponent from "../RedirectCounterComponent/RedirectCounterComponent";
 import { useBackendUrl } from "../../Contexts/BackendUrlContext";
+import OrderPassed from "./OrderPasssed/OrderPassed";
 
 
 
 export default function Cart() {
   const [sendingOrder , setSendingOrder]=useState(false)
-
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [showOrderDetails, setShowOrderDetails] = useState(false);
   const [orderHistory, setOrderHistory] = useState(false);
   const [emptyCart, setEmptyCart] = useState(false);
   const cart = useSelector((state: RootState) => state.cart.value);
   const dispatch = useDispatch();
-  
+  //////////////
   const { backendUrl } = useBackendUrl();
   const [dishs, setDishs] = useState<Dish[]>([]);
   const [redirectToLogin , setRedirectToLogin] = useState(false)
+  const [orderPassed, setOrderPassed] = useState<any[]>([])
+const [totalPassed, setTotalPassed] = useState(0)
+
+ 
+
   let init = 0;
   let totalPrice  = 0;
   let ids = "";
   const { user } = useAuth();
-
-/*  useEffect(() => {
-if(redirectToLogin){
-  const countdownInterval = setInterval(() => {
-    setCountdown((prevCount) => prevCount - 1);
-    console.log(countdown)
-  }, 1000); 
-  if(countdown===0){
-    navigate("/login")
-  }
-  return () => {
-    
-    clearInterval(countdownInterval);
+  const openModal = () => {
+    setModalIsOpen(true);
   };
- 
-}
 
- }, [countdown, redirectToLogin]) */
- 
-  
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
+
 const placeOrder=()=>{
   
   setSendingOrder(true)
   const userId = user?.userId
-  
   const orderRequestBody = {commandeLines: cart , total:totalPrice}
+
+console.log(cart)
 
  
   interceptor.post(`${backendUrl}/api/orders/orderForUser/${userId}`, orderRequestBody)
   .then(response => {
-    // Handle the response
+   
     console.log('Response:', response);
     showToast('Order placed successfully!');
+    setTotalPassed(totalPrice)
     dispatch(emptyCartAfterOrder())
+    
+    setOrderPassed(cart)
     setSendingOrder(false)
     setShowOrderDetails(true)
-    
+
+   
   })
+  .then(()=>openModal)
   .catch(error => {
-    // Handle errors
     if (error.response) {
       if (error.response.status === 404) {
         showToast('User not found. Unable to create order.', { type: 'error' });
@@ -107,7 +107,9 @@ const placeOrder=()=>{
   
 }
   const linePrice = (a: number, b: number) => {
+    
     totalPrice += a * b;
+    
     return a * b;
   };
 
@@ -299,7 +301,9 @@ const placeOrder=()=>{
        <div style={{height:'85%'}} className="mx-auto d-flex justify-content-center ">
        <OrderHistory></OrderHistory></div>
       ):emptyCart && showOrderDetails?
-      (<> OrderDetails</>)
+      ( <>
+      <OrderPassed totalPrice={totalPassed}  cart={orderPassed} dishs={dishs}></OrderPassed></>
+     )
       :( <div className="d-flex justify-content-center">
           
       <div className=" textShadow  mt-15 w-50 position-relative fw-bold text-center border border-secondary rounded-pill cartTable text-wrap fs-1 white  ">
