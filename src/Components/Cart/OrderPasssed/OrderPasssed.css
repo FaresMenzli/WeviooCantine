@@ -1,0 +1,17 @@
+.cartModal {
+  position: absolute;
+  inset: 40px;
+  border: 3px solid rgb(204, 204, 204);
+  background: #2c674c;
+  overflow: auto;
+  border-radius: 17px;
+  outline: none;
+  padding: 20px;
+  display: flex;
+  margin: auto;
+  width: 55vw;
+  height: 50vh;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 10vh;
+}
