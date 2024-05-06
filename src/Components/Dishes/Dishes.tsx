@@ -218,7 +218,9 @@ const Dishes: FC<DishesProps> = () => {
             
        
           <div onClick={()=>setshowFilters(false)} style={{   margin: '0 auto',
-    display: 'block'}}><WeviooSuggestionAnimated></WeviooSuggestionAnimated></div>
+    display: 'block'}}>
+{/*       <WeviooSuggestionAnimated></WeviooSuggestionAnimated>
+ */}      </div>
           
           <DishesWrapper style={{zoom:"80%"}} className="ps-5 mt-5">
             
