@@ -22,8 +22,7 @@ interface LoginProps  {
 
 const Login: FC<LoginProps> = () => {
   const navigate = useNavigate();
-  const [authFailed, setAuthFailed] = useState('');
- /* const [user, setUser] = useState(new User()) */
+  const [passwordEmpty, setPasswordEmpty] = useState(false);
   const [register, setRegister] = useState<boolean>(false)
   const [login, setLogin] = useState( new User ())
   const { setToken,setUser } = useAuth();
@@ -35,6 +34,7 @@ const Login: FC<LoginProps> = () => {
     setLogin((prevLogin) => ({
       ...prevLogin,
       [name]: value,
+      
     }));
     setEmail(e.target.value);
   };
@@ -84,6 +84,10 @@ const Login: FC<LoginProps> = () => {
   
   };
 
+   const handlePassword = () => {
+     setPasswordEmpty(!login.userPassword) 
+  }
+
   return(
  <>
        <div className='bg center'>
@@ -98,9 +102,9 @@ const Login: FC<LoginProps> = () => {
     <img className='cantineLogo' src={require('../../assets/cantine.png')} alt="cantineLogo" /></div>
     Login to <b>Wevioo Cantine</b>
       <form className='mb-2' onSubmit={handleSubmit}>
-        <input className='login' type="text" name="userEmail"  placeholder='E-mail' onChange={handleInputChange} onBlur={validateEmail}/><br></br> {emailError && <span className={styles.errorMessage}>{emailError}</span>}
-        <input className='login'type="text" name="userPassword" id="" placeholder='password' onChange={handleInputChange} />
-        <input className={`${emailError? 'notLogin' :'loginBtn'}`} disabled={emailError?true:false} type="submit" value="Login" name="" id=""/>
+        <input className={`${emailError? ' border border-danger' :''} login`} type="text" name="userEmail"  placeholder='E-mail' onChange={handleInputChange} onBlur={validateEmail}/><br></br> {emailError && <span className={styles.errorMessage}>{emailError}</span>}
+        <input className={`${passwordEmpty? ' border border-danger' :''} login`} type="text" name="userPassword" id="" placeholder='password' onChange={handleInputChange} onBlur={handlePassword}/><br></br> {passwordEmpty && <span className={styles.errorMessage}>the Password is obligatoire</span>}
+        <input className={`${emailError || !login.userPassword? 'notLogin' :'loginBtn'}`} disabled={emailError|| !login.userPassword?true:false} type="submit" value="Login" name="" id=""/>
       </form>
       <b>Don't have an account yet?  <u className='clickable' onClick={()=>setRegister(true)}>Sign Up</u></b>
      
