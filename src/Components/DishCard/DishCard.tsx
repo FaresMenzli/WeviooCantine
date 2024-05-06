@@ -84,7 +84,7 @@ const DishCard: FC<DishCardProps> = (props) => {
               onClick={(event) => {dispatch(addtItemToCart({dishId:props.id,quantity:parseInt(quan.toString())}));dispatch(decrementQuantityFromDishs({id:props.id,quantity:parseInt(quan.toString())}));setQuantitySelecter([]) ;event.preventDefault();}}
               type="button"
               value="Add to cart"
-              disabled={props.quantity===0}
+              hidden={props.quantity===0}
             ></AddToCartBtn>
           )}
 
@@ -94,7 +94,7 @@ const DishCard: FC<DishCardProps> = (props) => {
             onClick={() => navigate(`/dishDetails/${props.id}`)}
           ></ToDetailsButton>)}
         </DishCardButtons>
-        <div>Quantity : {props.quantity}</div>
+        <div className={`${props.quantity===0? 'text-danger ' :''}`}>Quantity : {props.quantity}</div>
         <div>Price : {props.price} TND </div>
       </DishDescriptionSection>
     </DishCardWrapper>
