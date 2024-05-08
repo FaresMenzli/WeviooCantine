@@ -7,7 +7,7 @@ flex-wrap: wrap;
 flex-direction: row;
 
      backdrop-filter: brightness(0.5);
-    margin-left: 300px;
+    margin-left: 20vw;
     margin-right: 50px;
 }
     border-radius: 69px;

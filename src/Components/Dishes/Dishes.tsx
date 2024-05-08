@@ -191,7 +191,6 @@ const Dishes: FC<DishesProps> = () => {
                 </label>
                 <br />
               </form>
-              <p>{selectedSort}</p>
             </div>
           </Filters>
         </RightBar>

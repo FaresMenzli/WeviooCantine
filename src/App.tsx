@@ -17,7 +17,12 @@ import { BackendUrlProvider } from "./Contexts/BackendUrlContext";
 import { activeEnv } from "./util/constant";
 import Footer from "./Components/Footer/Footer";
 import ShowEnv from "./Components/showEnvironement/ShowEnv";
-import Dashboard from "./Components/TestComponent/dashboard/Dashboard";
+import Dashboard from "./Components/BI_Dashboard/Dashboard";
+import Podium from "./Components/BI_Dashboard/Podium";
+
+import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
+import Unauthorized from "./Components/Unauthorized/Unauthorized";
+import OrderPassed from "./Components/Cart/OrderPasssed/OrderPassed";
 
 function App() {
   return (
@@ -29,17 +34,31 @@ function App() {
             <Route path="/" element={<Home />}></Route>
             <Route path="/login" element={<Login />}></Route>
             <Route path="dishes" element={<Dishes />}></Route>
-            <Route path="Admin" element={<AdminDashboard />}></Route>
-            <Route path="Staff" element={<StaffDashboard />}></Route>
+            <Route path="unauthorized" element={<Unauthorized />}></Route>
+
+            <Route
+              path="Staff"
+              element={
+                <PrivateRoute roles={["ADMIN", "KITCHEN_STAFF"]}>
+                  <StaffDashboard />
+                </PrivateRoute>
+              }
+            ></Route>
             <Route path="Cart" element={<Cart />}></Route>
             <Route
               path="/dishDetails/:id"
               element={<DishDetails></DishDetails>}
             />
             <Route path="home" element={<Home />}></Route>
-            <Route path="test" element={<Dashboard />}></Route>
-            <Route path="testShowEnv" element={<ShowEnv />}></Route>
             <Route path="*" element={<Notfound />} />
+            <Route
+              path="Admin"
+              element={
+                <PrivateRoute roles={["ADMIN"]}>
+                  <AdminDashboard />
+                </PrivateRoute>
+              }
+            ></Route>
           </Routes>
           <Footer></Footer>
         </AuthProvider>

@@ -3,11 +3,11 @@ import { ReactComponent as AnimatedSVG } from './LogoWeviooAnim.svg';
 import styles from "./WeviooSpinner.module.css"
 
 interface Props {
-    
+    chart?:boolean
 }
  
-const WeviooSpinner : FunctionComponent<Props> = () => {
-    return (<div className={`${styles.spinner} d-flex justify-content-center align-items-center `}><AnimatedSVG className="weviooSpinner"></AnimatedSVG></div>
+const WeviooSpinner : FunctionComponent<Props> = (props) => {
+    return (<div className={`${styles.spinner} d-flex justify-content-center align-items-center`}><AnimatedSVG className={"weviooSpinner "+(props.chart ? styles.chartSpinner  : '')}></AnimatedSVG></div>
      );
 }
  

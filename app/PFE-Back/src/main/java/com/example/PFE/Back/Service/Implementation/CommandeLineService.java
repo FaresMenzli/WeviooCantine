@@ -1,8 +1,6 @@
 package com.example.PFE.Back.Service.Implementation;
 
-import com.example.PFE.Back.DTO.CommandeLineDTO;
-import com.example.PFE.Back.DTO.DishSalesDTO;
-import com.example.PFE.Back.DTO.UserDTO;
+import com.example.PFE.Back.DTO.*;
 import com.example.PFE.Back.Model.CommandeLine;
 import com.example.PFE.Back.Model.Dish;
 import com.example.PFE.Back.Model.Order;
@@ -13,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -30,43 +31,164 @@ public class CommandeLineService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public List<DishSalesDTO> soldDishes() {
+//    public List<DishSalesDTO> convertCommandeLineToDishSalesDTO(List<CommandeLineDTO> commandeLineDTOS) {
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        Map<Long, DishSalesDTO> dishSalesMap = new HashMap<>();
+//        for (CommandeLineDTO commandLine : commandeLineDTOS) {
+//            Long dishId = commandLine.getDish().getDishId();
+//
+//            String datePortion = dateFormat.format(commandLine.getCommandeLineDate());
+//
+//            String dishName = commandLine.getDish().getDishName();
+//            if (dishSalesMap.containsKey(dishId)) {
+//                DishSalesDTO dishSales = dishSalesMap.get(dishId);
+//                dishSales.setQuantitySold(dishSales.getQuantitySold() + commandLine.getQuantity());
+//
+//            } else {
+//                dishSalesMap.put(dishId, new DishSalesDTO(dishId, dishName, commandLine.getQuantity(), datePortion));
+//            }
+//        }
+//        return new ArrayList<>(dishSalesMap.values());
+//    }
 
-        List<CommandeLineDTO> commandeLines = commandeLineDTOList();
-        Map<Long, DishSalesDTO> dishSalesMap = new HashMap<>();
+public Sales getSalesInfo(Optional<Date> start, Optional<Date> end){
+
+    List<DishSalesDetails> dishSalesDetailsList = getSalesDetails(start, end);
+    double amount = dishSalesDetailsList.stream().mapToDouble(DishSalesDetails::getTotalAmountAllDays).sum();
+    int Sale =dishSalesDetailsList.stream().mapToInt(DishSalesDetails::getTotalQuantitySoldAllDays).sum();
+
+
+    return new Sales(amount,Sale, dishSalesDetailsList);
+
+}
+
+    public List<DishSalesDetails> getSalesDetails(Optional<Date> start, Optional<Date> end) {
+        List<CommandeLineDTO> commandeLines ;
+        if (start.isPresent() && end.isPresent()) {
+            commandeLines=  commandelinesByDate( start.get() ,end.get());
+        }
+
+        else{ commandeLines = commandeLineDTOList();}
+
+        Map<Long, Map<LocalDate, SaleDetails>> salesMap = new HashMap<>();
         for (CommandeLineDTO commandLine : commandeLines) {
             Long dishId = commandLine.getDish().getDishId();
             String dishName = commandLine.getDish().getDishName();
-            if (dishSalesMap.containsKey(dishId)) {
-                DishSalesDTO dishSales = dishSalesMap.get(dishId);
-                dishSales.setQuantitySold(dishSales.getQuantitySold() + commandLine.getQuantity());
-            } else {
-                dishSalesMap.put(dishId, new DishSalesDTO(dishId, dishName, commandLine.getQuantity()));
-            }
-        }
-        return new ArrayList<>(dishSalesMap.values());
-    }
-    public List<DishSalesDTO> getTopDishes() {
-        List<DishSalesDTO> DishToSort =soldDishes();
-        DishToSort.sort((a, b) -> b.getQuantitySold() - a.getQuantitySold());
-        return DishToSort.subList(0, Math.min(DishToSort.size(), 3));
+            LocalDate date = commandLine.getCommandeLineDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            double totalAmount = calculateTotalAmount(commandLine);
+            int quantitySold = commandLine.getQuantity();
+            SaleDetails saleDetails = new SaleDetails(date, quantitySold, totalAmount);
+            salesMap.computeIfAbsent(dishId, k -> new HashMap<>())
+                    .merge(date, saleDetails, (existingSale, newSale) -> {
+                        existingSale.setDayQuantitySold(existingSale.getDayQuantitySold() + newSale.getDayQuantitySold());
+                        existingSale.setDayTotalAmount(existingSale.getDayTotalAmount() + newSale.getDayTotalAmount());
+                        return existingSale;
+                    });
 
+
+        }
+        List<DishSalesDetails> result = new ArrayList<>();
+        for (Map.Entry<Long, Map<LocalDate, SaleDetails>> entry : salesMap.entrySet()) {
+            String dishName = commandeLines.stream()
+                    .filter(cmdLine -> cmdLine.getDish().getDishId().equals(entry.getKey()))
+                    .findFirst()
+                    .map(cmdLine -> cmdLine.getDish().getDishName())
+                    .orElse(null);
+            double totalAmountAllDays = entry.getValue().values().stream().mapToDouble(SaleDetails::getDayTotalAmount).sum();
+            int totalQuantitySoldAllDays = entry.getValue().values().stream().mapToInt(SaleDetails::getDayQuantitySold).sum();
+            DishSalesDetails dishSalesDetails = new DishSalesDetails(
+                    entry.getKey(),
+                    dishName,
+                    totalAmountAllDays,
+                    totalQuantitySoldAllDays,
+                    new ArrayList<>(entry.getValue().values())
+            );
+            result.add(dishSalesDetails);
+            dishSalesDetails.getSales().sort(Comparator.comparing(SaleDetails::getDate));
+
+        }
+
+        return result;
     }
-        public List<CommandeLineDTO> commandeLineDTOList() {
+
+    private double calculateTotalAmount(CommandeLineDTO commandLine) {
+        return commandLine.getQuantity() * commandLine.getDish().getDishPrice();
+    }
+    public List<CommandeLineDTO> convertCommandeLinesToDto(List<CommandeLine> commandeLines) {
+        return commandeLines.stream()
+                .map(commandeLine -> modelMapper.map(commandeLine, CommandeLineDTO.class))
+                .collect(Collectors.toList());
+    }
+    public List<CommandeLineDTO> commandeLineDTOList() {
 
         List<CommandeLine> commandeLines = commandeLineRepository.findAll();
         return commandeLines.stream()
                 .map(commandeLine -> modelMapper.map(commandeLine, CommandeLineDTO.class))
                 .collect(Collectors.toList());
     }
+//    public List<DishSalesDTO> soldDishes() {
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        List<CommandeLineDTO> commandeLines = commandeLineDTOList();
+//        Map<Long, DishSalesDTO> dishSalesMap = new HashMap<>();
+//        for (CommandeLineDTO commandLine : commandeLines) {
+//            String datePortion = dateFormat.format(commandLine.getCommandeLineDate());
+//            Long dishId = commandLine.getDish().getDishId();
+//            String dishName = commandLine.getDish().getDishName();
+//            if (dishSalesMap.containsKey(dishId)) {
+//                DishSalesDTO dishSales = dishSalesMap.get(dishId);
+//                dishSales.setQuantitySold(dishSales.getQuantitySold() + commandLine.getQuantity());
+//            } else {
+//                dishSalesMap.put(dishId, new DishSalesDTO(dishId, dishName, commandLine.getQuantity(), datePortion));
+//            }
+//        }
+//        return new ArrayList<>(dishSalesMap.values());
+//    }
 
-    public List<CommandeLine> getAllCommandeLines() {
-        return (List<CommandeLine>) commandeLineRepository.findAll();
+//    public List<DishSalesDTO> getTopDishes() {
+//        List<DishSalesDTO> DishToSort = soldDishes();
+//        DishToSort.sort((a, b) -> b.getQuantitySold() - a.getQuantitySold());
+//        return DishToSort.subList(0, Math.min(DishToSort.size(), 3));
+//
+//    }
+
+
+
+//    public List<DishSalesDTO> getSoldDishesByDate(Date startDate, Date endDate) {
+//
+//        Calendar beginCalendar = Calendar.getInstance();
+//        beginCalendar.setTime(startDate);
+//        beginCalendar.set(Calendar.HOUR_OF_DAY, 0);
+//        beginCalendar.set(Calendar.MINUTE, 0);
+//        beginCalendar.set(Calendar.SECOND, 0);
+//        startDate = beginCalendar.getTime();
+//        Calendar endCalendar = Calendar.getInstance();
+//        endCalendar.set(Calendar.HOUR_OF_DAY, 23);
+//        endCalendar.set(Calendar.MINUTE, 59);
+//        endCalendar.set(Calendar.SECOND, 59);
+//        endDate = endCalendar.getTime();
+//        List<CommandeLine> commandeLines = commandeLineRepository.findByCommandeLineDateBetween(startDate, endDate);
+//        List<CommandeLineDTO> cl = convertCommandeLinesToDto(commandeLines);
+//        return convertCommandeLineToDishSalesDTO(cl);
+//
+//    }
+    public List<CommandeLineDTO> commandelinesByDate(Date startDate, Date endDate) {
+
+        Calendar beginCalendar = Calendar.getInstance();
+        beginCalendar.setTime(startDate);
+        beginCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        beginCalendar.set(Calendar.MINUTE, 0);
+        beginCalendar.set(Calendar.SECOND, 0);
+        startDate = beginCalendar.getTime();
+        Calendar endCalendar = Calendar.getInstance();
+        endCalendar.set(Calendar.HOUR_OF_DAY, 23);
+        endCalendar.set(Calendar.MINUTE, 59);
+        endCalendar.set(Calendar.SECOND, 59);
+        endDate = endCalendar.getTime();
+        return  convertCommandeLinesToDto(commandeLineRepository.findByCommandeLineDateBetween(startDate, endDate));
+
+
     }
 
-    public Optional<CommandeLine> getCommandeLineById(Long commandeLineId) {
-        return commandeLineRepository.findById(commandeLineId);
-    }
 
     public CommandeLine createCommandeLine(Long orderId, Long dishId, int quantity) {
         Optional<Order> orderOptional = orderService.getOrderById(orderId);
@@ -79,7 +201,6 @@ public class CommandeLineService {
             CommandeLine newCommandeLine = new CommandeLine(new Date(), order, dish, quantity);
             return commandeLineRepository.save(newCommandeLine);
         } else {
-            // Handle the case where order or dish is not found
             return null;
         }
     }

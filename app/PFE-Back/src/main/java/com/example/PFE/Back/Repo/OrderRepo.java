@@ -16,4 +16,6 @@ public interface OrderRepo extends CrudRepository<Order,Long> {
         return findByOrderDate(date);
     }
     List<Order> findByOrderDateBetween(Date startDate, Date endDate);
+
+    long countByOrderDateBetween(Date startDate, Date endDate);
 }

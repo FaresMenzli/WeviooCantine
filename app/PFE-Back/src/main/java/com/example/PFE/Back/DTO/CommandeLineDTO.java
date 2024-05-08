@@ -11,7 +11,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class CommandeLineDTO {
     private Long id;
-    private Date commandDate;
+    private Date commandeLineDate;
     private int quantity;
     private Dish dish;
 
