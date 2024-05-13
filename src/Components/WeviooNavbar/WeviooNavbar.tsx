@@ -7,6 +7,8 @@ import styles from "./WeviooNavbar.module.css";
 import { BasketFill, ChevronDown } from "react-bootstrap-icons";
 import { CartItems, CartSpan } from "../Dishes/Dishes.styled";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Dish } from "../../Models/Dish";
+import CartDropDown from "./CartDropDown/CartDropDown";
 
 const WeviooNavbar: FC = () => {
 
@@ -16,6 +18,9 @@ const WeviooNavbar: FC = () => {
   const navigate = useNavigate();
   const cart = useSelector((state: RootState) => state.cart.value);
   let init: number = 0;
+  const { data, loading, error } = useSelector(
+    (state: RootState) => state.dishes
+  );
   useEffect(() => {
     if(location.pathname.toLowerCase().includes("staff")){
       setStaffPage(true)
@@ -62,18 +67,95 @@ const WeviooNavbar: FC = () => {
             <div className="clickable" onClick={logout}>Logout</div>
           </div>
         </div>
-        <div className="d-flex ms-5">
+        <div className={`d-flex align-items-center  ms-5 ${styles.dropdownCart}`}>
              
              <BasketFill
                color="white"
-               className="clickable iconSize"
+              
+               className={`clickable iconSize`}
                onClick={() => navigate("/cart")}
-             ></BasketFill>
+             >
+                
+             </BasketFill>
+          
              <CartSpan>
                <CartItems className="white">
                  {cart.reduce((a, b) => a + b.quantity, init)}{" "}
                </CartItems>
              </CartSpan>
+             <div className={styles.dropdownContentCart}>
+          {/*    <table className=" text-center mt-5">
+              <thead>
+                <tr>
+                
+                  <th className=" textShadow">DishName</th>
+                  <th className=" textShadow">Dish photo</th>
+                 
+                  <th className=" textShadow">Quantity</th>
+                  <th className=" textShadow">Price</th>
+                
+                </tr>
+              </thead>
+              <tbody>
+                {data.map((dish: Dish) => (
+                 <tr hidden={cart.findIndex(x=>x.dishId==dish.dishId)==-1} key={dish.dishId}>
+                  
+                    <td>{dish.dishName}</td>
+                    <td>
+                      <img
+                        src={dish.dishPhoto}
+                        alt="dishPhoto"
+                        height={50}
+                        width={50}
+                      />
+                    </td>
+                   
+                    <td className="quantityBtn ">
+                      <div className="d-flex justify-content-evenly">
+                
+                        <div className="align-self-center">
+                          {" "}
+                          {cart.findIndex((x) => x.dishId === dish.dishId) !== -1
+                            ? cart.filter((item) => item.dishId === dish.dishId)[0]
+                                .quantity
+                            : ""}
+                        </div>
+             
+                      </div>
+                    </td>
+                    <td>
+                      {cart.findIndex((x) => x.dishId === dish.dishId) !== -1
+                        ? (
+                            cart.filter((item) => item.dishId === dish.dishId)[0]
+                              .quantity,
+                            dish.dishPrice
+                          )
+                        : 1}{" "}
+                      TND
+                    </td>
+                    <td>
+                      {" "}
+                     
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td className="fw-bold textShadow  totalCell">Total:</td>{" "}
+                  <td className="fw-bold textShadow totalCell">
+                    {cart.reduce((a, b) => a + b.quantity, 0)}
+                  </td>
+                  <td className="fw-bold">{} TND</td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            </table> */}
+           <CartDropDown></CartDropDown>
+                 </div>
            </div>
       </div>
     </div>

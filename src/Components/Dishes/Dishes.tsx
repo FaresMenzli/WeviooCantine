@@ -28,6 +28,8 @@ interface DishesProps {}
 const Dishes: FC<DishesProps> = () => {
   const dispatch = useDispatch();
   const [selectedSort, setSelectedSort] = useState("");
+  const [onlyAvailable, setOnlyAvailable] = useState(false);
+
   const handleSortChange = (Sort: React.SetStateAction<string>) => {
     setSelectedSort(Sort);
     dispatch(sortByType(Sort));
@@ -94,6 +96,10 @@ const Dishes: FC<DishesProps> = () => {
   if (error) {
     return <p>Error: {error}</p>;
   }
+  const onlyAvailableDishes =() =>{
+    setOnlyAvailable(!onlyAvailable)
+  }
+
   return (
     <>
       <DishesMainPage>
@@ -121,7 +127,9 @@ const Dishes: FC<DishesProps> = () => {
                   />
                   {c}
                 </label>
+                
               </div>
+              
             ))}
           
          
@@ -192,6 +200,15 @@ const Dishes: FC<DishesProps> = () => {
                 <br />
               </form>
             </div>
+            <div>
+            <div className="ms-3 mb-2 mt-3 fw-bold"> Availability :</div>
+          
+            <div className="form-check form-switch ms-4">
+  <input className="form-check-input " type="checkbox" role="switch" id="flexSwitchCheckDefault"  name="showAvailable"
+                    onChange={() => onlyAvailableDishes()}/>
+  <label className="form-check-label  fw-bold" htmlFor="flexSwitchCheckDefault">only Available</label>
+</div>
+            </div>
           </Filters>
         </RightBar>
 
@@ -218,7 +235,9 @@ const Dishes: FC<DishesProps> = () => {
             
        
           <div onClick={()=>setshowFilters(false)} style={{   margin: '0 auto',
-    display: 'block'}}><WeviooSuggestionAnimated></WeviooSuggestionAnimated></div>
+    display: 'block'}}>
+{/*       <WeviooSuggestionAnimated></WeviooSuggestionAnimated>
+ */}      </div>
           
           <DishesWrapper style={{zoom:"80%"}} className="ps-5 mt-5">
             
@@ -229,7 +248,7 @@ const Dishes: FC<DishesProps> = () => {
                   : dish.dishName.toLocaleLowerCase().includes(search);
               })
               .map((dish: Dish) => (
-                <div key={dish.dishId}>
+                <div hidden={onlyAvailable && dish.quantityAvailable==0} key={dish.dishId}>
                   <DishCard
                     id={dish.dishId}
                     category={dish.dishCategory}

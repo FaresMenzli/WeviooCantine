@@ -48,11 +48,10 @@
   
   
 }
-.dropdown > span {
-}
-.dropdown > span::after {
-}
-.dropdown:hover > span {
+.dropdownCart {
+  position: relative;
+  display: inline-block;
+  height: 43px;
 }
 .dropdown {
   position: relative;
@@ -68,6 +67,25 @@
   display: flex;
   align-items: flex-end;
   padding-bottom: 10px;
+}
+.dropdownContentCart {
+  display: none;
+  position: absolute;
+  color: black;
+  background-color: #f9f9f9;
+  min-width: 20vw;
+  max-width: 34vw;
+  min-height: 50vh;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 12px 16px;
+  z-index: 10;
+  border-radius: 15px;
+  top:38px;
+  right: -5.5vw;
+
+}
+.dropdownCart:hover .dropdownContentCart {
+  display: block;
 }
 .dropdownContent {
   display: none;
