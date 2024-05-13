@@ -8,6 +8,7 @@ import { BasketFill, ChevronDown } from "react-bootstrap-icons";
 import { CartItems, CartSpan } from "../Dishes/Dishes.styled";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Dish } from "../../Models/Dish";
+import CartDropDown from "./CartDropDown/CartDropDown";
 
 const WeviooNavbar: FC = () => {
 
@@ -66,7 +67,7 @@ const WeviooNavbar: FC = () => {
             <div className="clickable" onClick={logout}>Logout</div>
           </div>
         </div>
-        <div className={`d-flex ms-5 ${styles.dropdownCart}`}>
+        <div className={`d-flex align-items-center  ms-5 ${styles.dropdownCart}`}>
              
              <BasketFill
                color="white"
@@ -83,7 +84,7 @@ const WeviooNavbar: FC = () => {
                </CartItems>
              </CartSpan>
              <div className={styles.dropdownContentCart}>
-             <table className=" text-center mt-5">
+          {/*    <table className=" text-center mt-5">
               <thead>
                 <tr>
                 
@@ -152,7 +153,8 @@ const WeviooNavbar: FC = () => {
                   <td></td>
                 </tr>
               </tfoot>
-            </table>
+            </table> */}
+           <CartDropDown></CartDropDown>
                  </div>
            </div>
       </div>
