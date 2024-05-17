@@ -2,7 +2,6 @@ package com.example.PFE.Back.Service.Implementation;
 
 import com.example.PFE.Back.Exceptions.DishNotFoundException;
 import com.example.PFE.Back.Model.Dish;
-import com.example.PFE.Back.Model.DishCategory;
 import com.example.PFE.Back.Repo.DishRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class DishService {
@@ -42,5 +40,11 @@ public class DishService {
     }
     public Dish addDish(Dish dish) {
         return dishRepo.save(dish);
+    }
+
+    public void updateDishQuantity(Long dishId, Integer newQuantity) {
+        Dish dish = dishRepo.findById(dishId).orElseThrow(() -> new RuntimeException("User not found"));
+        dish.setQuantityAvailable(newQuantity);
+        dishRepo.save(dish);
     }
 }
