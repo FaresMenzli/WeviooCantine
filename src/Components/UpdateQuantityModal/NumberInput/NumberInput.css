@@ -1,0 +1,19 @@
+.number-input {
+    display: flex;
+    align-items: center;
+  }
+  
+  .number-input .minus,
+  .number-input .plus {
+   background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5em;
+    
+  }
+  
+  .number-input .quantity {
+    text-align: center;
+    width: 3em;
+    font-size: 1em;
+  }

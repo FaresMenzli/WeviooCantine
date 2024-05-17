@@ -17,7 +17,7 @@ import { RootState } from "../../redux/store";
 import { addtItemToCart } from "../../redux/cart";
 
 import { decrementQuantityFromDishs } from "../../redux/dishs";
-
+import "./DishCard.css"
 interface DishCardProps {
   id: number | undefined;
   name: string;
@@ -78,6 +78,9 @@ const DishCard: FC<DishCardProps> = (props) => {
               <option key={x}  value={x}>{x}</option>
             ))}
           </select>)}
+          {!dishsPage && (<div className="d-flex">
+            <input className="updateQuantityInput" placeholder={"update quantity ..."} type="text"></input><input value={"↑"} className="updateQuantityBtn" type="button"></input>
+          </div>)}
 
           {dishsPage && (
             <AddToCartBtn

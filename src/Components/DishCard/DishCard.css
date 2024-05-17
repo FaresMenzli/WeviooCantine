@@ -1,0 +1,15 @@
+.updateQuantityInput {
+    width: 100px;
+    height: 30px;
+
+}
+
+.updateQuantityBtn {
+
+    height: 30px;
+    width: 35px;
+    background: blue;
+    color: white;
+    border: 0;
+    -webkit-appearance: none;
+}
