@@ -3,6 +3,7 @@ package com.example.PFE.Back.Service.Implementation;
 import com.example.PFE.Back.DTO.UserDTO;
 import com.example.PFE.Back.Exceptions.UserNotFoundException;
 import com.example.PFE.Back.Model.User;
+import com.example.PFE.Back.Model.UserRole;
 import com.example.PFE.Back.Repo.UserRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,4 +50,10 @@ public class UserService {
         return modelMapper.map(user, UserDTO.class);
 
     }
+    public void changeUserRole(Long userId, UserRole newRole) {
+        User user = userRepo.findUserByUserId(userId);
+        user.changeUserRole(newRole);
+        userRepo.save(user);
+    }
+
 }
