@@ -43,8 +43,6 @@ const Table: React.FC<ITableProps> = ({ data, itemsPerPage }) => {  const [curre
     function updateQuantity(dishId: number | undefined) {
       setQuantityModalOpen(true)
       setDishToUpdateQuantity((data as Dish[]).filter(x=>x.dishId==dishId))
-      console.log(DishToUpdateQuantity)
-      console.log(dishId)
     
     }
   const renderTableData = (): JSX.Element[] => {

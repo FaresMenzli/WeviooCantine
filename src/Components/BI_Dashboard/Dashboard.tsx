@@ -43,15 +43,13 @@ const Dashboard: React.FC = () => {
   const [chartLoading, setChartLoading] = useState(false);
   const [totalPeriodAmount, setTotalPeriodAmount] = useState(0);
   const [totalPeriodQuantitySold, setTotalPeriodQuantitySold] = useState(0);
-const [nbOrders, setNbOrders] = useState(0)
+  const [nbOrders, setNbOrders] = useState(0);
   const handleDashboardChange = (dashboard: React.SetStateAction<number>) => {
     setSelectedDashboard(dashboard);
   };
   const { data, error } = useSelector((state: RootState) => state.dishes);
-    useEffect(() => {
-      
-  }, []);
-   
+  useEffect(() => {}, []);
+
   useEffect(() => {
     if (selectedDashboard == 3) {
       interceptor.get(`${backendUrl}/api/user/User`).then((response) => {
@@ -115,12 +113,13 @@ const [nbOrders, setNbOrders] = useState(0)
   useEffect(() => {
     setIntervalle();
   }, []); */
-  const getOrdersNumber =()=>{
-
+  const getOrdersNumber = () => {
     interceptor
-    .get(`${backendUrl}/api/orders/nbOrder?start=${beginIntervalle}&end=${endIntervalle}`)
-    .then((res)=>(setNbOrders(res.data)))
-  }
+      .get(
+        `${backendUrl}/api/orders/nbOrder?start=${beginIntervalle}&end=${endIntervalle}`
+      )
+      .then((res) => setNbOrders(res.data));
+  };
   const handleBeginDateChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -140,9 +139,9 @@ const [nbOrders, setNbOrders] = useState(0)
 
     return transformedData;
   };
-  const average = (a:number,b:number) => {
-    return Number((a/b).toFixed(2));
-  }
+  const average = (a: number, b: number) => {
+    return Number((a / b).toFixed(2));
+  };
   const setIntervalle = () => {
     setDataToShow(null);
     setTotalPeriodQuantitySold(0);
@@ -360,7 +359,7 @@ const [nbOrders, setNbOrders] = useState(0)
         {selectedDashboard == 1 ? (
           <div>
             <div className="topDashboardStatitsticContainer">
-            <div className=" topDashboardStatitstic">
+              <div className=" topDashboardStatitstic">
                 {dataToShow == null ? (
                   <div className="dashboardLoader">
                     <div></div>
@@ -418,7 +417,7 @@ const [nbOrders, setNbOrders] = useState(0)
                 )}
               </div>
               <div className=" topDashboardStatitstic">
-              {dataToShow == null ? (
+                {dataToShow == null ? (
                   <div className="dashboardLoader">
                     <div></div>
                     <div></div>
@@ -429,11 +428,10 @@ const [nbOrders, setNbOrders] = useState(0)
                     Average dish per order
                     <ElementorCounter
                       initialValue={0}
-                      stopAt={average(totalPeriodQuantitySold,nbOrders)}
+                      stopAt={average(totalPeriodQuantitySold, nbOrders)}
                       delay={100}
                       maxIncrement={1}
                     ></ElementorCounter>
-                    
                   </div>
                 )}
               </div>
@@ -449,7 +447,7 @@ const [nbOrders, setNbOrders] = useState(0)
                     Average amount per order
                     <ElementorCounter
                       initialValue={0}
-                      stopAt={average(totalPeriodAmount,nbOrders)}
+                      stopAt={average(totalPeriodAmount, nbOrders)}
                       delay={100}
                     ></ElementorCounter>
                     DNT
@@ -488,75 +486,73 @@ const [nbOrders, setNbOrders] = useState(0)
                               )[0].dishName
                             } by time`
                       }`,
-                     
-   
                     }}
                   />
                 )}
               </div>
-              
+
               {dataToShow == null ? (
                 <WeviooSpinner chart={true}></WeviooSpinner>
               ) : (
                 <Podium data={podiumDishData}></Podium>
               )}
-              
+
               <div className="dashboaradItems">
-              {dataToShow == null ? (
-                <WeviooSpinner chart={true}></WeviooSpinner>
-              ) : (
-                <Chart
-                  //most sold dish
-                  width={"100%"}
-                  height={"300px"}
-                  chartType="ColumnChart"
-                  loader={<WeviooSpinner></WeviooSpinner>}
-                  data={dataToShow || []}
-                  options={{
-                    title: `${
-                      selectedOptionDish == ""
-                        ? "dish order by quantity"
-                        : `${
-                            data.filter(
-                              (x) => x.dishId == Number(selectedOptionDish)
-                            )[0].dishName
-                          } by time`
-                    }`,
-                  }}
-                />
-              )}
+                {dataToShow == null ? (
+                  <WeviooSpinner chart={true}></WeviooSpinner>
+                ) : (
+                  <Chart
+                    //most sold dish
+                    width={"100%"}
+                    height={"300px"}
+                    chartType="ColumnChart"
+                    loader={<WeviooSpinner></WeviooSpinner>}
+                    data={dataToShow || []}
+                    options={{
+                      title: `${
+                        selectedOptionDish == ""
+                          ? "dish order by quantity"
+                          : `${
+                              data.filter(
+                                (x) => x.dishId == Number(selectedOptionDish)
+                              )[0].dishName
+                            } by time`
+                      }`,
+                    }}
+                  />
+                )}
               </div>
               <div className="dashboaradItems">
-              {dataToShow == null ? (
-                <WeviooSpinner chart={true}></WeviooSpinner>
-              ) : (
-                <Chart
-                  width={"100%"}
-                  height={"300px"}
-                  chartType="PieChart"
-                  loader={<WeviooSpinner></WeviooSpinner>}
-                  data={dataToShow || []}
-                  options={pieOptions}
-                />
-              )}
-</div>
-<div className="dashboaradItems">
-              {dataToShow == null ? (
-                <WeviooSpinner chart={true}></WeviooSpinner>
-              ) : (
-                <Chart
-                  width={"100%"}
-                  height={"300px"}
-                  chartType="ScatterChart"
-                  loader={<WeviooSpinner></WeviooSpinner>}
-                  data={dataToShow || []}
-                  options={{
-                    chart: {
-                      title: "Sales Scatter",
-                    },
-                  }}
-                />
-              )}
+                {dataToShow == null ? (
+                  <WeviooSpinner chart={true}></WeviooSpinner>
+                ) : (
+                  <Chart
+                    width={"100%"}
+                    height={"300px"}
+                    chartType="PieChart"
+                    loader={<WeviooSpinner></WeviooSpinner>}
+                    data={dataToShow || []}
+                    options={pieOptions}
+                  />
+                )}
+              </div>
+              <div className="dashboaradItems">
+                {dataToShow == null ? (
+                  <WeviooSpinner chart={true}></WeviooSpinner>
+                ) : (
+                  <Chart
+                    width={"100%"}
+                    height={"300px"}
+                    chartType="ScatterChart"
+                    loader={<WeviooSpinner></WeviooSpinner>}
+                    data={dataToShow || []}
+                    options={{
+                      chart: {
+                        title: "Sales Scatter",
+                      },
+                    }}
+                  />
+                )}
               </div>
               {dataToShow == null ? (
                 <WeviooSpinner chart={true}></WeviooSpinner>

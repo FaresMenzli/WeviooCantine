@@ -83,4 +83,12 @@ public class User implements Serializable,UserDetails {
         return userPassword;
     }
 
+
+    public void changeUserRole(UserRole newRole) {
+        if (newRole != null) {
+            this.userRole = newRole;
+        } else {
+            throw new IllegalArgumentException("UserRole cannot be null");
+        }
+    }
 }
