@@ -1,0 +1,33 @@
+.loader {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  animation: spin 2s linear infinite;
+}
+
+.sun {
+  width: 50px;
+  height: 50px;
+  background: #FFD700; /* Gold color */
+  border-radius: 50%;
+  position: absolute;
+  top: 25%;
+  left: 25%;
+}
+
+.rays {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="none" stroke="%23FFD700" stroke-width="4" d="M32 1v14M32 49v14M14.22 14.22l9.9 9.9M39.88 39.88l9.9 9.9M1 32h14M49 32h14M14.22 49.78l9.9-9.9M39.88 24.12l9.9-9.9"/></svg>') no-repeat center;
+  background-size: cover;
+  animation: spin 3s linear infinite reverse;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+

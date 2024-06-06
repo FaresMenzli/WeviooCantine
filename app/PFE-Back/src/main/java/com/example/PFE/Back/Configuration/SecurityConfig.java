@@ -20,7 +20,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private static final String[] WHITE_LIST_URL = {"/api/v1/auth/**","/api/Dishs/**","/api/user/**","/api/CommandLine/**","/swagger-ui/**", "/swagger-ui/index.html","/swagger-ui.html","/v3/api-docs/**","/api/orders/**"};
+    private static final String[] WHITE_LIST_URL = {"api/dishToSuggests/**","api/wevioosugg","api/degree","api/weather","/api/v1/auth/**","/api/Dishs/**","/api/user/**","/api/CommandLine/**","/swagger-ui/**", "/swagger-ui/index.html","/swagger-ui.html","/v3/api-docs/**","/api/orders/**"};
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authProvider;
     @Bean

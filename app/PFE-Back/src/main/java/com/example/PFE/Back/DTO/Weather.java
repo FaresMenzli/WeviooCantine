@@ -1,4 +1,4 @@
-package com.example.PFE.Back.Model;
+package com.example.PFE.Back.DTO;
 
 import lombok.Data;
 import lombok.Getter;

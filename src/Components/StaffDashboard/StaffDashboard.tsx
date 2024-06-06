@@ -16,6 +16,7 @@ import WeviooNavbar from "../WeviooNavbar/WeviooNavbar";
 import ManageDish from "./ManageDishs/ManageDishs";
 import OrderList from "./OrdersList/OrdersList";
 import { useBackendUrl } from "../../Contexts/BackendUrlContext";
+import ManageSuggestion from "./ManageSuggestions/ManageSuggestions";
 
 interface StaffDashboardProps {}
 
@@ -73,6 +74,16 @@ const StaffDashboard: FC<StaffDashboardProps> = () => {
         </Links>
         <Links
           className={`${
+            view === "manageSuggestion" ? "text-decoration-underline" : ""
+          } clickable`}
+          onClick={() => {
+            setView("manageSuggestion");
+          }}
+        >
+          manage Suggestion{" "}
+        </Links>
+        <Links
+          className={`${
             view === "orders" ? "text-decoration-underline" : ""
           } clickable`}
           onClick={() => {
@@ -104,6 +115,9 @@ const StaffDashboard: FC<StaffDashboardProps> = () => {
             </div>
           ))}
         </DishList>
+      ) :view === "manageSuggestion" ? (
+        <div className="bg-light text-center mt-5 w-25 m-auto rounded-3">
+   <ManageSuggestion></ManageSuggestion></div>
       ) : (
         <OrderList></OrderList>
       )}

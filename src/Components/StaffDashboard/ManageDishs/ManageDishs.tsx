@@ -1,11 +1,13 @@
 import axios from "axios";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Dish } from "../../../Models/Dish";
 import { showToast } from "../../Toaster/toasterService";
 import DishFormModal from "../../DishFormModal/DishFormModal";
 import { ToastContainer } from "react-toastify";
 import { Pen, Trash } from "react-bootstrap-icons";
 import Table from "../../TestComponent/Table";
+import interceptor from "../../../Interceptor/Interceptor";
+import { useBackendUrl } from "../../../Contexts/BackendUrlContext";
 
 interface ManageDishProps {
     data:Dish[]
@@ -13,12 +15,14 @@ interface ManageDishProps {
 }
  
 const ManageDish: FC<ManageDishProps> = (props) => {
-    
-    
+
+
+  const { backendUrl } = useBackendUrl();
     const [isModalOpen, setModalOpen] = useState(false);
    
    
     const handleOpenModal = () => {
+      
         setModalOpen(true);
       };
   
@@ -30,7 +34,7 @@ const ManageDish: FC<ManageDishProps> = (props) => {
     
         console.log("Submitted Dish:", dish);
         axios
-          .post(`http://localhost:5000/api/Dishs/add`, dish)
+          .post(`${backendUrl}/api/Dishs/add`, dish)
           .then((response) => {
            
             console.log("Response:", response);
@@ -49,12 +53,14 @@ const ManageDish: FC<ManageDishProps> = (props) => {
                   error.response.status,
                   error.response.data
                 );
+                
               }
             } else if (error.request) {
               console.error("No response received:", error.request);
             } else {
               console.error("Error setting up the request:", error.message);
             }
+            showToast(error.response)
           });
       };
   
@@ -82,7 +88,7 @@ const ManageDish: FC<ManageDishProps> = (props) => {
             />
           </div>
           <div className="d-flex align-items-center justify-content-center mb-5">
-          return (
+    
         <ToastContainer />
   
               {/* <table className="white  text-center mb-xxl-5 ">
@@ -128,7 +134,7 @@ const ManageDish: FC<ManageDishProps> = (props) => {
                   </tfoot>
               </table> */}
               <Table data={props.data} itemsPerPage={7}></Table>
-            )
+            
           </div>
         </div>
       );

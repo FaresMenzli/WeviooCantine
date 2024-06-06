@@ -2,6 +2,7 @@ package com.example.PFE.Back.Controller;
 
 import com.example.PFE.Back.Model.Dish;
 import com.example.PFE.Back.Model.DishCategory;
+import com.example.PFE.Back.Model.UserRole;
 import com.example.PFE.Back.Service.Implementation.DishService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
 @RequestMapping("/api/Dishs")
 @RestController
 public class DishController {
@@ -19,23 +21,21 @@ public class DishController {
     @Autowired
     DishService dishService;
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/dishs")
-    public List<Dish> dishList(){
+    public List<Dish> dishList() {
         return dishService.dishList();
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping("dish/{id}")
-    public Optional<Dish> getDish(@PathVariable Long id ){
+    public Optional<Dish> getDish(@PathVariable Long id) {
         return dishService.getDishById(id);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping("dishsByIds/{ids}")
-    public List<Dish> getDishesByIds(@PathVariable List<Long> ids ){
+    public List<Dish> getDishesByIds(@PathVariable List<Long> ids) {
         return dishService.getDishsByIds(ids);
     }
+
     @PostMapping("/add")
     public ResponseEntity<Dish> addDish(@RequestBody Dish dish) {
 
@@ -43,6 +43,7 @@ public class DishController {
 
         return new ResponseEntity<>(savedDish, HttpStatus.CREATED);
     }
+
     @PostMapping("/addCategory")
     public ResponseEntity<String> addCategory(@RequestBody String newCategoryName) {
         try {
@@ -67,13 +68,21 @@ public class DishController {
             return ResponseEntity.badRequest().body("Invalid category: " + newCategoryName);
         }
 
-}
-    @CrossOrigin(origins = "http://localhost:3000")
-@PutMapping("/updateDishQuantity/{dishId}")
-public ResponseEntity<Long> updateDishQuantity(@PathVariable Long dishId ,@RequestBody Integer newQuantity ) {
-        System.out.println(newQuantity);
-    dishService.updateDishQuantity(dishId,newQuantity);
+    }
 
-    return new ResponseEntity<>(dishId, HttpStatus.OK);
-}
+    @GetMapping("/categories")
+    public DishCategory[] getAllRoles() {
+        return DishCategory.values();
+    }
+
+
+
+//    @CrossOrigin(origins = "http://localhost:3000")
+//    @PutMapping("/updateDishQuantity/{dishId}")
+//    public ResponseEntity<Long> updateDishQuantity(@PathVariable Long dishId, @RequestBody Integer newQuantity) {
+//
+//        dishService.updateDishQuantity(dishId, newQuantity);
+//
+//        return new ResponseEntity<>(dishId, HttpStatus.OK);
+//    }
 }
