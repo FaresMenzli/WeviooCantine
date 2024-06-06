@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const DishCardWrapper = styled.div`
 flex: 0 0 19%;
-margin: 9vh 7vw 0vh 7vw;
+
 border: 1px black solid;
     border-radius: 16px 92px;
     background-color: bisque;

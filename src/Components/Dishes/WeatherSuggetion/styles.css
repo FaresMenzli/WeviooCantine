@@ -1,0 +1,219 @@
+.weatherContainer{
+
+
+    height: 400px;
+    width: 50%;
+    margin:auto;
+}
+
+.weatherWrapper{
+
+  width: 60vw;
+  margin:auto;
+
+  border-radius: 35px;
+  height: 550px;
+}
+.weatherCold{
+  background-image: url("https://i.cbc.ca/1.3930427.1676393450!/fileImage/httpImage/image.jpg_gen/derivatives/16x9_780/frosted-windows.jpg");
+  background-size: cover;
+  opacity: 0.9;
+
+}
+.weatherHot{
+  background-image: url("https://scx2.b-cdn.net/gfx/news/2015/extremeheatw.jpg");
+  background-size: cover;
+}
+.weatherCold h2 {
+  color: blue;
+  font-family: fantasy;
+animation: weatherColdcolorCycle 2s infinite alternate;
+}
+.weatherHot h2 {
+  color: red;
+  font-family: fantasy;
+animation: weatherHotcolorCycle 2s infinite alternate;
+}
+
+@keyframes weatherColdcolorCycle {
+    0% {
+        color: rgba(0, 170, 255, 0.669);
+    }
+    50% {
+        color: rgba(0, 110, 255, 0.528);
+    }
+    100% {
+      color: rgba(0, 42, 87, 0.972);
+  }
+}
+
+@keyframes weatherHotcolorCycle {
+  0% {
+      color: rgba(255, 0, 0, 0.669);
+  }
+  50% {
+      color: rgba(255, 0, 0, 0.528);
+  }
+  100% {
+    color: rgba(255, 0, 0, 0.669);
+}
+}
+
+.body {
+    height: 600px;
+    margin: 0;
+    display: grid;
+    grid-template-rows: 410px 15px;
+    grid-template-columns: 1fr 30px 30px 30px 30px 30px 1fr;
+    align-items: center;
+    justify-items: center;
+    align-items: end;
+  
+  }
+
+  .weatherLoaderContainer {
+
+    width: 60vw;
+    height:200px;
+   margin:auto;
+  
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  span#carousel {
+    grid-row: 1 / 2;
+    grid-column: 1 / 8;
+    width: 60vw;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    perspective: 400px;
+    --items: 5;
+    --middle: 3;
+    --position: 3;
+  
+  /*   pointer-events: none; */
+    
+  }
+  
+  div.item {
+    position: absolute;
+    width: 210px;
+    height: 400px;
+    background-color: coral;
+    --r: calc(var(--position) - var(--offset));
+    --abs: max(calc(var(--r) * -1), var(--r));
+    transition: all 0.25s linear;
+    transform: rotateY(calc(-10deg * var(--r)))
+      translateX(calc(-300px * var(--r)));
+    z-index: calc((var(--position) - var(--abs)));
+  }
+  
+  div.item:nth-of-type(1) {
+    --offset: 1;
+  /*   background-color: #90f1ef; */
+    background-color: transparent;
+  }
+  div.item:nth-of-type(2) {
+    --offset: 2;
+    background-color: transparent;
+
+/*     background-color: #ff70a6;
+
+ */  }
+  div.item:nth-of-type(3) {
+    --offset: 3;
+    background-color: transparent;
+
+/*     background-color: #ff9770;*/
+   }
+  div.item:nth-of-type(4) {
+    --offset: 4;
+    background-color: transparent;
+
+/*     background-color: #ffd670;
+ */  }
+  div.item:nth-of-type(5) {
+    --offset: 5;
+    background-color: transparent;
+
+/*     background-color: #e9ff70;
+ */  }
+  
+  input:nth-of-type(1) {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+  }
+  input:nth-of-type(1):checked ~ span#carousel {
+    --position: 1;
+  }
+  
+  input:nth-of-type(2) {
+    grid-column: 3 / 4;
+    grid-row: 2 / 3;
+  }
+  input:nth-of-type(2):checked ~ span#carousel {
+    --position: 2;
+  }
+  
+  input:nth-of-type(3) {
+    grid-column: 4 /5;
+    grid-row: 2 / 3;
+  }
+  input:nth-of-type(3):checked ~ span#carousel {
+    --position: 3;
+  }
+  
+  input:nth-of-type(4) {
+    grid-column: 5 / 6;
+    grid-row: 2 / 3;
+  }
+  input:nth-of-type(4):checked ~ span#carousel {
+    --position: 4;
+  }
+  
+  input:nth-of-type(5) {
+    grid-column: 6 / 7;
+    grid-row: 2 / 3;
+  }
+  input:nth-of-type(5):checked ~ span#carousel {
+    --position: 5;
+  }
+  .WeatherLoaderText {
+    font-family: Helvetica, 'Helvetica Neue', sans-serif;
+    letter-spacing: 1px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 11px;
+    color: #a0a0a0;
+    width: 200px;
+  }
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+    border-radius: 50%;
+  }
+  .container{
+    position: relative;
+    cursor: pointer;
+  }
+  
+
+.container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+/*   .container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+  } */

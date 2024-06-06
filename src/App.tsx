@@ -23,6 +23,7 @@ import Podium from "./Components/BI_Dashboard/Podium";
 import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
 import Unauthorized from "./Components/Unauthorized/Unauthorized";
 import OrderPassed from "./Components/Cart/OrderPasssed/OrderPassed";
+import WeatherLoader from "./Components/Dishes/WeatherLoader/WeatherLoader";
 
 function App() {
   return (
@@ -59,6 +60,7 @@ function App() {
                 </PrivateRoute>
               }
             ></Route>
+            <Route path="test" element={<WeatherLoader></WeatherLoader>}></Route>
           </Routes>
           <Footer></Footer>
         </AuthProvider>

@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { Dish } from '../../Models/Dish';
 import { FormButton, FormContainer, FormInput, StyledModal } from './DishFormModal.styled';
 import { FormLabel, ModalHeader } from 'react-bootstrap';
+import interceptor from '../../Interceptor/Interceptor';
+import { useBackendUrl } from '../../Contexts/BackendUrlContext';
+import axios from 'axios';
 
 interface DishFormModalProps {
   isOpen: boolean;
@@ -11,6 +14,17 @@ interface DishFormModalProps {
 }
 
 const DishFormModal: React.FC<DishFormModalProps> = ({ isOpen, onClose, onSubmit }) => {
+  const { backendUrl } = useBackendUrl();
+  const [Categories, setCategories] = useState([])
+  const [selectedCategorie, setSelectedCategorie] = useState<string | undefined>();
+  const handleCategorieChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCategorie(event.target.value);
+  };
+  useEffect(() => {
+  axios
+    .get(`${backendUrl}/api/Dishs/categories`)
+    .then((r) => setCategories(r.data));
+}, []);
   const [dish, setDish] = useState<Dish>({
     
     dishName: '',
@@ -27,6 +41,7 @@ const DishFormModal: React.FC<DishFormModalProps> = ({ isOpen, onClose, onSubmit
       ...prevDish,
       [name]: value,
     }));
+    console.log(dish)
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {
@@ -64,12 +79,20 @@ const DishFormModal: React.FC<DishFormModalProps> = ({ isOpen, onClose, onSubmit
 
       <FormLabel className='fw-bold'>
         Dish Category: </FormLabel>
-        <select name="dishCategory" value={dish.dishCategory} onChange={handleInputChange}>
+       {/*  <select name="dishCategory" value={dish.dishCategory}  onChange={handleInputChange}>
           <option value="DRINK">DRINK</option>
           <option value="MAIN">MAIN</option>
           <option value="SALAD">SALAD</option>
-        </select>
+        </select> */}
      
+        <select name="dishCategory" value={selectedCategorie}
+            className="text-center"
+            onChange={handleInputChange}
+          >
+            {Categories.map((category) => (
+              <option value={category}>{category}</option>
+            ))}
+          </select>
 
       <FormLabel className='fw-bold'>
         Dish Photo: </FormLabel>

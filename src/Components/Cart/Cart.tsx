@@ -70,7 +70,6 @@ console.log(cart)
   interceptor.post(`${backendUrl}/api/orders/orderForUser/${userId}`, orderRequestBody)
   .then(response => {
    
-    console.log('Response:', response);
     showToast('Order placed successfully!');
     setTotalPassed(totalPrice)
     dispatch(emptyCartAfterOrder())

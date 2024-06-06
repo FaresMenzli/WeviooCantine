@@ -557,13 +557,19 @@ input:disabled {
 }
 .searchWrapper{
   
-  position: sticky;
+/*   position: sticky;
   z-index: 9;
   top:45px;
   width: 30%;
-  margin: auto;
+  margin: auto; */
  
-  
+  position: fixed;
+    z-index: 9;
+    top: 5px;
+    width: 17%;
+    left: 28%;
+   
+
 }
 .searchGroup{
  

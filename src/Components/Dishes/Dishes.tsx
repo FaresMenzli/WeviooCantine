@@ -2,18 +2,16 @@
 
 import React, { FC, useEffect, useState } from "react";
 import {
- 
   DishesMainPage,
   DishesWrapper,
   Filters,
   RightBar,
   SearchForDish,
-
 } from "./Dishes.styled";
 import DishCard from "../DishCard/DishCard";
 
 import { Dish } from "../../Models/Dish";
-import {  Search } from "react-bootstrap-icons";
+import { Search } from "react-bootstrap-icons";
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
@@ -23,6 +21,7 @@ import { sortByType } from "../../redux/dishs";
 
 import WeviooSuggestionAnimated from "../WeviooSuggestionAnimated/WeviooSuggestionAnimated";
 import WeviooNavbar from "../WeviooNavbar/WeviooNavbar";
+import WeatherSuggetion from "./WeatherSuggetion/WeatherSuggetion";
 
 interface DishesProps {}
 const Dishes: FC<DishesProps> = () => {
@@ -41,22 +40,13 @@ const Dishes: FC<DishesProps> = () => {
       : [...selectedCategories, category];
     setSelectedCategories(updatedCategories);
   };
- 
+
   const [showFilters, setshowFilters] = useState(true);
 
-
-
   const cart = useSelector((state: RootState) => state.cart.value);
- 
-  
-
-
 
   const [category, setCategory] = useState<string[]>([]);
   const [search, setSearch] = useState("");
- 
-
-
 
   const { data, loading, error } = useSelector(
     (state: RootState) => state.dishes
@@ -69,7 +59,6 @@ const Dishes: FC<DishesProps> = () => {
         );
   useEffect(() => {
     if (data) {
-  
       let tab: string[] = [];
       data.map((dish: Dish) => {
         if (!tab.includes(dish.dishCategory)) {
@@ -83,12 +72,12 @@ const Dishes: FC<DishesProps> = () => {
   }, [data]);
 
   if (loading === "pending") {
-    return (<>
-      <WeviooNavbar></WeviooNavbar>
-      <div className="restaurantBg d-flex align-items-center justify-content-center">
-        
-        <WeviooSpinner></WeviooSpinner>
-      </div>
+    return (
+      <>
+        <WeviooNavbar></WeviooNavbar>
+        <div className="restaurantBg d-flex align-items-center justify-content-center">
+          <WeviooSpinner></WeviooSpinner>
+        </div>
       </>
     );
   }
@@ -96,9 +85,9 @@ const Dishes: FC<DishesProps> = () => {
   if (error) {
     return <p>Error: {error}</p>;
   }
-  const onlyAvailableDishes =() =>{
-    setOnlyAvailable(!onlyAvailable)
-  }
+  const onlyAvailableDishes = () => {
+    setOnlyAvailable(!onlyAvailable);
+  };
 
   return (
     <>
@@ -127,12 +116,9 @@ const Dishes: FC<DishesProps> = () => {
                   />
                   {c}
                 </label>
-                
               </div>
-              
             ))}
-          
-         
+
             <div className="ms-3 mb-2 mt-3 fw-bold"> Sort :</div>
             <div className="ms-4">
               <form>
@@ -201,24 +187,31 @@ const Dishes: FC<DishesProps> = () => {
               </form>
             </div>
             <div>
-            <div className="ms-3 mb-2 mt-3 fw-bold"> Availability :</div>
-          
-            <div className="form-check form-switch ms-4">
-  <input className="form-check-input " type="checkbox" role="switch" id="flexSwitchCheckDefault"  name="showAvailable"
-                    onChange={() => onlyAvailableDishes()}/>
-  <label className="form-check-label  fw-bold" htmlFor="flexSwitchCheckDefault">only Available</label>
-</div>
+              <div className="ms-3 mb-2 mt-3 fw-bold"> Availability :</div>
+
+              <div className="form-check form-switch ms-4">
+                <input
+                  className="form-check-input "
+                  type="checkbox"
+                  role="switch"
+                  id="flexSwitchCheckDefault"
+                  name="showAvailable"
+                  onChange={() => onlyAvailableDishes()}
+                />
+                <label
+                  className="form-check-label  fw-bold"
+                  htmlFor="flexSwitchCheckDefault"
+                >
+                  only Available
+                </label>
+              </div>
             </div>
           </Filters>
         </RightBar>
 
         <div className="restaurantBg pt-4 pb-5">
-        <div className="searchWrapper">
-            <div
-              className="input-group searchGroup m-auto mb-4"
-             
-            >
-              
+          <div className="searchWrapper">
+            <div className="input-group searchGroup m-auto mb-4">
               <span className="input-group-text" style={{ height: "30px" }}>
                 <Search></Search>
               </span>
@@ -231,16 +224,24 @@ const Dishes: FC<DishesProps> = () => {
                 className="form-control"
               />
             </div>
-            </div>
-            
-       
-          <div onClick={()=>setshowFilters(false)} style={{   margin: '0 auto',
-    display: 'block'}}>
-{/*       <WeviooSuggestionAnimated></WeviooSuggestionAnimated>
- */}      </div>
-          
-          <DishesWrapper style={{zoom:"80%"}} className="ps-5 mt-5">
-            
+          </div>
+
+          <div
+            onClick={() => setshowFilters(false)}
+            style={{ margin: "0 auto", display: "block" }}
+          >
+            {/*       <WeviooSuggestionAnimated></WeviooSuggestionAnimated>
+             */}{" "}
+            <div className="ms-xl-5" hidden={search !== ""}>
+              {" "}
+              <WeatherSuggetion></WeatherSuggetion>{" "}
+            </div>{" "}
+          </div>
+
+          <DishesWrapper
+            style={{ zoom: "80%", marginTop: "50vh" }}
+            className="ps-5 "
+          >
             {filteredDishes
               .filter((dish: Dish) => {
                 return search.toLowerCase() === ""
@@ -248,7 +249,10 @@ const Dishes: FC<DishesProps> = () => {
                   : dish.dishName.toLocaleLowerCase().includes(search);
               })
               .map((dish: Dish) => (
-                <div hidden={onlyAvailable && dish.quantityAvailable==0} key={dish.dishId}>
+                <div
+                  hidden={onlyAvailable && dish.quantityAvailable == 0}
+                  key={dish.dishId}
+                >
                   <DishCard
                     id={dish.dishId}
                     category={dish.dishCategory}

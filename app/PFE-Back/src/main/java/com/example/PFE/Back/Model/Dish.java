@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Table(name="Dish")
 public class Dish {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name="dish_id")
     private Long dishId;
     private String dishName;

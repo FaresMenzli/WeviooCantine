@@ -47,4 +47,7 @@ public class DishService {
         dish.setQuantityAvailable(newQuantity);
         dishRepo.save(dish);
     }
+    public List<Dish> getRandomEntities() {
+        return dishRepo.findRandomEntities();
+    }
 }
