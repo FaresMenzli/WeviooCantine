@@ -24,6 +24,9 @@ import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
 import Unauthorized from "./Components/Unauthorized/Unauthorized";
 import OrderPassed from "./Components/Cart/OrderPasssed/OrderPassed";
 import WeatherLoader from "./Components/Dishes/WeatherLoader/WeatherLoader";
+import ForgottenPassword from "./Components/Login/ForgottenPassword/ForgottenPassword";
+import WeviooNavbar from "./Components/WeviooNavbar/WeviooNavbar";
+import ResetPassword from "./Components/Login/ResetPassword/ResetPassword";
 
 function App() {
   return (
@@ -36,7 +39,7 @@ function App() {
             <Route path="/login" element={<Login />}></Route>
             <Route path="dishes" element={<Dishes />}></Route>
             <Route path="unauthorized" element={<Unauthorized />}></Route>
-
+            <Route path="/forgot-password" element={<ForgottenPassword/>} />
             <Route
               path="Staff"
               element={
@@ -61,6 +64,7 @@ function App() {
               }
             ></Route>
             <Route path="test" element={<WeatherLoader></WeatherLoader>}></Route>
+            <Route path="/reset-password/:token" element={<ResetPassword />} />
           </Routes>
           <Footer></Footer>
         </AuthProvider>

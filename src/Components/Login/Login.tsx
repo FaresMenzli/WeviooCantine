@@ -13,6 +13,7 @@ import { Bounce, Flip, ToastContainer } from 'react-toastify';
 import styles from '../Register/Register.module.css';
 
 import { useBackendUrl } from '../../Contexts/BackendUrlContext';
+import { Alert, Typography } from '@mui/material';
 
 
 
@@ -88,6 +89,10 @@ const Login: FC<LoginProps> = () => {
      setPasswordEmpty(!login.userPassword) 
   }
 
+  function ToForgottenPassword() {
+    navigate('/forgot-password');
+  }
+
   return(
  <>
        <div className='bg center'>
@@ -102,12 +107,16 @@ const Login: FC<LoginProps> = () => {
     <img className='cantineLogo' src={require('../../assets/cantine.png')} alt="cantineLogo" /></div>
     Login to <b>Wevioo Cantine</b>
       <form className='mb-2' onSubmit={handleSubmit}>
-        <input className={`${emailError? ' border border-danger' :''} login`} type="text" name="userEmail"  placeholder='E-mail' onChange={handleInputChange} onBlur={validateEmail}/><br></br> {emailError && <span className={styles.errorMessage}>{emailError}</span>}
-        <input className={`${passwordEmpty? ' border border-danger' :''} login`} type="text" name="userPassword" id="" placeholder='password' onChange={handleInputChange} onBlur={handlePassword}/><br></br> {passwordEmpty && <span className={styles.errorMessage}>the Password is obligatoire</span>}
+        <input className={`${emailError? ' border border-danger' :''} login`} type="text" name="userEmail"  placeholder='E-mail' onChange={handleInputChange} onBlur={validateEmail}/><br></br> {emailError &&  <Alert className='mx-5' severity="error">{emailError}</Alert>}
+        {/* <span className={styles.errorMessage}>{emailError}</span> */}
+        <input className={`${passwordEmpty? ' border border-danger' :''} login`} type="text" name="userPassword" id="" placeholder='password' onChange={handleInputChange} onBlur={handlePassword}/><br></br> {passwordEmpty &&<Alert className='mx-5' severity="error">the Password is obligatoire</Alert>}
+        {/* <span className={styles.errorMessage}>the Password is obligatoire</span> */}
         <input className={`${emailError || !login.userPassword? 'notLogin' :'loginBtn'}`} disabled={emailError|| !login.userPassword?true:false} type="submit" value="Login" name="" id=""/>
       </form>
+      <div className='d-flex flex-column'>
+      <b className=''>password forgotten ? <u onClick={ToForgottenPassword} className='clickable'>Click Hier</u></b>
       <b>Don't have an account yet?  <u className='clickable' onClick={()=>setRegister(true)}>Sign Up</u></b>
-     
+      </div>
     </div>
     <ToastContainer />
     </>
