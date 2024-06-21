@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { string, number } from "prop-types";
 import React, { useEffect, useState } from "react";
 import { Chart } from "react-google-charts";
@@ -16,6 +16,14 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import "./Dashboard.css";
 import ElementorCounter from "./ElementorCounter/ElmentorCounter";
+import DashboardForCustomersStats from "./DashboardForCustomersStats/DashboardForCustomersStats";
+
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { Button } from "@mui/material";
+import EventRepeatOutlinedIcon from '@mui/icons-material/EventRepeatOutlined';
 
 interface SalesInfoData {
   dishSalesDetailsList: TopDishData[];
@@ -44,13 +52,33 @@ const Dashboard: React.FC = () => {
   const [totalPeriodAmount, setTotalPeriodAmount] = useState(0);
   const [totalPeriodQuantitySold, setTotalPeriodQuantitySold] = useState(0);
   const [nbOrders, setNbOrders] = useState(0);
+  const today = dayjs();
+  const [soldDishs, setSoldDishs] = useState<SalesInfoData>();
+  const [beginIntervalle, setBeginIntervalle] = useState("2024-03-01");
+  const [endIntervalle, setEndIntervalle] = useState<string>(
+    today.format("YYYY-MM-DD")
+  );
+
+  const [beginIntervalleMui, setBeginIntervalleMui] = useState<Dayjs | null>(dayjs("2024-03-01"));
+
+  const [endIntervalleMui ,setEndIntervalleMui] = useState<Dayjs | null>(today)
+  const { backendUrl } = useBackendUrl();
+  const [dataToShow, setDataToShow] = useState<null | (number | string)[][]>(
+    null
+  );
+  
   const handleDashboardChange = (dashboard: React.SetStateAction<number>) => {
     setSelectedDashboard(dashboard);
   };
   const { data, error } = useSelector((state: RootState) => state.dishes);
-  useEffect(() => {}, []);
+  useEffect(() => {
+
+    console.log(beginIntervalleMui?.format("YYYY-MM-DD"))
+    console.log(endIntervalleMui?.format("YYYY-MM-DD"))
+  }, [beginIntervalleMui,endIntervalleMui]);
 
   useEffect(() => {
+    console.log(selectedDashboard);
     if (selectedDashboard == 3) {
       interceptor.get(`${backendUrl}/api/user/User`).then((response) => {
         console.log(response.data);
@@ -99,20 +127,10 @@ const Dashboard: React.FC = () => {
     //
   }, [selectedOptionDish]);
 
-  const today = dayjs();
-  const [soldDishs, setSoldDishs] = useState<SalesInfoData>();
-  const [beginIntervalle, setBeginIntervalle] = useState("2024-03-01");
-  const [endIntervalle, setEndIntervalle] = useState<string>(
-    today.format("YYYY-MM-DD")
-  );
-  const { backendUrl } = useBackendUrl();
-  const [dataToShow, setDataToShow] = useState<null | (number | string)[][]>(
-    null
-  );
-  /* 
+
   useEffect(() => {
-    setIntervalle();
-  }, []); */
+   console.log(beginIntervalleMui)
+  }, [beginIntervalleMui]);
   const getOrdersNumber = () => {
     interceptor
       .get(
@@ -258,6 +276,14 @@ const Dashboard: React.FC = () => {
     setSelectedOptionDish(event.target.value);
   }
 
+  const updateCustomerStatByDate = () => {
+    interceptor
+    .get(
+      `${backendUrl}/api/user/userForDashboard?start=${beginIntervalleMui?.format("YYYY-MM-DD")}&end=${endIntervalleMui?.format("YYYY-MM-DD")}`
+    )
+    .catch(error => console.log(error))
+  }
+
   return (
     <div className="mt-3">
       <AdminLeftBar>
@@ -336,10 +362,33 @@ const Dashboard: React.FC = () => {
               <span>Customers</span>
             </Label>
             <div hidden={selectedDashboard != 3}>
-              from
-              <input type="date" value="" />
-              to
-              <input type="date" name="" id="" />
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={["DatePicker"]}>
+                  <DatePicker
+                    format="DD/MM/YYYY"
+                    defaultValue={beginIntervalleMui}
+                    label="From"
+                    value={beginIntervalleMui}
+          onChange={(newValue) => setBeginIntervalleMui(newValue)}
+                  />
+                </DemoContainer>
+              </LocalizationProvider>
+
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={["DatePicker"]}>
+                  <DatePicker
+                    label="To"
+                    format="DD/MM/YYYY"
+                    onChange={(newValue) => setEndIntervalleMui(newValue)}
+
+
+                    defaultValue={endIntervalleMui}
+                  />
+                </DemoContainer>
+              </LocalizationProvider>
+              <Button onClick={updateCustomerStatByDate} variant="contained" endIcon={<EventRepeatOutlinedIcon />}>
+        Send
+      </Button>
             </div>
             <div hidden={selectedDashboard != 3}>
               select a customer
@@ -408,9 +457,9 @@ const Dashboard: React.FC = () => {
                   <div>
                     Amount realised
                     <ElementorCounter
-                      initialValue={0}
+                      initialValue={totalPeriodAmount - 2000}
                       stopAt={totalPeriodAmount}
-                      delay={5}
+                      delay={1}
                     ></ElementorCounter>
                     DNT
                   </div>
@@ -889,31 +938,20 @@ const Dashboard: React.FC = () => {
             /> */}
             </div>
           </div>
-        ) : selectedDashboard == 2 ? (
-          <div
+        ) : selectedDashboard == 3 ? (
+          <>
+            {/*    <div
             className="mt-3"
             style={{
               display: "grid",
               gridTemplateColumns: "45% 45%",
               justifyItems: "center",
               gap: "20px",
-            }}
-          >
-            {dataToShow == null ? (
-              <WeviooSpinner chart={true}></WeviooSpinner>
-            ) : (
-              <Chart
-                width={"100%"}
-                height={"300px"}
-                chartType="LineChart"
-                loader={<WeviooSpinner></WeviooSpinner>}
-                data={dataToShow || []}
-                options={pieOptions}
-              />
-            )}
-          </div>
+            }}> */}
+            <DashboardForCustomersStats></DashboardForCustomersStats>
+          </>
         ) : (
-          <></>
+          <> </>
         )}
       </div>
       {/* )} */}

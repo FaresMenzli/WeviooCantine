@@ -1,3 +1,4 @@
+import { Gauge, gaugeClasses } from '@mui/x-charts';
 import React, { useState, useEffect } from 'react';
 
 interface ElementorCounterProps {
@@ -5,11 +6,11 @@ interface ElementorCounterProps {
   maxIncrement?: number;
   delay?: number;
   stopAt?: number;
+  gauge?:boolean;
 }
 
-const ElementorCounter: React.FC<ElementorCounterProps> = ({ initialValue = 0, maxIncrement = 10, delay = 1000, stopAt }) => {
+const ElementorCounter: React.FC<ElementorCounterProps> = ({ initialValue = 0, maxIncrement = 10, delay = 1000, stopAt,gauge }) => {
   const [count, setCount] = useState<number>(initialValue);
-
   useEffect(() => {
     const intervalId = setInterval(() => {
       const randomIncrement = Math.floor(Math.random() * (maxIncrement + 1));
@@ -27,9 +28,34 @@ const ElementorCounter: React.FC<ElementorCounterProps> = ({ initialValue = 0, m
   }, [maxIncrement, delay, stopAt]);
 
   return (
-    <h2>
+    <>
+
+    {gauge?(<>
+    
+      <Gauge
+  value={count}
+  startAngle={-110}
+  endAngle={110}
+  sx={{
+    [`& .${gaugeClasses.valueText}`]: {
+      fontSize: 18,
+      transform: 'translate(0px, 0px)',
+    },
+  }}
+ 
+  text={
+     ({ value }) => `${value} %`
+  }
+/>
+    
+    </>):( <h2>
       {count}
-    </h2>
+    </h2>)}
+   
+    
+    
+    
+    </>
   );
 };
 

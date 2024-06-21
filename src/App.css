@@ -254,15 +254,16 @@ border: 0.1px rgb(131,129,205) dashed;
 
  
 }
+
 thead tr th {
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: center;
-  /*background-color: rgb(174 255 255 / 50%);*/
   color: black;
   border-radius: 35px;
   font-weight: bold;
 }
+
 .orderListTable{
   width: 50vw;
   background-color: rgba(14, 14, 46, 0.456);
@@ -275,12 +276,12 @@ thead tr th {
   backdrop-filter: blur(10px);
   border-radius: 35px;
 }
-table {
+/* table {
   width: 50vw;
   background-color: rgb(174 255 255 / 20%);
   backdrop-filter: blur(10px);
   border-radius: 35px;
-}
+} */
 tfoot{
   height: 60px;
 }
