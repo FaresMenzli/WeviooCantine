@@ -31,12 +31,11 @@ border: black solid 4px;
 `;
 export const AdminLeftBar = styled.div`
 height: 75vh;
-width: 200px;
+width: 220px;
 background: radial-gradient(black, transparent);
 background: aliceblue;
 position: fixed;
-margin-left: 25px;
-margin-top: 4vh;
+margin-left: 15px;
 border-radius: 20px;
 
 `;

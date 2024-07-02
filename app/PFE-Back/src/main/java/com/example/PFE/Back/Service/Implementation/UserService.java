@@ -1,10 +1,8 @@
 package com.example.PFE.Back.Service.Implementation;
 
-import com.example.PFE.Back.DTO.Sales;
-import com.example.PFE.Back.DTO.UserDTO;
-import com.example.PFE.Back.DTO.UserForDashboard;
-import com.example.PFE.Back.DTO.UserStats;
+import com.example.PFE.Back.DTO.*;
 import com.example.PFE.Back.Exceptions.UserNotFoundException;
+import com.example.PFE.Back.Model.CommandeLine;
 import com.example.PFE.Back.Model.Order;
 import com.example.PFE.Back.Model.User;
 import com.example.PFE.Back.Model.UserRole;
@@ -15,10 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.time.Month;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +24,8 @@ public class UserService {
     @Autowired
     private UserRepo userRepo;
 
+    @Autowired
+    private CommandeLineService commandeLineService;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -73,40 +71,89 @@ public class UserService {
 
 
     public List<UserStats> getAllUsersStats(Optional<Date> startDateOptional, Optional<Date> endDateOptional) {
-        return getUsersWithOrdersBetweenDates(startDateOptional,endDateOptional).stream().map(user -> {
+        return getUsersWithOrdersBetweenDates(startDateOptional, endDateOptional).stream().map(user -> {
             int orderCount = user.getOrders().size();
-            double totalCost = user.getOrders().stream()
-                    .mapToDouble(Order::getTotal)
-                    .sum();
+            double totalCost = user.getOrders().stream().mapToDouble(Order::getTotal).sum();
             return new UserStats(user, orderCount, totalCost);
         }).sorted(Comparator.comparing(UserStats::getOrdersNB).reversed()).collect(Collectors.toList());
     }
 
-    public UserForDashboard getUserStatsForDashboard(Optional<Date> startDateOptional, Optional<Date> endDateOptional) {
-        List<UserStats> userStatsList = getAllUsersStats(startDateOptional,endDateOptional);
+    public UserForDashboard getUserStatsForDashboard(Long userId, Optional<Date> startDateOptional, Optional<Date> endDateOptional) {
+
+        List<UserStats> userStatsList = getAllUsersStats(startDateOptional, endDateOptional);
         Integer nbTotalOrders = userStatsList.stream().mapToInt(UserStats::getOrdersNB).sum();
         Double coastTotalOrders = userStatsList.stream().mapToDouble(UserStats::getOrdersCoast).sum();
-        return new UserForDashboard(userStatsList, userStatsList.size(), (int) getAllUsersStats(startDateOptional,endDateOptional).stream().filter(user -> user.getOrdersNB() > 0).count(), (int) getAllUsersStats(startDateOptional,endDateOptional).stream().filter(user -> user.getOrdersNB() > 1).count(), coastTotalOrders, nbTotalOrders);
+        List<Order> allOrders = (List<Order>) orderRepo.findAll();
+
+
+        Map<Object, Integer> monthlyOrderCounts = allOrders.stream().collect(Collectors.groupingBy(order -> order.getOrderDate().getMonth() + 1, Collectors.summingInt(e -> 1)));
+        Map<Object, Double> monthlyOrderAverageByCustomer = monthlyOrderCounts.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> entry.getValue() / (double) userStatsList.size()
+                ));
+
+        if (userId != null) {
+            User selectedUser = userRepo.findUserByUserId(userId);
+            List<DishSalesDetails> dishSalesDetailsList =commandeLineService.convertCommandeLinesDTOToDishSalesDetailsList(commandeLineService.convertCommandeLinesToDto(collectAllCommandeLines(selectedUser)));
+
+            if (userStatsList.stream().filter(userStats -> Objects.equals(userStats.getUser().getUserId(), userId)).collect(Collectors.toList()).isEmpty()){
+               userStatsList.add(new UserStats(selectedUser,0,0.0));
+                dishSalesDetailsList =null;
+            }
+
+            List<Order> orderListForCustomer =  orderRepo.findOrderByUser(selectedUser);
+            Map<Object, Integer> monthlyOrderCountsForCustomer = orderListForCustomer.stream().collect(Collectors.groupingBy(order -> order.getOrderDate().getMonth() + 1, Collectors.summingInt(e -> 1)));
+            Map<Object, Map<String, Object>> combinedMap = new HashMap<>();
+            monthlyOrderAverageByCustomer.forEach((month, count) -> {
+                combinedMap.put(month, new HashMap<>() {{
+                    put("AVG", count);
+                    put("count", monthlyOrderCountsForCustomer.getOrDefault(month,0));
+                }});
+            });
+            return new UserForDashboard(userStatsList.stream().filter(userStats -> Objects.equals(userStats.getUser().getUserId(), userId)).collect(Collectors.toList()),
+                    userStatsList.size(),
+                    (int) getAllUsersStats(startDateOptional, endDateOptional).stream().filter(user -> user.getOrdersNB() > 0).count(),
+                    (int) getAllUsersStats(startDateOptional, endDateOptional).stream().filter(user -> user.getOrdersNB() > 1).count(),
+                    coastTotalOrders,
+                    nbTotalOrders,
+                    monthlyOrderCounts,
+                    monthlyOrderCountsForCustomer,
+                    monthlyOrderAverageByCustomer,
+                    combinedMap ,
+                    dishSalesDetailsList.stream().sorted(Comparator.comparingInt(DishSalesDetails::getTotalQuantitySoldAllDays).reversed()) .collect(Collectors.toList()));
+        }
+        return new UserForDashboard(userStatsList, userStatsList.size(), (int) getAllUsersStats(startDateOptional, endDateOptional).stream().filter(user -> user.getOrdersNB() > 0).count(), (int) getAllUsersStats(startDateOptional, endDateOptional).stream().filter(user -> user.getOrdersNB() > 1).count(), coastTotalOrders, nbTotalOrders, monthlyOrderCounts,monthlyOrderAverageByCustomer);
     }
 
     public List<User> getUsersWithOrdersBetweenDates(Optional<Date> startDateOptional, Optional<Date> endDateOptional) {
         if (startDateOptional.isPresent() && endDateOptional.isPresent()) {
+
             List<User> users = userRepo.findUsersWithOrdersBetweenDates(startDateOptional.get(), endDateOptional.get());
-            users.forEach(user -> user.setOrders(
-                    user.getOrders().stream()
-                            .filter(order -> order.getOrderDate().compareTo(startDateOptional.get()) >= 0 && order.getOrderDate().compareTo(endDateOptional.get()) <= 0)
-                            .collect(Collectors.toList())
-            ));
-        return users;
+
+            users.forEach(user -> user.setOrders(user.getOrders().stream().filter(order -> order.getOrderDate().compareTo(startDateOptional.get()) >= 0 && order.getOrderDate().compareTo(endDateOptional.get()) <= 0).collect(Collectors.toList())));
+            return users;
 
 
         }
         return userList();
     }
-    public UserForDashboard getUserStatsByDate(Optional<Date> startDateOptional, Optional<Date> endDateOptional) {
 
+
+    public UserForDashboard getUserStatsForDashboardForOneUser(Long userId, Optional<Date> startDateOptional, Optional<Date> endDateOptional) {
+        User user = userRepo.findUserByUserId(userId);
 
         return null;
+    }
+
+    public List<CommandeLine> collectAllCommandeLines(User user) {
+        List<CommandeLine> allCommandeLines = new ArrayList<>();
+
+        for (Order order : user.getOrders()) {
+            allCommandeLines.addAll(order.getCommandeLines());
+        }
+
+        return allCommandeLines;
     }
 }
 

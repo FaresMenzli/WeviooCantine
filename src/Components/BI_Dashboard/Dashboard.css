@@ -13,8 +13,8 @@ background-color: white;
 .topDashboardStatitsticContainer{
 
     display: grid;
-    grid-template-columns: 20% 20% 20% 20% 20%;
-    justify-items: start;
+    grid-template-columns: 18% 18% 18% 18% 18%;
+    justify-items: center;
     height: 100px;
 }
 

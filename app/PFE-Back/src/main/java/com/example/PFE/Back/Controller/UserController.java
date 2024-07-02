@@ -36,15 +36,25 @@ public class UserController {
         }
     }
 
-    @GetMapping("userForDashboard")
-    public UserForDashboard getUsersStats(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date start, @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date end) {
+    @GetMapping(value = {"userForDashboard", "userForDashboard/{userId}"})
+    public UserForDashboard getUsersStats(@PathVariable(required = false) Long userId,@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date start, @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date end) {
 
         Optional<Date> startDateOptional = Optional.ofNullable(start);
         Optional<Date> endDateOptional = Optional.ofNullable(end);
 
 
-        return userService.getUserStatsForDashboard(startDateOptional,endDateOptional);
+        return userService.getUserStatsForDashboard(userId,startDateOptional,endDateOptional);
     }
+//    @GetMapping("userForDashboard/{userId}")
+//    public UserForDashboard getUsersStatsForOneUser(@PathVariable(required = false) Long userId, @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date start, @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date end) {
+//
+//        Optional<Date> startDateOptional = Optional.ofNullable(start);
+//        Optional<Date> endDateOptional = Optional.ofNullable(end);
+//
+//
+//        return userService.getUserStatsForDashboard(userId ,startDateOptional,endDateOptional);
+//
+//    }
     @GetMapping("User")
     public List<User> getUsers(){
 

@@ -196,10 +196,10 @@ tbody tr {
   border-bottom: 1px solid !important;
   height: 50px;
 }
-tbody tr:hover {
+/* tbody tr:hover {
   background-color: black;
   color: white;
-}
+} */
 .userListTable thead tr th {
   border-radius: 0;
   background-color: #000000a3;
