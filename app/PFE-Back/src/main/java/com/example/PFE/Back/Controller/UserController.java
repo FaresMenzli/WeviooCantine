@@ -53,7 +53,19 @@ public class UserController {
         return userService.userList();
     }
 
+    @PutMapping("updateUser/{userId}")
+    public ResponseEntity<User> updateUser(
+            @PathVariable Long userId,
+            @RequestBody User userDetails) {
 
+        Optional<User> optionalUser = userService.getUserById(userId);
+        if (optionalUser.isPresent()) {
+            User updatedUser = userService.updateUser(userId, userDetails);
+            return ResponseEntity.ok(updatedUser);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
     @DeleteMapping("/deleteUserById/{id}")
     public Long deleteUser(@PathVariable Long id) {
 
