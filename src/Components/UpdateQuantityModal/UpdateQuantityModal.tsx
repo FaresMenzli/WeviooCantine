@@ -26,7 +26,7 @@ const UpdateQuantityModal: FC<UpdateQuantityModalProps> = ({ isOpen, onClose, di
        interceptor.put(`${backendUrl}/api/Dishs/updateDishQuantity/${dish?.dishId}`,quantity,{
         headers: {
             'Content-Type': 'application/json'
-        }})
+        }}).then(()=>window.location.reload())
        .catch((error) => {
         if (error.response) {
           if (error.response.status === 403) {
@@ -48,7 +48,7 @@ const UpdateQuantityModal: FC<UpdateQuantityModalProps> = ({ isOpen, onClose, di
      
     }
 
-    return (<StyledModal className={"mt-5"}  isOpen={isOpen}
+    return (<StyledModal className={"mt-5 h-75"}  isOpen={isOpen}
         onRequestClose={onClose}
         ariaHideApp={false}>
     

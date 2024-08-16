@@ -29,6 +29,7 @@ import { Links, TopBarLinks } from "../StaffDashboard/StaffDashboard.styled";
 import UpdateRoleModal from "./UpdateRoleModal/UpdateRoleModal";
 import { showToast } from "../Toaster/toasterService";
 import { ToastContainer } from "react-toastify";
+import ManageUserTable from "./ManageUserTable/ManageUserTable";
 
 interface AdminDashboardProps {}
 //let users :User[] ;
@@ -88,10 +89,6 @@ const AdminDashboard: FC<AdminDashboardProps> = () => {
     window.location.reload();
   };
 
-  function UpdateRole(id: number): void {
-    setUserToUpdateRole(users.filter((user: User) => user.userId === id));
-    setUpdateRoleModalOpen(true);
-  }
 
   return (
     <AdminDashboardWrapper>
@@ -130,7 +127,7 @@ const AdminDashboard: FC<AdminDashboardProps> = () => {
           <>
             <MainDashboard>
               {view === "userList" ? (
-                <div className="pb-5 d-flex align-items-start justify-content-center mt-5 w-100 ">
+               /*  <div  className="pb-5 d-flex align-items-start justify-content-center mt-5 w-100 ">
                   <UpdateRoleModal
                     fetchUsers={fetchUsers}
                     isOpen={isUpdateRoleModalOpen}
@@ -198,7 +195,12 @@ const AdminDashboard: FC<AdminDashboardProps> = () => {
                       </tr>
                     </tfoot>
                   </table>
+                </div> */
+                <div>
+
+                  <ManageUserTable data={users}></ManageUserTable>
                 </div>
+
               ) : view === "Dashboard" ? (
                 <Dashboard />
               ) : (

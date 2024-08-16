@@ -63,7 +63,9 @@ const DishFormModal: React.FC<DishFormModalProps> = ({ isOpen, onClose, onSubmit
     isOpen={isOpen}
     onRequestClose={onClose}
     ariaHideApp={false} // This is necessary to prevent a warning and ensure proper functionality
+    
   >
+    <div style={{zoom: "85%"}}>
       <ModalHeader className='fw-bold justify-content-center mb-2'>Add Dish </ModalHeader>
       <FormContainer  onSubmit={handleFormSubmit}>
         
@@ -116,6 +118,7 @@ const DishFormModal: React.FC<DishFormModalProps> = ({ isOpen, onClose, onSubmit
 
       <FormButton  type="submit">Submit</FormButton>
       </FormContainer>
+      </div>
     </StyledModal>
   );
 };

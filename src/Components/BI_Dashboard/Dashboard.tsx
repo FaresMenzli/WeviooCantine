@@ -586,7 +586,7 @@ const Dashboard: React.FC = () => {
              unsold dishs  */}
               <div className="dashboaradItems">
                 {dataToShow == null ? (
-                  <WeviooSpinner chart={true}></WeviooSpinner>
+                  <WeviooSpinner  chart={true}></WeviooSpinner>
                 ) : (
                   <Chart
                     width={"100%"}
@@ -616,11 +616,10 @@ const Dashboard: React.FC = () => {
               )}
 </div>
               <div className="dashboaradItems">
-                {dataToShow != null ? (
+                {dataToShow == null ? (
                   <WeviooSpinner chart={true}></WeviooSpinner>
                 ) : (
                   <Chart
-                    //most sold dish
                     width={"100%"}
                     height={"300px"}
                     chartType="ColumnChart"

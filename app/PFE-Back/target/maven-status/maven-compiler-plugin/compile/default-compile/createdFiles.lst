@@ -61,6 +61,7 @@ com\example\PFE\Back\DTO\SaleDetails.class
 com\example\PFE\Back\Model\CommandeLine.class
 com\example\PFE\Back\Auth\AuthenticationRequest.class
 com\example\PFE\Back\Model\User.class
+com\example\PFE\Back\Service\Implementation\UserService$1.class
 com\example\PFE\Back\Auth\RegisterRequest.class
 com\example\PFE\Back\DTO\CommandeLineDTO.class
 com\example\PFE\Back\DTO\OrderRequestDTO.class

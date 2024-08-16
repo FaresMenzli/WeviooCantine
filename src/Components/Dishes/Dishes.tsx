@@ -42,6 +42,8 @@ const Dishes: FC<DishesProps> = () => {
   };
 
   const [showFilters, setshowFilters] = useState(true);
+  const [showSuggestions, setshowSuggestions] = useState(true);
+
 
   const cart = useSelector((state: RootState) => state.cart.value);
 
@@ -95,11 +97,18 @@ const Dishes: FC<DishesProps> = () => {
         <WeviooNavbar></WeviooNavbar>
         <RightBar className=" ms-3 d-flex ">
           <button
-            id="Filters"
+            
             className="fw-bold position-fixed "
             onClick={() => setshowFilters(!showFilters)}
           >
             {!showFilters ? "show Filters" : "hide Filters"}
+          </button>
+          <button
+            id="Filters"
+            className="fw-bold position-fixed "
+            onClick={() => setshowSuggestions(!showSuggestions)}
+          >
+            {!showSuggestions ? "show Suggestions" : "hide Suggestions"}
           </button>
           <Filters hidden={!showFilters}>
             <div className="mt-3 ms-2 fw-bold">Filter</div>
@@ -232,16 +241,17 @@ const Dishes: FC<DishesProps> = () => {
           >
             {/*       <WeviooSuggestionAnimated></WeviooSuggestionAnimated>
              */}{" "}
-            <div className="ms-xl-5" hidden={search !== ""}>
+            <div className="ms-xl-5" hidden={search !== "" || !showSuggestions}>
               {" "}
               <WeatherSuggetion></WeatherSuggetion>{" "}
             </div>{" "}
           </div>
 
           <DishesWrapper
-            style={{ zoom: "80%", marginTop: "50vh" }}
-            className="ps-5 "
+            style={{ zoom: "80%", marginTop: "50vh", }}
+            className="ps-5 pt-4"
           >
+           
             {filteredDishes
               .filter((dish: Dish) => {
                 return search.toLowerCase() === ""
@@ -253,6 +263,7 @@ const Dishes: FC<DishesProps> = () => {
                   hidden={onlyAvailable && dish.quantityAvailable == 0}
                   key={dish.dishId}
                 >
+                   <div className="mx-5 my-2">
                   <DishCard
                     id={dish.dishId}
                     category={dish.dishCategory}
@@ -261,8 +272,10 @@ const Dishes: FC<DishesProps> = () => {
                     price={dish.dishPrice}
                     quantity={dish.quantityAvailable}
                   ></DishCard>
+                  </div>
                 </div>
               ))}
+              
           </DishesWrapper>
         </div>
       </DishesMainPage>

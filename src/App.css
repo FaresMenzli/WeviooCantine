@@ -255,14 +255,14 @@ border: 0.1px rgb(131,129,205) dashed;
  
 }
 
-thead tr th {
+/* thead tr th {
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: center;
   color: black;
   border-radius: 35px;
   font-weight: bold;
-}
+} */
 
 .orderListTable{
   width: 50vw;
@@ -315,9 +315,9 @@ tbody :last-child{
   border-radius: 35px;
   
 } */
-thead :first-child{
+/* thead :first-child{
   border-bottom: 1px solid black;
-}
+} */
 .quantityWidth{
 width: 31%!Important;
 }

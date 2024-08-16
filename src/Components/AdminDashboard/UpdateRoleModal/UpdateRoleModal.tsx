@@ -11,14 +11,13 @@ interface UpdateRoleModalProps {
   isOpen: boolean;
   onClose: () => void;
   user?: User;
-  fetchUsers : () => void ;
+ 
 }
 
 const UpdateRoleModal: React.FC<UpdateRoleModalProps> = ({
   isOpen,
   onClose,
-  user,
-  fetchUsers
+  user
 }) => {
   const [btnLoading, setBtnLoading] = useState(false);
   const [selectedRole, setSelectedRole] = useState<string | undefined>();
@@ -53,7 +52,7 @@ const UpdateRoleModal: React.FC<UpdateRoleModalProps> = ({
       interceptor
         .put(`${backendUrl}/api/user/${user?.userId}/role/${selectedRole}`)
         .then(() => {
-          fetchUsers();
+         
           showToast(
             `The role of ${user?.userFirstName} is changed to ${selectedRole}`
           );
