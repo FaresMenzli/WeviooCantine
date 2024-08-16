@@ -43,14 +43,7 @@ public class UserService {
         return userRepo.save(user);
     }
 
-    public void updateUser(Long userId, User updatedUser) {
-        userRepo.findById(userId).ifPresent(user -> {
-            user.setUserFirstName(updatedUser.getUsername());
-            user.setUserEmail(updatedUser.getUserEmail());
-            user.setUserPassword(updatedUser.getUserPassword());
-            userRepo.save(user);
-        });
-    }
+
 
     public Long deleteUserById(Long id) {
         userRepo.deleteById(id);
@@ -154,6 +147,18 @@ public class UserService {
         }
 
         return allCommandeLines;
+    }
+    public User updateUser(Long userId, User userDetails) {
+        return userRepo.findById(userId).map(user -> {
+            user.setUserFirstName(userDetails.getUserFirstName());
+            user.setUserLastName(userDetails.getUserLastName());
+            user.setUserEmail(userDetails.getUserEmail());
+            user.setUserRole(userDetails.getUserRole());
+            return userRepo.save(user);
+        }).orElseGet(() -> {
+            userDetails.setUserId(userId);
+            return userRepo.save(userDetails);
+        });
     }
 }
 
