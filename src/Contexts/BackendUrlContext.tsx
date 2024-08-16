@@ -32,7 +32,7 @@ function backUrl() {
       case activeUrl.indexOf(':3001') > -1:
         return 'http://62.72.30.33:5001';
       default:
-        return '';
+        return 'http://62.72.30.33:5000';
     }
   }
 

@@ -38,9 +38,6 @@ public class OrderService {
     private OrderRepo orderRepository;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private DishService dishService;
 
     @Autowired

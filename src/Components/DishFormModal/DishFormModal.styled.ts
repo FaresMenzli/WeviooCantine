@@ -22,7 +22,7 @@ const fadeIn = keyframes`
 `;
 export const StyledModal = styled(Modal)`
 position: absolute;
-top: 10%;
+top: 12%;
     left: 38%;
 transform: translate(-50%, -50%);
 background-color: #ffffff;

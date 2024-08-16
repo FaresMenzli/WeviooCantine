@@ -1,6 +1,7 @@
 package com.example.PFE.Back.Model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
@@ -40,6 +41,7 @@ public class User implements Serializable,UserDetails {
     private String userFirstName;
     private String userLastName;
     private String userEmail;
+   @JsonIgnore
     private String userPassword;
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
@@ -79,6 +81,7 @@ public class User implements Serializable,UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public String getPassword() {
         return userPassword;
     }

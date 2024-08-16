@@ -69,6 +69,50 @@ public Sales getSalesInfo(Optional<Date> start, Optional<Date> end){
         }
 
         else{ commandeLines = commandeLineDTOList();}
+        return convertCommandeLinesDTOToDishSalesDetailsList(commandeLines);
+//
+//        Map<Long, Map<LocalDate, SaleDetails>> salesMap = new HashMap<>();
+//        for (CommandeLineDTO commandLine : commandeLines) {
+//            Long dishId = commandLine.getDish().getDishId();
+//            String dishName = commandLine.getDish().getDishName();
+//            LocalDate date = commandLine.getCommandeLineDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+//            double totalAmount = calculateTotalAmount(commandLine);
+//            int quantitySold = commandLine.getQuantity();
+//            SaleDetails saleDetails = new SaleDetails(date, quantitySold, totalAmount);
+//            salesMap.computeIfAbsent(dishId, k -> new HashMap<>())
+//                    .merge(date, saleDetails, (existingSale, newSale) -> {
+//                        existingSale.setDayQuantitySold(existingSale.getDayQuantitySold() + newSale.getDayQuantitySold());
+//                        existingSale.setDayTotalAmount(existingSale.getDayTotalAmount() + newSale.getDayTotalAmount());
+//                        return existingSale;
+//                    });
+//
+//
+//        }
+//        List<DishSalesDetails> result = new ArrayList<>();
+//        for (Map.Entry<Long, Map<LocalDate, SaleDetails>> entry : salesMap.entrySet()) {
+//            String dishName = commandeLines.stream()
+//                    .filter(cmdLine -> cmdLine.getDish().getDishId().equals(entry.getKey()))
+//                    .findFirst()
+//                    .map(cmdLine -> cmdLine.getDish().getDishName())
+//                    .orElse(null);
+//            double totalAmountAllDays = entry.getValue().values().stream().mapToDouble(SaleDetails::getDayTotalAmount).sum();
+//            int totalQuantitySoldAllDays = entry.getValue().values().stream().mapToInt(SaleDetails::getDayQuantitySold).sum();
+//            DishSalesDetails dishSalesDetails = new DishSalesDetails(
+//                    entry.getKey(),
+//                    dishName,
+//                    totalAmountAllDays,
+//                    totalQuantitySoldAllDays,
+//                    new ArrayList<>(entry.getValue().values())
+//            );
+//            result.add(dishSalesDetails);
+//            dishSalesDetails.getSales().sort(Comparator.comparing(SaleDetails::getDate));
+//
+//        }
+//
+//        return result;
+    }
+
+    public List<DishSalesDetails> convertCommandeLinesDTOToDishSalesDetailsList (List<CommandeLineDTO> commandeLines ){
 
         Map<Long, Map<LocalDate, SaleDetails>> salesMap = new HashMap<>();
         for (CommandeLineDTO commandLine : commandeLines) {
@@ -126,51 +170,7 @@ public Sales getSalesInfo(Optional<Date> start, Optional<Date> end){
                 .map(commandeLine -> modelMapper.map(commandeLine, CommandeLineDTO.class))
                 .collect(Collectors.toList());
     }
-//    public List<DishSalesDTO> soldDishes() {
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        List<CommandeLineDTO> commandeLines = commandeLineDTOList();
-//        Map<Long, DishSalesDTO> dishSalesMap = new HashMap<>();
-//        for (CommandeLineDTO commandLine : commandeLines) {
-//            String datePortion = dateFormat.format(commandLine.getCommandeLineDate());
-//            Long dishId = commandLine.getDish().getDishId();
-//            String dishName = commandLine.getDish().getDishName();
-//            if (dishSalesMap.containsKey(dishId)) {
-//                DishSalesDTO dishSales = dishSalesMap.get(dishId);
-//                dishSales.setQuantitySold(dishSales.getQuantitySold() + commandLine.getQuantity());
-//            } else {
-//                dishSalesMap.put(dishId, new DishSalesDTO(dishId, dishName, commandLine.getQuantity(), datePortion));
-//            }
-//        }
-//        return new ArrayList<>(dishSalesMap.values());
-//    }
 
-//    public List<DishSalesDTO> getTopDishes() {
-//        List<DishSalesDTO> DishToSort = soldDishes();
-//        DishToSort.sort((a, b) -> b.getQuantitySold() - a.getQuantitySold());
-//        return DishToSort.subList(0, Math.min(DishToSort.size(), 3));
-//
-//    }
-
-
-
-//    public List<DishSalesDTO> getSoldDishesByDate(Date startDate, Date endDate) {
-//
-//        Calendar beginCalendar = Calendar.getInstance();
-//        beginCalendar.setTime(startDate);
-//        beginCalendar.set(Calendar.HOUR_OF_DAY, 0);
-//        beginCalendar.set(Calendar.MINUTE, 0);
-//        beginCalendar.set(Calendar.SECOND, 0);
-//        startDate = beginCalendar.getTime();
-//        Calendar endCalendar = Calendar.getInstance();
-//        endCalendar.set(Calendar.HOUR_OF_DAY, 23);
-//        endCalendar.set(Calendar.MINUTE, 59);
-//        endCalendar.set(Calendar.SECOND, 59);
-//        endDate = endCalendar.getTime();
-//        List<CommandeLine> commandeLines = commandeLineRepository.findByCommandeLineDateBetween(startDate, endDate);
-//        List<CommandeLineDTO> cl = convertCommandeLinesToDto(commandeLines);
-//        return convertCommandeLineToDishSalesDTO(cl);
-//
-//    }
     public List<CommandeLineDTO> commandelinesByDate(Date startDate, Date endDate) {
 
         Calendar beginCalendar = Calendar.getInstance();
@@ -184,6 +184,7 @@ public Sales getSalesInfo(Optional<Date> start, Optional<Date> end){
         endCalendar.set(Calendar.MINUTE, 59);
         endCalendar.set(Calendar.SECOND, 59);
         endDate = endCalendar.getTime();
+
         return  convertCommandeLinesToDto(commandeLineRepository.findByCommandeLineDateBetween(startDate, endDate));
 
 

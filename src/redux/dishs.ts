@@ -18,6 +18,7 @@ const initialState: DishesState = {
 export const fetchDishes = createAsyncThunk<Dish[]>(
   "dishes/fetchDishes",
   async () => {
+    
      const backendUrl ='http://62.72.30.33:5000';
     const response = await axios.get<Dish[]>(
       `${backendUrl}/api/Dishs/dishs`

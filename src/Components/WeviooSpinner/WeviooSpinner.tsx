@@ -7,7 +7,7 @@ interface Props {
 }
  
 const WeviooSpinner : FunctionComponent<Props> = (props) => {
-    return (<div className={`${styles.spinner} d-flex justify-content-center align-items-center`}><AnimatedSVG className={"weviooSpinner "+(props.chart ? styles.chartSpinner  : '')}></AnimatedSVG></div>
+    return (<div className={`${props.chart?'h-100 ':' '}${styles.spinner} d-flex justify-content-center align-items-center`}><AnimatedSVG className={"weviooSpinner "+(props.chart ? styles.chartSpinner  : '')}></AnimatedSVG></div>
      );
 }
  

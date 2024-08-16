@@ -61,6 +61,7 @@ transition: opacity 0.3s;
 `;
 export const Filters = styled.div`
 overflow: hidden;
+min-height:430px;
 height: 55vh;
 width: 13vw;
 min-width:150px;

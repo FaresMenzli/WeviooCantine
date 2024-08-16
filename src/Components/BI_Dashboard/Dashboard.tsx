@@ -1,6 +1,6 @@
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { string, number } from "prop-types";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Chart } from "react-google-charts";
 import interceptor from "../../Interceptor/Interceptor";
 import { useBackendUrl } from "../../Contexts/BackendUrlContext";
@@ -16,6 +16,27 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import "./Dashboard.css";
 import ElementorCounter from "./ElementorCounter/ElmentorCounter";
+import DashboardForCustomersStats, {
+  ChildComponentHandles,
+} from "./DashboardForCustomersStats/DashboardForCustomersStats";
+
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  OutlinedInput,
+  SelectChangeEvent,
+} from "@mui/material";
+import EventRepeatOutlinedIcon from "@mui/icons-material/EventRepeatOutlined";
+import { User } from "../../Models/User";
+import { TopDishData } from "../../Models/TopDishData";
+import { WidthFull } from "@mui/icons-material";
 
 interface SalesInfoData {
   dishSalesDetailsList: TopDishData[];
@@ -28,29 +49,60 @@ interface Sales {
   dayTotalAmount: number;
 }
 
-interface TopDishData {
-  dishId: number;
-  dishName: string;
-  sales: Sales[];
-  totalAmountAllDays: number;
-  totalQuantitySoldAllDays: number;
-}
-
 const Dashboard: React.FC = () => {
+  const childRef = useRef<ChildComponentHandles>(null);
+
+  const parentHandleClick = () => {
+    if (childRef.current) {
+      childRef.current.handleClick(
+        beginIntervalleMui?.format("YYYY-MM-DD"),
+        endIntervalleMui?.format("YYYY-MM-DD")
+      );
+    }
+  };
+
   const [selectedOptionDish, setSelectedOptionDish] = useState("");
+  const [selectedOptionCustomer, setSelectedOptionCustomer] = useState("All");
   const [selectedDashboard, setSelectedDashboard] = useState(1);
-  const [podiumDishData, setPodiumDishData] = useState([]);
+  const [podiumDishData, setPodiumDishData] = useState<TopDishData[]>([]);
   const [chartLoading, setChartLoading] = useState(false);
   const [totalPeriodAmount, setTotalPeriodAmount] = useState(0);
   const [totalPeriodQuantitySold, setTotalPeriodQuantitySold] = useState(0);
   const [nbOrders, setNbOrders] = useState(0);
+  const today = dayjs();
+  const [soldDishs, setSoldDishs] = useState<SalesInfoData>();
+  const [beginIntervalle, setBeginIntervalle] = useState("2024-03-01");
+  const [endIntervalle, setEndIntervalle] = useState<string>(
+    today.format("YYYY-MM-DD")
+  );
+
+  const [beginIntervalleMui, setBeginIntervalleMui] = useState<Dayjs | null>(
+    dayjs("2024-03-01")
+  );
+
+  const [endIntervalleMui, setEndIntervalleMui] = useState<Dayjs | null>(today);
+  const [beginIntervalleCSRMui, setBeginIntervalleCSRMui] =
+    useState<Dayjs | null>(dayjs("2024-03-01"));
+
+  const [endIntervalleCSRMui, setEndIntervalleCSRMui] = useState<Dayjs | null>(
+    today
+  );
+  const { backendUrl } = useBackendUrl();
+  const [dataToShow, setDataToShow] = useState<null | (number | string)[][]>(
+    null
+  );
+
   const handleDashboardChange = (dashboard: React.SetStateAction<number>) => {
     setSelectedDashboard(dashboard);
   };
   const { data, error } = useSelector((state: RootState) => state.dishes);
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log(beginIntervalleMui?.format("YYYY-MM-DD"));
+    console.log(selectedOptionCustomer);
+  }, [selectedOptionCustomer]);
 
   useEffect(() => {
+    console.log(selectedDashboard);
     if (selectedDashboard == 3) {
       interceptor.get(`${backendUrl}/api/user/User`).then((response) => {
         console.log(response.data);
@@ -59,6 +111,7 @@ const Dashboard: React.FC = () => {
   }, [selectedDashboard]);
 
   useEffect(() => {
+    getUsersList();
     if (selectedOptionDish != "") {
       if (
         soldDishs?.dishSalesDetailsList.find(
@@ -99,24 +152,22 @@ const Dashboard: React.FC = () => {
     //
   }, [selectedOptionDish]);
 
-  const today = dayjs();
-  const [soldDishs, setSoldDishs] = useState<SalesInfoData>();
-  const [beginIntervalle, setBeginIntervalle] = useState("2024-03-01");
-  const [endIntervalle, setEndIntervalle] = useState<string>(
-    today.format("YYYY-MM-DD")
-  );
-  const { backendUrl } = useBackendUrl();
-  const [dataToShow, setDataToShow] = useState<null | (number | string)[][]>(
-    null
-  );
-  /* 
   useEffect(() => {
-    setIntervalle();
-  }, []); */
+    console.log(beginIntervalleMui);
+  }, [beginIntervalleMui]);
+
+  const [userList, setuserList] = useState<User[]>([]);
+  const getUsersList = () => {
+    interceptor
+      .get(`${backendUrl}/api/user/User`)
+      .then((res) => setuserList(res.data));
+  };
   const getOrdersNumber = () => {
     interceptor
       .get(
-        `${backendUrl}/api/orders/nbOrder?start=${beginIntervalle}&end=${endIntervalle}`
+        `${backendUrl}/api/orders/nbOrder?start=${beginIntervalleCSRMui?.format(
+          "YYYY-MM-DD"
+        )}&end=${endIntervalleCSRMui?.format("YYYY-MM-DD")}`
       )
       .then((res) => setNbOrders(res.data));
   };
@@ -149,7 +200,9 @@ const Dashboard: React.FC = () => {
     getOrdersNumber();
     axios
       .get(
-        `${backendUrl}/api/CommandLine/getSalesDetailsByDate?start=${beginIntervalle}&end=${endIntervalle}`
+        `${backendUrl}/api/CommandLine/getSalesDetailsByDate?start=${beginIntervalleCSRMui?.format(
+          "YYYY-MM-DD"
+        )}&end=${endIntervalleCSRMui?.format("YYYY-MM-DD")}`
       )
       .then((response) => {
         setSoldDishs(response.data);
@@ -252,18 +305,28 @@ const Dashboard: React.FC = () => {
     fontSize: 20,
   };
 
-  function handleSelectDishChange(
-    event: React.ChangeEvent<HTMLSelectElement>
-  ): void {
+  const handleSelectDishChange = (event: SelectChangeEvent) => {
     setSelectedOptionDish(event.target.value);
-  }
+  };
+  const handleSelectCustomerChange = (event: SelectChangeEvent) => {
+    setSelectedOptionCustomer(event.target.value);
+  };
+
+  const updateCustomerStatByDate = () => {
+    interceptor
+      .get(
+        `${backendUrl}/api/user/userForDashboard?start=${beginIntervalleMui?.format(
+          "YYYY-MM-DD"
+        )}&end=${endIntervalleMui?.format("YYYY-MM-DD")}`
+      )
+      .catch((error) => console.log(error));
+  };
 
   return (
     <div className="mt-3">
       <AdminLeftBar>
         <div className="ps-2 pt-5">
           <Form>
-            <div className="fw-bold pb-2"> Orders :</div>
             <Label>
               <input
                 type="radio"
@@ -273,39 +336,47 @@ const Dashboard: React.FC = () => {
               />
               <span>Orders</span>
             </Label>
-            <div hidden={selectedDashboard != 1} className="text-center ">
-              <tr>
-                <td>begin :</td>
-                <td>
-                  <input
-                    type="date"
-                    name=""
-                    id=""
-                    defaultValue={beginIntervalle}
-                    onChange={handleBeginDateChange}
+            <div hidden={selectedDashboard != 1} >
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={["DatePicker"]}>
+                  <DatePicker
+                    className="w-75"
+                    format="DD/MM/YYYY"
+                    defaultValue={beginIntervalleCSRMui}
+                    label="From"
+                    value={beginIntervalleCSRMui}
+                    onChange={(newValue) => setBeginIntervalleCSRMui(newValue)}
                   />
-                </td>
-              </tr>
-              <tr>
-                <td>end :</td>
-                <td>
-                  <input
-                    type="date"
-                    name=""
-                    id=""
-                    defaultValue={endIntervalle}
-                    onChange={handleEndDateChange}
-                  />
-                </td>
-              </tr>
+                </DemoContainer>
+              </LocalizationProvider>
 
-              <input
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={["DatePicker"]}>
+                  <DatePicker
+                    className="w-75"
+                    label="To"
+                    format="DD/MM/YYYY"
+                    onChange={(newValue) => setEndIntervalleCSRMui(newValue)}
+                    defaultValue={endIntervalleCSRMui}
+                  />
+                </DemoContainer>
+              </LocalizationProvider>
+
+              {/*       <input
                 type="button"
                 name=""
                 id=""
                 value="update time intervalle"
                 onClick={() => setIntervalle()}
-              />
+              /> */}
+              <Button
+                className="mt-3"
+                onClick={setIntervalle}
+                variant="contained"
+                endIcon={<EventRepeatOutlinedIcon />}
+              >
+                update Intervalle
+              </Button>
             </div>
             <Label>
               <input
@@ -315,47 +386,93 @@ const Dashboard: React.FC = () => {
               />
             </Label>
             <div hidden={selectedDashboard != 1}>
-              select a Dish
-              <select
-                value={selectedOptionDish}
-                onChange={handleSelectDishChange}
-              >
-                <option value="">All</option>
-                {data.map((dish) => (
-                  <option value={dish.dishId}>{dish.dishName}</option>
-                ))}
-              </select>
+              <FormControl fullWidth className="mt-3">
+                <InputLabel id="demo-simple-select-label">Dish</InputLabel>
+                <Select
+                  className="w-75"
+                  input={<OutlinedInput label="Dish" />}
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={selectedOptionDish}
+                  onChange={handleSelectDishChange}
+                  label="Dish"
+                >
+                  <MenuItem value="">All</MenuItem>
+                  {data.map((dish) => (
+                    <MenuItem value={dish.dishId}>{dish.dishName}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </div>
-            <div className="fw-bold pb-2"> Customer :</div>
+
             <Label>
               <input
                 type="radio"
                 name="radio"
                 onChange={() => handleDashboardChange(3)}
               />
-              <span>Customers</span>
+              <span className="mt-3">Customers</span>
             </Label>
-            <div hidden={selectedDashboard != 3}>
-              from
-              <input type="date" value="" />
-              to
-              <input type="date" name="" id="" />
+            <div hidden={selectedDashboard != 3} >
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={["DatePicker"]}>
+                  <DatePicker
+                    className="w-75"
+                    format="DD/MM/YYYY"
+                    defaultValue={beginIntervalleMui}
+                    label="From"
+                    value={beginIntervalleMui}
+                    onChange={(newValue) => setBeginIntervalleMui(newValue)}
+                  />
+                </DemoContainer>
+              </LocalizationProvider>
+
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={["DatePicker"]}>
+                  <DatePicker
+                    className="w-75"
+                    label="To"
+                    format="DD/MM/YYYY"
+                    onChange={(newValue) => setEndIntervalleMui(newValue)}
+                    defaultValue={endIntervalleMui}
+                  />
+                </DemoContainer>
+              </LocalizationProvider>
+              <Button
+                className="mt-3"
+                onClick={parentHandleClick}
+                variant="contained"
+                endIcon={<EventRepeatOutlinedIcon />}
+              >
+                update Intervalle
+              </Button>
             </div>
             <div hidden={selectedDashboard != 3}>
-              select a customer
-              <select>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-              </select>
+              <FormControl className="mt-3 w-75">
+                <InputLabel id="demo-simple-select-label">Customer</InputLabel>
+                <Select
+                  input={<OutlinedInput label="Name" />}
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={selectedOptionCustomer}
+                  onChange={handleSelectCustomerChange}
+                  label="Customer"
+                >
+                  <MenuItem value="All">All</MenuItem>
+                  {userList.map((user: User) => (
+                    <MenuItem value={user.userId}>
+                      {user.userFirstName}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </div>
           </Form>
         </div>
       </AdminLeftBar>
       {/* {chartLoading ? <WeviooSpinner></WeviooSpinner> :  */}
       {/* ( */}
-      <div className="pb-5 pt-5 mt-4" style={{ paddingLeft: "250px" }}>
+      <div className="pb-5 pt-2 mt-4" style={{ paddingLeft: "250px" }}>
         {selectedDashboard == 1 ? (
           <div>
             <div className="topDashboardStatitsticContainer">
@@ -408,9 +525,9 @@ const Dashboard: React.FC = () => {
                   <div>
                     Amount realised
                     <ElementorCounter
-                      initialValue={0}
+                      initialValue={totalPeriodAmount - 2000}
                       stopAt={totalPeriodAmount}
-                      delay={5}
+                      delay={1}
                     ></ElementorCounter>
                     DNT
                   </div>
@@ -462,13 +579,14 @@ const Dashboard: React.FC = () => {
                 gridTemplateColumns: "45% 45%",
                 justifyItems: "center",
                 gap: "20px",
+                gridAutoRows:" 300px",
               }}
             >
               {/*   add pourcentage of sold dish from all sold 
              unsold dishs  */}
               <div className="dashboaradItems">
                 {dataToShow == null ? (
-                  <WeviooSpinner chart={true}></WeviooSpinner>
+                  <WeviooSpinner  chart={true}></WeviooSpinner>
                 ) : (
                   <Chart
                     width={"100%"}
@@ -490,19 +608,18 @@ const Dashboard: React.FC = () => {
                   />
                 )}
               </div>
-
+<div className="dashboaradItems">
               {dataToShow == null ? (
                 <WeviooSpinner chart={true}></WeviooSpinner>
               ) : (
                 <Podium data={podiumDishData}></Podium>
               )}
-
+</div>
               <div className="dashboaradItems">
                 {dataToShow == null ? (
                   <WeviooSpinner chart={true}></WeviooSpinner>
                 ) : (
                   <Chart
-                    //most sold dish
                     width={"100%"}
                     height={"300px"}
                     chartType="ColumnChart"
@@ -554,6 +671,7 @@ const Dashboard: React.FC = () => {
                   />
                 )}
               </div>
+              <div className="dashboaradItems">
               {dataToShow == null ? (
                 <WeviooSpinner chart={true}></WeviooSpinner>
               ) : (
@@ -570,18 +688,8 @@ const Dashboard: React.FC = () => {
                   }}
                 />
               )}
-              {/* {dataToShow == null ? (
-              <WeviooSpinner chart={true}></WeviooSpinner>
-            ) : (
-              <Chart
-                width={"100%"}
-                height={"300px"}
-                chartType="LineChart"
-                loader={<WeviooSpinner></WeviooSpinner>}
-                data={dataToShow || []}
-                options={pieOptions}
-              />
-            )} */}
+              </div>
+{/* 
               {dataToShow == null ? (
                 <WeviooSpinner chart={true}></WeviooSpinner>
               ) : (
@@ -597,8 +705,8 @@ const Dashboard: React.FC = () => {
                     },
                   }}
                 />
-              )}
-
+              )} */}
+<div className="dashboaradItems">
               {dataToShow == null ? (
                 <WeviooSpinner chart={true}></WeviooSpinner>
               ) : (
@@ -614,8 +722,8 @@ const Dashboard: React.FC = () => {
                     },
                   }}
                 />
-              )}
-              {dataToShow == null ? (
+              )}</div>
+             {/*  {dataToShow == null ? (
                 <WeviooSpinner chart={true}></WeviooSpinner>
               ) : (
                 <Chart
@@ -630,9 +738,9 @@ const Dashboard: React.FC = () => {
                     },
                   }}
                 />
-              )}
+              )} */}
 
-              {dataToShow == null ? (
+            {/*   {dataToShow == null ? (
                 <WeviooSpinner chart={true}></WeviooSpinner>
               ) : (
                 <Chart
@@ -647,17 +755,9 @@ const Dashboard: React.FC = () => {
                     },
                   }}
                 />
-              )}
+              )} */}
 
-              {/* <Chart
-              width={"100%"}
-              height={"300px"}
-              chartType="LineChart"
-              loader={<WeviooSpinner></WeviooSpinner>}
-              data={dataToShow || []}
-              options={pieOptions}
-            /> */}
-              <Chart
+         {/*      <Chart
                 width={"100%"}
                 height={"300px"}
                 chartType="ScatterChart"
@@ -692,8 +792,8 @@ const Dashboard: React.FC = () => {
                     title: "Sales and Expenses Comparison",
                   },
                 }}
-              />
-              <Chart
+              /> */}
+            {/*   <Chart
                 width={"100%"}
                 height={"300px"}
                 chartType="BarChart"
@@ -729,191 +829,27 @@ const Dashboard: React.FC = () => {
                     title: "Sales Scatter",
                   },
                 }}
-              />
-              <Chart
-                //order by BU
-                width={"100%"}
-                height={"300px"}
-                chartType="Bar"
-                loader={<WeviooSpinner></WeviooSpinner>}
-                data={dataToShow || []}
-                options={{
-                  chart: {
-                    title: "Sales Scatter",
-                  },
-                }}
-              />
-
-              <Chart
-                //top three dishes sold by day trough a week
-                width={"100%"}
-                height={"300px"}
-                chartType="LineChart"
-                loader={<WeviooSpinner></WeviooSpinner>}
-                data={dataToShow || []}
-                options={{
-                  chart: {
-                    title: "Sales Scatter",
-                  },
-                }}
-              />
-
-              {/*         <Chart
-              width={"100%"}
-              height={"300px"}
-              chartType="LineChart"
-              loader={<WeviooSpinner></WeviooSpinner>}
-              data={dataToShow || []}
-              options={pieOptions}
-            />
-            <Chart
-              width={"100%"}
-              height={"300px"}
-              chartType="ScatterChart"
-              loader={<WeviooSpinner></WeviooSpinner>}
-                            data={dataToShow || []}
-
-              options={{
-                chart: {
-                  title: "Sales Scatter",
-                },
-              }}
-            />
-            <Chart
-              width={"100%"}
-              height={"300px"}
-              chartType="AreaChart"
-              loader={<WeviooSpinner></WeviooSpinner>}
-                            data={dataToShow || []}
-
-              options={{
-                chart: {
-                  title: "Sales and Expenses Over Time",
-                },
-              }}
-            />
-            <Chart
-              width={"100%"}
-              height={"300px"}
-              chartType="ComboChart"
-              loader={<WeviooSpinner></WeviooSpinner>}
-                            data={dataToShow || []}
-
-              options={{
-                chart: {
-                  title: "Sales and Expenses Comparison",
-                },
-              }}
-            />
-            <Chart
-              width={"100%"}
-              height={"300px"}
-              chartType="BarChart"
-              loader={<WeviooSpinner></WeviooSpinner>}
-                            data={dataToShow || []}
-
-              options={{
-                chart: {
-                  title: "Sales by Year",
-                },
-              }}
-            />
-         
-            <Chart
-              width={"100%"}
-              height={"300px"}
-              chartType="LineChart"
-              loader={<WeviooSpinner></WeviooSpinner>}
-                            data={dataToShow || []}
-
-              options={{
-                chart: {
-                  title: "Sales Trend",
-                },
-              }}
-            />
-            <Chart
-              width={"100%"}
-              height={"300px"}
-              chartType="ScatterChart"
-              loader={<WeviooSpinner></WeviooSpinner>}
-                            data={dataToShow || []}
-
-              options={{
-                chart: {
-                  title: "Sales Scatter",
-                },
-              }}
-            />
-            <Chart
-              //order by BU
-              width={"100%"}
-              height={"300px"}
-              chartType="Bar"
-              loader={<WeviooSpinner></WeviooSpinner>}
-                            data={dataToShow || []}
-
-              options={{
-                chart: {
-                  title: "Sales Scatter",
-                },
-              }}
-            />
-            <Chart
-              //most sold dish
-              width={"100%"}
-              height={"300px"}
-              chartType="ColumnChart"
-              loader={<WeviooSpinner></WeviooSpinner>}
-                            data={dataToShow || []}
-
-              options={{
-                chart: {
-                  title: "Sales Scatter",
-                },
-              }}
-            />
-            <Chart
-              //top three dishes sold by day trough a week
-              width={"100%"}
-              height={"300px"}
-              chartType="LineChart"
-              loader={<WeviooSpinner></WeviooSpinner>}
-                            data={dataToShow || []}
-
-              options={{
-                chart: {
-                  title: "Sales Scatter",
-                },
-              }}
-            /> */}
+              /> */}
+              
             </div>
           </div>
-        ) : selectedDashboard == 2 ? (
-          <div
+        ) : selectedDashboard == 3 ? (
+          <>
+            {/*    <div
             className="mt-3"
             style={{
               display: "grid",
               gridTemplateColumns: "45% 45%",
               justifyItems: "center",
               gap: "20px",
-            }}
-          >
-            {dataToShow == null ? (
-              <WeviooSpinner chart={true}></WeviooSpinner>
-            ) : (
-              <Chart
-                width={"100%"}
-                height={"300px"}
-                chartType="LineChart"
-                loader={<WeviooSpinner></WeviooSpinner>}
-                data={dataToShow || []}
-                options={pieOptions}
-              />
-            )}
-          </div>
+            }}> */}
+            <DashboardForCustomersStats
+              selectedCustomer={selectedOptionCustomer}
+              ref={childRef}
+            ></DashboardForCustomersStats>
+          </>
         ) : (
-          <></>
+          <> </>
         )}
       </div>
       {/* )} */}
