@@ -196,9 +196,13 @@ const AdminDashboard: FC<AdminDashboardProps> = () => {
                     </tfoot>
                   </table>
                 </div> */
-                <div>
+                <div
+          className=" d-flex flex-column justify-content-center align-items-center w-100 py-2 px-3"
+        >
+                <div className=" rounded-3 w-75 bg-light p-2 ">
 
                   <ManageUserTable data={users}></ManageUserTable>
+                </div>
                 </div>
 
               ) : view === "Dashboard" ? (

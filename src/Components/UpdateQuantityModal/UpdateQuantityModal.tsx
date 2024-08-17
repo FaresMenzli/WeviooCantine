@@ -48,7 +48,7 @@ const UpdateQuantityModal: FC<UpdateQuantityModalProps> = ({ isOpen, onClose, di
      
     }
 
-    return (<StyledModal className={"mt-5 h-75"}  isOpen={isOpen}
+    return (<StyledModal className={"mt-5 h-75 "}  isOpen={isOpen}
         onRequestClose={onClose}
         ariaHideApp={false}>
     

@@ -90,8 +90,7 @@ const ManageDish: FC<ManageDishProps> = (props) => {
      
        
 
-        {/*  <Table data={props.data} itemsPerPage={7}></Table> */}
-        {/*    */}
+       
       </div>
       <ToastContainer />
     </div>
