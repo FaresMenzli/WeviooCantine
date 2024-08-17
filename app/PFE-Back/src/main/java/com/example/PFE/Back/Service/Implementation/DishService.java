@@ -50,4 +50,18 @@ public class DishService {
     public List<Dish> getRandomEntities() {
         return dishRepo.findRandomEntities();
     }
+
+    public Dish updateDish(Long dishId, Dish dishDetails) {
+        return dishRepo.findById(dishId).map(dish -> {
+            dish.setDishName(dishDetails.getDishName());
+            dish.setDishCategory(dishDetails.getDishCategory());
+            dish.setDishOrigin(dishDetails.getDishOrigin());
+            dish.setDishPrice(dishDetails.getDishPrice());
+            dish.setDishPhoto(dishDetails.getDishPhoto());
+            return dishRepo.save(dish);
+        }).orElseGet(() -> {
+            dishDetails.setDishId(dishId);
+            return dishRepo.save(dishDetails);
+        });
+    }
 }

@@ -1,5 +1,4 @@
 import * as React from "react";
-import PropTypes from "prop-types";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -7,8 +6,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-
+import {PersonRemoveOutlined, ManageAccountsOutlined, SupervisedUserCircleOutlined} from '@mui/icons-material';
 import {
+  Tooltip,
+  IconButton,
   Button,
   Dialog,
   DialogActions,
@@ -18,12 +19,11 @@ import {
   styled,
   TablePagination,
 } from "@mui/material";
-import { Trash, Pencil } from "react-bootstrap-icons";
 import { User } from "../../../Models/User";
 import UpdateRoleModal from "../UpdateRoleModal/UpdateRoleModal";
-import axios from "axios";
 import { useBackendUrl } from "../../../Contexts/BackendUrlContext";
 import UpdateUserDialog from "./UpdateUserDialog/UpdateUserDialog ";
+import { pink } from "@mui/material/colors";
 
 interface ManageUserTableProps {
   data: User[];
@@ -113,22 +113,22 @@ const ManageUserTable: React.FC<ManageUserTableProps> = ({ data }) => {
         onClose={handleCloseModal}
         user={userToUpdateRole ? userToUpdateRole[0] : undefined}
       ></UpdateRoleModal>
-      <TableContainer sx={{ maxHeight: 440 }} component={Paper}>
+      <TableContainer sx={{ maxHeight: 500 }} component={Paper}>
         <Table stickyHeader aria-label="sticky table">
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="ms-5"
             placeholder="search"
             type="text"
           />
-          <TableHead sx={{ position: "sticky" }}>
+          <TableHead sx={{ position: "sticky",zIndex:isUpdateRoleModalOpen ?0:1 }}>
             <TableRow>
-              <StyledTableCell align="center">Actions </StyledTableCell>
-              <StyledTableCell align="center">User Name </StyledTableCell>
+             
+              <StyledTableCell align="center">User </StyledTableCell>
               <StyledTableCell align="center">User Email </StyledTableCell>
               <StyledTableCell align="center">Actual Role </StyledTableCell>
-              <StyledTableCell align="center">Update Role</StyledTableCell>
+              <StyledTableCell align="center">Actions </StyledTableCell>
+
             </TableRow>
           </TableHead>
           <TableBody>
@@ -144,21 +144,10 @@ const ManageUserTable: React.FC<ManageUserTableProps> = ({ data }) => {
                   key={(item as User).userId}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell align="center">
-                    <div>
-                      <Pencil className="clickable" onClick={()=>handleEditUserDialogOpen(item)}></Pencil>
-                      <Trash
-                        className="clickable"
-                        onClick={() => {
-                          setUserToDelete((item as User).userId);
-                          handleClickOpen();
-                        }}
-                      ></Trash>
-                    </div>
-                  </TableCell>
+                
 
                   <TableCell component="th" scope="row">
-                    {(item as User).userFirstName} {(item as User).userLastName}
+                    {(item as User).userFirstName} <b>{(item as User).userLastName}</b>
                   </TableCell>
                   <TableCell align="center">
                     {(item as User).userEmail}
@@ -166,12 +155,35 @@ const ManageUserTable: React.FC<ManageUserTableProps> = ({ data }) => {
                   <TableCell align="center">
                     {(item as User).userRole}
                   </TableCell>
-                  <TableCell align="center">
+                  {/* <TableCell align="center">
                     <input
                       onClick={() => UpdateRole((item as User).userId)}
                       type="button"
                       value={"update Role"}
                     ></input>
+                  </TableCell> */}
+                  <TableCell align="center">
+                  <Tooltip title="Edit user details">
+  <IconButton onClick={()=>handleEditUserDialogOpen(item)}>
+    <ManageAccountsOutlined  />
+  </IconButton>
+  </Tooltip>
+  <Tooltip title="update Role">
+  <IconButton onClick={() => UpdateRole((item as User).userId)}>
+    <SupervisedUserCircleOutlined  />
+  </IconButton>
+  </Tooltip>
+             
+             
+  <Tooltip title="Delete User">
+  <IconButton  onClick={() => {
+                          setUserToDelete((item as User).userId);
+                          handleClickOpen();
+                        }}>
+    <PersonRemoveOutlined sx={{ color: pink[500] }} />
+  </IconButton>
+</Tooltip>
+                      
                   </TableCell>
                 </StyledTableRow>
               ))}

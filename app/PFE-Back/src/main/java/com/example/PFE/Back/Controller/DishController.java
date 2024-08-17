@@ -75,6 +75,19 @@ public class DishController {
         return DishCategory.values();
     }
 
+    @PutMapping("updateDish/{dishId}")
+    public ResponseEntity<Dish> updateDish(
+            @PathVariable Long dishId,
+            @RequestBody Dish dishDetails) {
+
+        Optional<Dish> optionalUser = dishService.getDishById(dishId);
+        if (optionalUser.isPresent()) {
+            Dish updatedDish = dishService.updateDish(dishId, dishDetails);
+            return ResponseEntity.ok(updatedDish);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 
 //    @CrossOrigin(origins = "http://localhost:3000")

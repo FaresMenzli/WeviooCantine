@@ -18,7 +18,7 @@ const CartDropDown: FC<CartDropDownProps> = () => {
   return (
     <>
       {cart.length != 0 ? (
-        <div className="d-flex flex-column align-items-center ">
+        <div className="d-flex flex-column align-items-center z-3 ">
         <table className="navbarCartTable text-center mb-5 mt-5">
           <thead>
             <tr>
