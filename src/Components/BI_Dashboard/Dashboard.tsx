@@ -472,7 +472,7 @@ const Dashboard: React.FC = () => {
       </AdminLeftBar>
       {/* {chartLoading ? <WeviooSpinner></WeviooSpinner> :  */}
       {/* ( */}
-      <div className="pb-5 pt-2 mt-4" style={{ paddingLeft: "250px" }}>
+      <div className="pb-5 pt-2 mt-5" style={{ paddingLeft: "250px" }}>
         {selectedDashboard == 1 ? (
           <div>
             <div className="topDashboardStatitsticContainer">

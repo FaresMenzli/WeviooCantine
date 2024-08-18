@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 
 export const AdminDashboardWrapper = styled.div`
-
 height:100%;
-width:100%;
+min-height:100vh;
 
 `;
 export const TopBarDashboard = styled.div`

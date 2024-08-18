@@ -3,6 +3,8 @@ import interceptor from "../../../Interceptor/Interceptor";
 import { BoxArrowRight, Pen, Trash } from "react-bootstrap-icons";
 import WeviooSpinner from "../../WeviooSpinner/WeviooSpinner";
 import dayjs from 'dayjs';
+import CloseIcon from "@mui/icons-material/Close";
+
 
 import styles from "./OrderList.module.css"
 import { Filters, RightBar } from "../../Dishes/Dishes.styled";
@@ -10,6 +12,19 @@ import { User } from "../../../Models/User";
 
 import { Dish } from "../../../Models/Dish";
 import { useBackendUrl } from "../../../Contexts/BackendUrlContext";
+import { Table , TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  IconButton,
+  TableContainer,Paper,
+  DialogActions,
+  Button,
+  DialogTitle,
+  Dialog,
+  DialogContent} from "@mui/material";
+import { AdminLeftBar } from "../../AdminDashboard/AdminDashboard.styled";
+
 interface OrderListProps {
     
 }
@@ -20,7 +35,7 @@ interface CommandeLine{
 
 }
 interface Order {
-    id: number;
+    orderId: number;
     orderDate: Date;
     total: number;
     user:User
@@ -56,7 +71,7 @@ const handleDateChange =  (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(event.target.value);    
 };
 
-const convertDate = (date:string) => {
+const convertDate = (date:string|Date) => {
 
   const originalDate = new Date(date);
    return originalDate.toLocaleString('en-GB', {
@@ -75,16 +90,10 @@ const convertDate = (date:string) => {
 
     return (  <>
   
-    <RightBar className=" ms-3 d-flex">
-    
-    <button
-      id="Filters"
-      className="fw-bold "
-    
-    >
-      "show Filters"
-    </button>
-    <Filters className={styles.filterContainer}>
+   
+  <AdminLeftBar className="mt-5 pt-5">
+  
+   
       <div className="mt-3 ms-2 fw-bold">Filter</div>
    
       <div className="ms-3 mb-2 mt-3 fw-bold"> Selece Date</div>
@@ -98,52 +107,57 @@ const convertDate = (date:string) => {
         
        
      
-    </Filters>
-  </RightBar>
+    
+  </AdminLeftBar>
      {loading? (<WeviooSpinner></WeviooSpinner> ):
      
      (<div>
-    
-    <table className="text-center m-auto mt-5" >
-            <thead>
-              <tr>
-              <th className="white textShadow">Actions</th>
-              <th className="white textShadow">id</th>
-              <th className="white textShadow">orderDate</th>
-              <th className="white textShadow">Total</th>
-              <th className="white textShadow">User</th>
-              <th className="white textShadow">Order Details</th>
-
-              </tr>
-            </thead>
-            <tbody>
-          {orders.filter((order:Order)=>{
-
-       return searchByUser.toLowerCase() === ""
-         ? order
-         : ( order.user.userFirstName.toLocaleLowerCase().includes(searchByUser) || order.user.userLastName.toLocaleLowerCase().includes(searchByUser))}) 
-       
-
-          
-          
-          
-          
-          .map((order: any) => (    
-              <tr key={order.userId}>
-                <td>
-                <Pen color="white" className="me-3 clickable" ></Pen>
-                  <Trash className="clickable"  color="red"> </Trash>
-                </td>
-                <td className="white">{order.orderId}</td>
-                <td className="white">{convertDate(order.orderDate)}</td>
-                <td className="white">{order.total}</td>
-                <td className="white">{order.user.userFirstName} <b>{order.user.userLastName}</b> </td>
-                <td className="clickable" onClick={()=>handleOrderDetailsClick(order.commandeLines)}> <BoxArrowRight color="white"></BoxArrowRight></td>
-
-              </tr>
-            ))}</tbody>
-          </table>
-       
+    { orders.length>0 ? (       <TableContainer sx={{  margin: "auto", marginTop:8,maxHeight: 440 ,width:"50%"}} component={Paper}>
+         <Table sx={{ margin: "auto",  textAlign: "center" , }}>
+      <TableHead>
+        <TableRow>
+          <TableCell className="white textShadow">id</TableCell>
+          <TableCell className="white textShadow">orderDate</TableCell>
+          <TableCell className="white textShadow">Total</TableCell>
+          <TableCell className="white textShadow">User</TableCell>
+          <TableCell className="white textShadow">Order Details</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {orders
+          .filter((order) => {
+            return searchByUser.toLowerCase() === ""
+              ? order
+              : order.user.userFirstName.toLowerCase().includes(searchByUser) ||
+                  order.user.userLastName.toLowerCase().includes(searchByUser);
+          })
+          .map((order) => (
+            <TableRow key={order.orderId}>
+             
+              <TableCell className="white">{order.orderId}</TableCell>
+              <TableCell className="white">{convertDate(order.orderDate)}</TableCell>
+              <TableCell className="white">{order.total} DNT</TableCell>
+              <TableCell className="white">
+                {order.user.userFirstName} <b>{order.user.userLastName}</b>
+              </TableCell>
+              <TableCell>
+                <IconButton
+                  color="primary"
+                  onClick={() => handleOrderDetailsClick(order.commandeLines)}
+                >
+                  <BoxArrowRight />
+                </IconButton>
+              </TableCell>
+            </TableRow>
+          ))}
+      </TableBody>
+    </Table>
+    </TableContainer>) :(<div className={`${styles.noOrders}`} >
+      <div className="bg-light p-3 rounded-3"><b>No orders in this date</b> </div>
+     
+      
+      </div>)}
+ 
           </div> 
           )
           
@@ -151,36 +165,56 @@ const convertDate = (date:string) => {
 }
 
 {modalOpen && (
-        <div className={styles.modal }>
-          <div className={styles.modalContent}>
-            <span className={styles.close} onClick={() => setModalOpen(false)}>
-              &times;
-            </span>
-            <table className="text-center m-auto mt-5" >
-            <thead>
-              <tr>
-              <th > CommandeLine Id</th>
-              <th >Dish name</th>
-              <th >Dish photo</th>
-              <th >quantity</th>
-              
-
-              </tr>
-            </thead>
-            <tbody>
-{commandeLines.map((cl :CommandeLine) =>
-
-            <tr>
-              <td>{cl.commandeLineId}</td>
-              <td>{cl.dish.dishName}</td>
-              <td><img height={60} src={cl.dish.dishPhoto} alt="" /></td>
-            <td>{cl.quantityOrdered}</td>
-            </tr>)
-}
-</tbody>
-</table>
-          </div>
-        </div>
+        <Dialog
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogTitle>
+          Order Details
+          <IconButton
+            aria-label="close"
+            onClick={() => setModalOpen(false)}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>CommandeLine Id</TableCell>
+                <TableCell>Dish name</TableCell>
+                <TableCell>Dish photo</TableCell>
+                <TableCell>Quantity</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {commandeLines.map((cl) => (
+                <TableRow key={cl.commandeLineId}>
+                  <TableCell>{cl.commandeLineId}</TableCell>
+                  <TableCell>{cl.dish.dishName}</TableCell>
+                  <TableCell>
+                    <img height={60} src={cl.dish.dishPhoto} alt={cl.dish.dishName} />
+                  </TableCell>
+                  <TableCell>{cl.quantityOrdered}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setModalOpen(false)} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
       )}  
     </>);
 }
