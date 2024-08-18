@@ -17,11 +17,6 @@ const OrderPassed: FC<OrderPassedProps> = (props) => {
     setisOpen(false);
   };
   const { user } = useAuth();
-
-
-    console.log(props.dishs)
-    console.log(props.cart)
-
     return (
         <Modal 
       className="cartModal"
@@ -29,17 +24,17 @@ const OrderPassed: FC<OrderPassedProps> = (props) => {
       onRequestClose={closeModal}
       contentLabel="Example Modal"
     >
-      <h1 className="white">Thank you {user?.userFirstName} for passing the order </h1>
-      <h2 className="white">your order details</h2>
-      <table className=" white text-center mt-5">
+      <h1 className="">Thank you {user?.userFirstName} for passing the order </h1>
+      <h2 className="">your order details</h2>
+      <table className=" passedOrderTable text-center">
               <thead>
                 <tr>
-                  <th className="white textShadow">DishId</th>
-                  <th className="white textShadow">DishName</th>
-                  <th className="white textShadow">Dish photo</th>
-                  <th className="white textShadow">Dish category</th>
-                  <th className="white textShadow">Quantity</th>
-                  <th className="white textShadow">Price</th>
+                  <th className=" ">DishId</th>
+                  <th className=" ">DishName</th>
+                  <th className=" ">Dish photo</th>
+                  <th className=" ">Dish category</th>
+                  <th className=" ">Quantity</th>
+                  <th className=" ">Price</th>
                 
                 </tr>
               </thead>
@@ -93,7 +88,7 @@ const OrderPassed: FC<OrderPassedProps> = (props) => {
                   <td></td>
                   <td></td>
                   <td className="fw-bold textShadow  totalCell">Total:</td>{" "}
-                  <td className="fw-bold textShadow totalCell">
+                  <td className="fw-bold  totalCell">
                     {props.cart.reduce((a, b) => a + b.quantity, 0)}
                   </td>
                   <td className="fw-bold">{props.totalPrice} TND</td>

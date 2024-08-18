@@ -201,7 +201,8 @@ const convertDate = (date:string|Date) => {
                   <TableCell>{cl.commandeLineId}</TableCell>
                   <TableCell>{cl.dish.dishName}</TableCell>
                   <TableCell>
-                    <img height={60} src={cl.dish.dishPhoto} alt={cl.dish.dishName} />
+                    <img  height={70}
+                        width={70} src={cl.dish.dishPhoto} alt={cl.dish.dishName} />
                   </TableCell>
                   <TableCell>{cl.quantityOrdered}</TableCell>
                 </TableRow>
