@@ -2,7 +2,7 @@
   position: absolute;
   inset: 40px;
   border: 3px solid rgb(204, 204, 204);
-  background: #2c674c;
+  background: #ffffff;
   overflow: auto;
   border-radius: 17px;
   outline: none;
@@ -14,4 +14,10 @@
   align-items: center;
   flex-direction: column;
   margin-top: 10vh;
+}
+.passedOrderTable{
+  width: 50vw;
+}
+.passedOrderTable thead{
+  height: 50px;
 }
