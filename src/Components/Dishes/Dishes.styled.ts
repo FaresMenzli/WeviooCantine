@@ -34,6 +34,10 @@ border-radius: 20px;
 opacity: 77%;
 overflow: hidden;`;
 export const RightBar = styled.div`
+    height: 100vh;
+    width: 300px;
+    position: fixed;
+}
 & #suggestion{
     min-width:200px;
     border-radius:20px;

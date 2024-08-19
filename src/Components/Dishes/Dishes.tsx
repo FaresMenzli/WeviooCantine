@@ -23,6 +23,7 @@ import WeviooSuggestionAnimated from "../WeviooSuggestionAnimated/WeviooSuggesti
 import WeviooNavbar from "../WeviooNavbar/WeviooNavbar";
 import WeatherSuggetion from "./WeatherSuggetion/WeatherSuggetion";
 
+import "./Dishes.css"
 interface DishesProps {}
 const Dishes: FC<DishesProps> = () => {
   const dispatch = useDispatch();
@@ -95,21 +96,27 @@ const Dishes: FC<DishesProps> = () => {
     <>
       <DishesMainPage>
         <WeviooNavbar></WeviooNavbar>
+      
+        <div className="restaurantBg pt-4 pb-5">
         <RightBar className=" ms-3 d-flex ">
+          <div className=" mt-5 d-flex  flex-column align-items-center">
           <button
             
-            className="fw-bold position-fixed "
+            className="fw-bold button mb-2 "
             onClick={() => setshowFilters(!showFilters)}
           >
             {!showFilters ? "show Filters" : "hide Filters"}
           </button>
           <button
-            id="Filters"
-            className="fw-bold position-fixed "
+           
+            
+            className="fw-bold button "
             onClick={() => setshowSuggestions(!showSuggestions)}
           >
             {!showSuggestions ? "show Suggestions" : "hide Suggestions"}
           </button>
+          </div>
+         
           <Filters hidden={!showFilters}>
             <div className="mt-3 ms-2 fw-bold">Filter</div>
             <div className="ms-3 mb-2 fw-bold"> Category :</div>
@@ -218,7 +225,6 @@ const Dishes: FC<DishesProps> = () => {
           </Filters>
         </RightBar>
 
-        <div className="restaurantBg pt-4 pb-5">
           <div className="searchWrapper">
             <div className="input-group searchGroup m-auto mb-4">
               <span className="input-group-text" style={{ height: "30px" }}>
@@ -248,8 +254,8 @@ const Dishes: FC<DishesProps> = () => {
           </div>
 
           <DishesWrapper
-            style={{ zoom: "80%", marginTop: "50vh", }}
-            className="ps-5 pt-4"
+            style={{ zoom: "80%" }}
+            className="ps-5 pt-4 mt-5"
           >
            
             {filteredDishes

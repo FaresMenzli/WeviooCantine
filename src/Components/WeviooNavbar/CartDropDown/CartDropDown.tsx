@@ -3,11 +3,22 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { Dish } from "../../../Models/Dish";
 import "./CartDropDown.css";
+import { Button } from "@mui/material";
+import {Info} from '@mui/icons-material';
+import { useNavigate } from "react-router-dom";
 
 interface CartDropDownProps {}
 
 const CartDropDown: FC<CartDropDownProps> = () => {
+  const navigate = useNavigate();
   const cart = useSelector((state: RootState) => state.cart.value);
+ let totalPrice =0;
+ const linePrice = (a: number, b: number) => {
+    
+  totalPrice += a * b;
+  
+  return a * b;
+};
   const { data, loading, error } = useSelector(
     (state: RootState) => state.dishes
   );
@@ -19,12 +30,11 @@ const CartDropDown: FC<CartDropDownProps> = () => {
     <>
       {cart.length != 0 ? (
         <div className="d-flex flex-column align-items-center z-3 ">
-        <table className="navbarCartTable text-center mb-5 mt-5">
+        <table className="navbarCartTable rounded-3 text-center mb-4 mt-4">
           <thead>
             <tr>
               <th className="">DishName</th>
               <th className=" ">Dish photo</th>
-
               <th className=" ">Quantity</th>
               <th className=" ">Price</th>
             </tr>
@@ -57,11 +67,14 @@ const CartDropDown: FC<CartDropDownProps> = () => {
                   </div>
                 </td>
                 <td>
-                  {cart.findIndex((x) => x.dishId === dish.dishId) !== -1
-                    ? (cart.filter((item) => item.dishId === dish.dishId)[0]
-                        .quantity,
-                      dish.dishPrice)
-                    : 1}{" "}
+                {cart.findIndex((x) => x.dishId === dish.dishId) !== -1
+                        ? linePrice(
+                            cart.filter((item) => item.dishId === dish.dishId)[0]
+                              .quantity,
+                            dish.dishPrice
+                          )
+                        : 1}{" "}
+                      
                   TND
                 </td>
                 <td> </td>
@@ -75,13 +88,23 @@ const CartDropDown: FC<CartDropDownProps> = () => {
               <td className="fw-bold  totalCell">
                 {cart.reduce((a, b) => a + b.quantity, 0)}
               </td>
-              <td className="fw-bold">{} TND</td>
+                    
+                    <td className="fw-bold">{totalPrice} TND</td>
               <td></td>
             </tr>
           </tfoot>
         </table>
-        <div>
-          <input type="button" value="More Details" />
+        <div className="mb-3">
+        <Button 
+        onClick={()=>navigate("/cart")}
+         style={{
+        borderRadius: 35,
+        backgroundColor: "#21b6ae",
+        color:"white"
+    }} variant="outlined" startIcon={<Info />}>
+  More details
+</Button>
+
         </div>
         </div>
       ) : (
