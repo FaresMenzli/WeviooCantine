@@ -1,0 +1,8 @@
+.button{
+    width: 13vw;
+    min-width:150px;
+    border-radius:20px;
+    background: linear-gradient(66deg, rgb(244 234 138) 0%, rgb(241, 218, 54) 100%);
+    opacity:80%;
+    transition: opacity 0.3s;
+}
