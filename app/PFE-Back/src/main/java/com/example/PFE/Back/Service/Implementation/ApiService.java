@@ -35,7 +35,7 @@ public class ApiService {
 
 
     public ApiResponse getDataFromApi() {
-        String apiUrl = "https://api.weatherbit.io/v2.0/current?lat=36.89951782793725&lon=10.190657031051124&key=20c6b4bbc280420e82e5c1b20afd7a00&include=minutely";
+        String apiUrl = "https://api.weatherbit.io/v2.0/current?lat=36.89951782793725&lon=10.190657031051124&key=c532aff557dd4b5597c072a2d67de2a3&include=minutely";
         try {
 
             System.out.println("+++++++++++++++++++++++++++++++");
