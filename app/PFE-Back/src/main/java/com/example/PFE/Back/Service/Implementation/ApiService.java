@@ -38,8 +38,6 @@ public class ApiService {
         String apiUrl = "https://api.weatherbit.io/v2.0/current?lat=36.89951782793725&lon=10.190657031051124&key=20c6b4bbc280420e82e5c1b20afd7a00&include=minutely";
         try {
 
-            System.out.println("+++++++++++++++++++++++++++++++");
-            System.out.println(restTemplate.getForObject(apiUrl, ApiResponse.class).getData().toArray()[0]);
             return restTemplate.getForObject(apiUrl, ApiResponse.class);
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             e.printStackTrace();
@@ -62,14 +60,14 @@ public class ApiService {
     public WeviooSuggestion getSuggestion() {
         List<Dish> dishSuggestion = new ArrayList<>();
         // double WeatherDegree = getWeatherDegree();
-        double WeatherDegree = 80;
+        double WeatherDegree = 30;
         if (WeatherDegree > 20) {
 
           dishSuggestion=  dishToSuggestService.getDishToSuggestsByWeatherStatus(WeatherStatus.HOT);
-            return new WeviooSuggestion("It's hot outside, stay hydrated and cool. we suggest : ", new WeatherDegreeAndIcon(WeatherDegree, getWeatherIcon()), dishSuggestion);
+            return new WeviooSuggestion("It's hot outside, stay hydrated and cool. we suggest : ", new WeatherDegreeAndIcon(WeatherDegree, "getWeatherIcon()"), dishSuggestion);
         } else if (WeatherDegree < 10) {
 
-            return new WeviooSuggestion("It's cold outside, stay warm and cozy. We suggest: ", new WeatherDegreeAndIcon(WeatherDegree, getWeatherIcon()), dishSuggestion);
+            return new WeviooSuggestion("It's cold outside, stay warm and cozy. We suggest: ", new WeatherDegreeAndIcon(WeatherDegree, "getWeatherIcon()"), dishSuggestion);
 
         }
 

@@ -90,12 +90,12 @@ public class DishController {
     }
 
 
-//    @CrossOrigin(origins = "http://localhost:3000")
-//    @PutMapping("/updateDishQuantity/{dishId}")
-//    public ResponseEntity<Long> updateDishQuantity(@PathVariable Long dishId, @RequestBody Integer newQuantity) {
-//
-//        dishService.updateDishQuantity(dishId, newQuantity);
-//
-//        return new ResponseEntity<>(dishId, HttpStatus.OK);
-//    }
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PutMapping("/updateDishQuantity/{dishId}")
+    public ResponseEntity<Long> updateDishQuantity(@PathVariable Long dishId, @RequestBody Integer newQuantity) {
+
+        dishService.updateDishQuantity(dishId, newQuantity);
+
+        return new ResponseEntity<>(dishId, HttpStatus.OK);
+    }
 }

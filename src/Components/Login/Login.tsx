@@ -108,9 +108,8 @@ const Login: FC<LoginProps> = () => {
     Login to <b>Wevioo Cantine</b>
       <form className='mb-2' onSubmit={handleSubmit}>
         <input className={`${emailError? ' border border-danger' :''} login`} type="text" name="userEmail"  placeholder='E-mail' onChange={handleInputChange} onBlur={validateEmail}/><br></br> {emailError &&  <Alert className='mx-5' severity="error">{emailError}</Alert>}
-        {/* <span className={styles.errorMessage}>{emailError}</span> */}
-        <input className={`${passwordEmpty? ' border border-danger' :''} login`} type="text" name="userPassword" id="" placeholder='password' onChange={handleInputChange} onBlur={handlePassword}/><br></br> {passwordEmpty &&<Alert className='mx-5' severity="error">the Password is obligatoire</Alert>}
-        {/* <span className={styles.errorMessage}>the Password is obligatoire</span> */}
+
+        <input className={`${passwordEmpty? ' border border-danger' :''} login`} type="password" name="userPassword" id="" placeholder='password' onChange={handleInputChange} onBlur={handlePassword}/><br></br> {passwordEmpty &&<Alert className='mx-5' severity="error">the Password is obligatoire</Alert>}
         <input className={`${emailError || !login.userPassword? 'notLogin' :'loginBtn'}`} disabled={emailError|| !login.userPassword?true:false} type="submit" value="Login" name="" id=""/>
       </form>
       <div className='d-flex flex-column'>
