@@ -58,19 +58,20 @@ const ManageDish: FC<ManageDishProps> = (props) => {
 
   return (
     <div className="pt-1 " style={{maxHeight:"100vh"}}>
-      <div className="pb-1 d-flex align-items-center justify-content-center mt-5">
+      <div className="pt-4 pb-1 d-flex align-items-center justify-content-center mt-5">
         <input
           className="addDishs me-5"
           onClick={handleOpenModal}
           type="button"
           value="Add new Dish"
         />
-        <input
+        {/* <input
           id="addnewCategory"
           className="addDishs"
           type="button"
           value="Add new Category"
-        />
+        /> */}
+       
 
         <DishFormModal
           isOpen={isModalOpen}
@@ -83,8 +84,10 @@ const ManageDish: FC<ManageDishProps> = (props) => {
         
         >
           <div className=" rounded-3 w-75 bg-light p-2 ">
+
         
-          <ManageDishTable data={props.data}></ManageDishTable>
+          {!isModalOpen?(  <ManageDishTable data={props.data}></ManageDishTable>):(<></>)}
+        
 
           </div>
      
