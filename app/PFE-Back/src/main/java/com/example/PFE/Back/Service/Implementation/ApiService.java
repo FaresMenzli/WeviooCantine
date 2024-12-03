@@ -67,12 +67,12 @@ public class ApiService {
             return new WeviooSuggestion("It's hot outside, stay hydrated and cool. we suggest : ", new WeatherDegreeAndIcon(WeatherDegree, "getWeatherIcon()"), dishSuggestion);
         } else if (WeatherDegree < 10) {
 
-            return new WeviooSuggestion("It's cold outside, stay warm and cozy. We suggest: ", new WeatherDegreeAndIcon(WeatherDegree, "getWeatherIcon()"), dishSuggestion);
+            return new WeviooSuggestion("It's cold outside, stay warm and cozy. We suggest: ", new WeatherDegreeAndIcon(WeatherDegree, "getWeatherIcon()"), dishToSuggestService.getDishToSuggestsByWeatherStatus(WeatherStatus.COLD));
 
         }
 
 
-        return new WeviooSuggestion("", new WeatherDegreeAndIcon(WeatherDegree, getWeatherIcon()), dishSuggestion);
+        return new WeviooSuggestion("", new WeatherDegreeAndIcon(WeatherDegree, getWeatherIcon()), dishToSuggestService.getDishToSuggestsByWeatherStatus(WeatherStatus.NORMAL));
 
     }
 }
