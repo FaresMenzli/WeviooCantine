@@ -60,19 +60,18 @@ public class ApiService {
     public WeviooSuggestion getSuggestion() {
         List<Dish> dishSuggestion = new ArrayList<>();
         // double WeatherDegree = getWeatherDegree();
-        double WeatherDegree = 30;
+        double WeatherDegree = 25;
         if (WeatherDegree > 20) {
 
-          dishSuggestion=  dishToSuggestService.getDishToSuggestsByWeatherStatus(WeatherStatus.HOT);
-            return new WeviooSuggestion("It's hot outside, stay hydrated and cool. we suggest : ", new WeatherDegreeAndIcon(WeatherDegree, "getWeatherIcon()"), dishSuggestion);
+            return new WeviooSuggestion("It's hot outside, stay hydrated and cool. we suggest : ", new WeatherDegreeAndIcon(WeatherDegree, "getWeatherIcon()"), dishToSuggestService.getDishToSuggestsByWeatherStatus(WeatherStatus.HOT));
         } else if (WeatherDegree < 10) {
 
-            return new WeviooSuggestion("It's cold outside, stay warm and cozy. We suggest: ", new WeatherDegreeAndIcon(WeatherDegree, "getWeatherIcon()"), dishSuggestion);
+            return new WeviooSuggestion("It's cold outside, stay warm and cozy. We suggest: ", new WeatherDegreeAndIcon(WeatherDegree, "getWeatherIcon()"), dishToSuggestService.getDishToSuggestsByWeatherStatus(WeatherStatus.COLD));
 
         }
 
 
-        return new WeviooSuggestion("", new WeatherDegreeAndIcon(WeatherDegree, getWeatherIcon()), dishSuggestion);
+        return new WeviooSuggestion("", new WeatherDegreeAndIcon(WeatherDegree, getWeatherIcon()), dishToSuggestService.getDishToSuggestsByWeatherStatus(WeatherStatus.NORMAL));
 
     }
 }
