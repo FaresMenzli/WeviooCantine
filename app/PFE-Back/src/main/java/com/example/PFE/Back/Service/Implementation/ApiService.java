@@ -60,7 +60,7 @@ public class ApiService {
     public WeviooSuggestion getSuggestion() {
         List<Dish> dishSuggestion = new ArrayList<>();
         // double WeatherDegree = getWeatherDegree();
-        double WeatherDegree = 25;
+        double WeatherDegree = 30;
         if (WeatherDegree > 20) {
 
             return new WeviooSuggestion("It's hot outside, stay hydrated and cool. we suggest : ", new WeatherDegreeAndIcon(WeatherDegree, "getWeatherIcon()"), dishToSuggestService.getDishToSuggestsByWeatherStatus(WeatherStatus.HOT));
